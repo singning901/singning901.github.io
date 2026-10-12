@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>音乐 · Singning901</title>
+<meta name="description" content="901的小世界是一个有意思的小窝" />
+<meta name="keywords" content="42team,42cloud,Linux,Python,Java,C++,漫画,Sakura" />
+<meta name="theme-color" content="#faf7f1" />
+<meta name="color-scheme" content="light" />
+<link rel="icon" href="/img/favicon.ico" />
+<link rel="stylesheet" href="/css/liubai.css" />
+
+<script>
+(function () {
+  var d = document.documentElement;
+  // 渐显动画的初始隐藏态只在有 JS 时生效
+  d.classList.add('js');
+
+  // ── 昼夜：按访客本地时间决定，支持 ?daypart=night 预览 ──
+  var hour = new Date().getHours();
+  var part = 'day';
+  if (hour >= 5 && hour < 8)       part = 'dawn';   // 清晨
+  else if (hour >= 8 && hour < 17) part = 'day';    // 白天
+  else if (hour >= 17 && hour < 20) part = 'dusk';  // 傍晚
+  else                              part = 'night'; // 夜晚
+
+  var forced = false;
+  /* 手动指定的昼夜模式优先于时间（存在 localStorage） */
+  try {
+    var m = localStorage.getItem('liubai-mode');
+    if (m === 'day' || m === 'night') { part = m; forced = true; }
+  } catch (e) {}
+
+  try {
+    var q = new URLSearchParams(location.search).get('daypart');
+    if (q && /^(dawn|day|dusk|night)$/.test(q)) { part = q; forced = true; }
+  } catch (e) {}
+  d.setAttribute('data-daypart', part);
+  if (forced) d.setAttribute('data-forced', '1');
+
+})();
+</script>
+
+<meta name="generator" content="Hexo 8.1.2"></head>
+<body class="tpl-page">
+  
+  <a class="skip-link" href="#main">跳到正文</a>
+
+  
+<!-- 鼠标进入这条不可见的顶部感应带，导航才滑出 -->
+<div class="nav-zone" style="height:90px" aria-hidden="true"></div>
+
+<header class="site-nav" id="site-nav" data-pin-after="260">
+  <div class="nav-inner">
+    <a class="nav-brand" href="/" aria-label="Singning901">
+      <span class="seal" aria-hidden="true">九</span>
+      <span class="brand-text">
+        <span class="brand-mark">
+<svg class="wordmark" viewBox="-6 -12 712 124" role="img" aria-label="Singning901"
+     fill="none" stroke-linecap="round" stroke-linejoin="round" preserveAspectRatio="xMinYMid meet">
+
+  <!-- s -->
+  <g transform="translate(0,0)">
+    <path d="M45 31 C45 24 38 20 30 20 C22 20 15 24 15 31 C15 39 22 43 30 45 C38 47 45 51 45 60 C45 68 38 73 30 73 C22 73 15 69 15 62" />
+  </g>
+
+  <!-- i -->
+  <g transform="translate(66,0)">
+    <path d="M17 72 V22" />
+    <circle class="wm-accent" cx="17" cy="7" r="4.6" stroke="none" />
+  </g>
+
+  <!-- n -->
+  <g transform="translate(108,0)">
+    <path d="M8 72 V22 M8 38 C8 27 17 21 30 21 C43 21 52 27 52 38 V72" />
+  </g>
+
+  <!-- g：碗在 x-height，尾巴明确向左甩 -->
+  <g transform="translate(178,0)">
+    <path d="M54 47 A24 24 0 1 1 6 47 A24 24 0 1 1 54 47" />
+    <path d="M54 23 V80 C54 92 43 98 27 98" />
+  </g>
+
+  <!-- n -->
+  <g transform="translate(250,0)">
+    <path d="M8 72 V22 M8 38 C8 27 17 21 30 21 C43 21 52 27 52 38 V72" />
+  </g>
+
+  <!-- i -->
+  <g transform="translate(320,0)">
+    <path d="M17 72 V22" />
+    <circle class="wm-accent" cx="17" cy="7" r="4.6" stroke="none" />
+  </g>
+
+  <!-- n -->
+  <g transform="translate(362,0)">
+    <path d="M8 72 V22 M8 38 C8 27 17 21 30 21 C43 21 52 27 52 38 V72" />
+  </g>
+
+  <!-- g -->
+  <g transform="translate(432,0)">
+    <path d="M54 47 A24 24 0 1 1 6 47 A24 24 0 1 1 54 47" />
+    <path d="M54 23 V80 C54 92 43 98 27 98" />
+  </g>
+
+  <!-- 901：小圈 + 长竖，与 g 明确区分 -->
+  <g class="wm-digits" transform="translate(518,0)">
+    <path d="M50 24 A20 20 0 1 1 10 24 A20 20 0 1 1 50 24" />
+    <path d="M50 24 V72" />
+    <path transform="translate(70,0)" d="M55 38 A24 34 0 1 1 7 38 A24 34 0 1 1 55 38" />
+    <path transform="translate(140,0)" d="M14 18 L26 4 V72" />
+  </g>
+</svg>
+</span>
+        <span class="brand-sub">高考要加油啊！！！</span>
+      </span>
+    </a>
+
+    <nav class="nav-links" aria-label="主导航">
+      
+        <a class="nav-link" href="/">
+          <span class="nav-link-cn">首页</span>
+          <span class="nav-link-en">INDEX</span>
+        </a>
+      
+        <a class="nav-link" href="/links/">
+          <span class="nav-link-cn">友人帐</span>
+          <span class="nav-link-en">LINKS</span>
+        </a>
+      
+        <a class="nav-link" href="/comment/">
+          <span class="nav-link-cn">留言板</span>
+          <span class="nav-link-en">GUESTBOOK</span>
+        </a>
+      
+        <a class="nav-link" href="/about/">
+          <span class="nav-link-cn">关于</span>
+          <span class="nav-link-en">ABOUT</span>
+        </a>
+      
+    </nav>
+
+    
+
+    <!-- 昼夜模式：自动 / 日间 / 夜间 三态循环 -->
+    <button class="mode-toggle" id="mode-toggle" type="button" data-mode="auto"
+            title="切换昼夜模式（自动 / 日间 / 夜间）">
+      <span class="mode-icon" aria-hidden="true"></span>
+      <span class="mode-label" id="mode-label">自动</span>
+    </button>
+
+    <button class="nav-toggle" id="nav-toggle" aria-label="展开菜单" aria-expanded="false">
+      <span></span><span></span>
+    </button>
+  </div>
+</header>
+
+
+  
+    <main id="main" class="wrap">
+      <div class="reading-grid">
+        <article class="article">
+          <header class="post-head">
+  <div class="post-meta"><div class="section-label" style="margin:0">音乐</div></div>
+  <h1 class="post-h1">音乐</h1>
+</header>
+
+<div class="prose" id="prose">
+  <p>这里以后会放歌单～</p>
+<p>旧版站点用的是 APlayer + MetingJS 播放器。如果想恢复播放器，可以在<br><code>_config.butterfly.yml</code> 里配置 Butterfly 自带的 APlayer<br>（<code>aplayer:</code> 段落，支持 Meting 接口），或者直接在本页正文里嵌入<br>APlayer 的 <code>div</code> 标签。</p>
+
+</div>
+
+        </article>
+        <aside class="aside">
+  
+  <div class="aside-block aside-author">
+    <div class="aside-label">AUTHOR</div>
+    
+      <img class="aside-avatar" src="/img/niao.jpg" alt="Singning901" />
+    
+    <div class="aside-name">Singning901</div>
+    <p class="aside-bio">901 的小世界是一个有意思的小窝</p>
+    <dl class="aside-stats">
+      <div><dt>文章</dt><dd>1</dd></div>
+      <div><dt>标签</dt><dd>1</dd></div>
+      <div><dt>分类</dt><dd>1</dd></div>
+    </dl>
+  </div>
+  
+
+  
+
+  <div class="aside-block">
+    <div class="aside-label">RECENT</div>
+    <ul class="aside-recent">
+      
+        <li>
+          <a href="/2021/02/10/myfirstpost/">
+            <span class="recent-title">第一篇！横空出世！！！！</span>
+            <span class="recent-date">2021-02-10</span>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+</aside>
+
+      </div>
+    </main>
+  
+
+  <footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-rule" aria-hidden="true"></div>
+
+    <div class="footer-cols">
+      <div class="footer-col">
+        <div class="footer-label">SITE</div>
+        <div class="footer-mark">
+<svg class="wordmark" viewBox="-6 -12 712 124" role="img" aria-label="Singning901"
+     fill="none" stroke-linecap="round" stroke-linejoin="round" preserveAspectRatio="xMinYMid meet">
+
+  <!-- s -->
+  <g transform="translate(0,0)">
+    <path d="M45 31 C45 24 38 20 30 20 C22 20 15 24 15 31 C15 39 22 43 30 45 C38 47 45 51 45 60 C45 68 38 73 30 73 C22 73 15 69 15 62" />
+  </g>
+
+  <!-- i -->
+  <g transform="translate(66,0)">
+    <path d="M17 72 V22" />
+    <circle class="wm-accent" cx="17" cy="7" r="4.6" stroke="none" />
+  </g>
+
+  <!-- n -->
+  <g transform="translate(108,0)">
+    <path d="M8 72 V22 M8 38 C8 27 17 21 30 21 C43 21 52 27 52 38 V72" />
+  </g>
+
+  <!-- g：碗在 x-height，尾巴明确向左甩 -->
+  <g transform="translate(178,0)">
+    <path d="M54 47 A24 24 0 1 1 6 47 A24 24 0 1 1 54 47" />
+    <path d="M54 23 V80 C54 92 43 98 27 98" />
+  </g>
+
+  <!-- n -->
+  <g transform="translate(250,0)">
+    <path d="M8 72 V22 M8 38 C8 27 17 21 30 21 C43 21 52 27 52 38 V72" />
+  </g>
+
+  <!-- i -->
+  <g transform="translate(320,0)">
+    <path d="M17 72 V22" />
+    <circle class="wm-accent" cx="17" cy="7" r="4.6" stroke="none" />
+  </g>
+
+  <!-- n -->
+  <g transform="translate(362,0)">
+    <path d="M8 72 V22 M8 38 C8 27 17 21 30 21 C43 21 52 27 52 38 V72" />
+  </g>
+
+  <!-- g -->
+  <g transform="translate(432,0)">
+    <path d="M54 47 A24 24 0 1 1 6 47 A24 24 0 1 1 54 47" />
+    <path d="M54 23 V80 C54 92 43 98 27 98" />
+  </g>
+
+  <!-- 901：小圈 + 长竖，与 g 明确区分 -->
+  <g class="wm-digits" transform="translate(518,0)">
+    <path d="M50 24 A20 20 0 1 1 10 24 A20 20 0 1 1 50 24" />
+    <path d="M50 24 V72" />
+    <path transform="translate(70,0)" d="M55 38 A24 34 0 1 1 7 38 A24 34 0 1 1 55 38" />
+    <path transform="translate(140,0)" d="M14 18 L26 4 V72" />
+  </g>
+</svg>
+</div>
+        <p class="footer-desc">901的小世界是一个有意思的小窝</p>
+      </div>
+
+      <div class="footer-col">
+        <div class="footer-label">NAVIGATE</div>
+        <ul class="footer-list">
+          
+            <li><a href="/">首页</a></li>
+          
+            <li><a href="/links/">友人帐</a></li>
+          
+            <li><a href="/comment/">留言板</a></li>
+          
+            <li><a href="/about/">关于</a></li>
+          
+        </ul>
+      </div>
+
+      
+      <div class="footer-col">
+        <div class="footer-label">ELSEWHERE</div>
+        <ul class="footer-list">
+          
+            <li><a href="https://github.com/singning901" target="_blank" rel="noopener">GitHub</a></li>
+          
+            <li><a href="https://space.bilibili.com/293793694" target="_blank" rel="noopener">Bilibili</a></li>
+          
+            <li><a href="mailto:1052868941@qq.com" target="_blank" rel="noopener">Email</a></li>
+          
+        </ul>
+      </div>
+      
+    </div>
+
+    <div class="footer-base">
+      <span>© 2021–2026 Singning901</span>
+      <!-- 旧版网站的完整副本，存放在 source/legacy/ -->
+      <a class="footer-legacy" href="/legacy/">
+        <span aria-hidden="true">←</span> 回到旧版网站
+      </a>
+      
+        <span class="footer-powered">Hexo · 留白</span>
+      
+    </div>
+  </div>
+</footer>
+
+
+  <div class="page-scan" aria-hidden="true"></div>
+
+  <script src="/js/liubai.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Singning901</title>
+<meta name="description" content="901的小世界是一个有意思的小窝" />
+<meta name="keywords" content="42team,42cloud,Linux,Python,Java,C++,漫画,Sakura" />
+<meta name="theme-color" content="#faf7f1" />
+<meta name="color-scheme" content="light" />
+<link rel="icon" href="/img/favicon.ico" />
+<link rel="stylesheet" href="/css/liubai.css" />
+
+<noscript><style>.intro{display:none !important}</style></noscript>
+
+<script>
+(function () {
+  var d = document.documentElement;
+  // 渐显动画的初始隐藏态只在有 JS 时生效
+  d.classList.add('js');
+
+  // ── 昼夜：按访客本地时间决定，支持 ?daypart=night 预览 ──
+  var hour = new Date().getHours();
+  var part = 'day';
+  if (hour >= 5 && hour < 8)       part = 'dawn';   // 清晨
+  else if (hour >= 8 && hour < 17) part = 'day';    // 白天
+  else if (hour >= 17 && hour < 20) part = 'dusk';  // 傍晚
+  else                              part = 'night'; // 夜晚
+
+  var forced = false;
+  /* 手动指定的昼夜模式优先于时间（存在 localStorage） */
+  try {
+    var m = localStorage.getItem('liubai-mode');
+    if (m === 'day' || m === 'night') { part = m; forced = true; }
+  } catch (e) {}
+
+  try {
+    var q = new URLSearchParams(location.search).get('daypart');
+    if (q && /^(dawn|day|dusk|night)$/.test(q)) { part = q; forced = true; }
+  } catch (e) {}
+  d.setAttribute('data-daypart', part);
+  if (forced) d.setAttribute('data-forced', '1');
+
+
+  try {
+    if (sessionStorage.getItem('liubai-intro-seen') === '1') {
+      d.classList.add('intro-skip');   // 本会话已看过，直接跳过
+      return;
+    }
+  } catch (e) {}
+
+  // 入场层存在期间，首屏动画挂起
+  d.classList.add('intro-active');
+
+})();
+</script>
+
+<meta name="generator" content="Hexo 8.1.2"></head>
+<body class="tpl-home">
+  
+<div class="intro" id="intro" role="dialog" aria-modal="true" aria-label="进入站点">
+  <div class="intro-panel intro-panel-top" aria-hidden="true"></div>
+  <div class="intro-panel intro-panel-bottom" aria-hidden="true"></div>
+
+  <!-- ── 手绘背景：抽象技术图形（鹰角式平面语言）──────────────────────
+       切角面板 + 同心断弧 + 刻度尺 + 斜向虚线带 + 十字定位标记
+       天体（日 / 月）与全部颜色由 html[data-daypart] 驱动 -->
+  <div class="intro-art" aria-hidden="true">
+    <svg class="art" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
+      <rect class="art-sky" width="1600" height="900"/>
+
+      <path class="art-panel" d="M1188 0 H1600 V392 L1560 432 H1188 L1148 392 V40 Z"/>
+      <path class="art-panel" d="M0 632 H286 L326 672 V900 H0 Z"/>
+
+      <g class="art-arcs">
+        <circle cx="176" cy="1168" r="520"/>
+        <circle cx="176" cy="1168" r="700"/>
+        <circle cx="176" cy="1168" r="880"/>
+        <circle cx="176" cy="1168" r="1060"/>
+      </g>
+
+      <g class="art-band">
+        <line x1="-40" y1="212" x2="1640" y2="58"/>
+        <line x1="-40" y1="232" x2="1640" y2="78"/>
+      </g>
+
+      <g class="art-ruler">
+        <line class="art-ruler-base" x1="0" y1="848" x2="1600" y2="848"/>
+        
+          <line class="art-tick" x1="0" y1="838" x2="0" y2="848"/>
+        
+          <line class="art-tick" x1="40" y1="838" x2="40" y2="848"/>
+        
+          <line class="art-tick" x1="80" y1="838" x2="80" y2="848"/>
+        
+          <line class="art-tick" x1="120" y1="838" x2="120" y2="848"/>
+        
+          <line class="art-tick" x1="160" y1="838" x2="160" y2="848"/>
+        
+          <line class="art-tick" x1="200" y1="838" x2="200" y2="848"/>
+        
+          <line class="art-tick" x1="240" y1="838" x2="240" y2="848"/>
+        
+          <line class="art-tick" x1="280" y1="838" x2="280" y2="848"/>
+        
+          <line class="art-tick" x1="320" y1="838" x2="320" y2="848"/>
+        
+          <line class="art-tick" x1="360" y1="838" x2="360" y2="848"/>
+        
+          <line class="art-tick" x1="400" y1="838" x2="400" y2="848"/>
+        
+          <line class="art-tick" x1="440" y1="838" x2="440" y2="848"/>
+        
+          <line class="art-tick" x1="480" y1="838" x2="480" y2="848"/>
+        
+          <line class="art-tick" x1="520" y1="838" x2="520" y2="848"/>
+        
+          <line class="art-tick" x1="560" y1="838" x2="560" y2="848"/>
+        
+          <line class="art-tick" x1="600" y1="838" x2="600" y2="848"/>
+        
+          <line class="art-tick" x1="640" y1="838" x2="640" y2="848"/>
+        
+          <line class="art-tick" x1="680" y1="838" x2="680" y2="848"/>
+        
+          <line class="art-tick" x1="720" y1="838" x2="720" y2="848"/>
+        
+          <line class="art-tick" x1="760" y1="838" x2="760" y2="848"/>
+        
+          <line class="art-tick" x1="800" y1="838" x2="800" y2="848"/>
+        
+          <line class="art-tick" x1="840" y1="838" x2="840" y2="848"/>
+        
+          <line class="art-tick" x1="880" y1="838" x2="880" y2="848"/>
+        
+          <line class="art-tick" x1="920" y1="838" x2="920" y2="848"/>
+        
+          <line class="art-tick" x1="960" y1="838" x2="960" y2="848"/>
+        
+          <line class="art-tick" x1="1000" y1="838" x2="1000" y2="848"/>
+        
+          <line class="art-tick" x1="1040" y1="838" x2="1040" y2="848"/>
+        
+          <line class="art-tick" x1="1080" y1="838" x2="1080" y2="848"/>
+        
+          <line class="art-tick" x1="1120" y1="838" x2="1120" y2="848"/>
+        
+          <line class="art-tick" x1="1160" y1="838" x2="1160" y2="848"/>
+        
+          <line class="art-tick" x1="1200" y1="838" x2="1200" y2="848"/>
+        
+          <line class="art-tick" x1="1240" y1="838" x2="1240" y2="848"/>
+        
+          <line class="art-tick" x1="1280" y1="838" x2="1280" y2="848"/>
+        
+          <line class="art-tick" x1="1320" y1="838" x2="1320" y2="848"/>
+        
+          <line class="art-tick" x1="1360" y1="838" x2="1360" y2="848"/>
+        
+          <line class="art-tick" x1="1400" y1="838" x2="1400" y2="848"/>
+        
+          <line class="art-tick" x1="1440" y1="838" x2="1440" y2="848"/>
+        
+          <line class="art-tick" x1="1480" y1="838" x2="1480" y2="848"/>
+        
+          <line class="art-tick" x1="1520" y1="838" x2="1520" y2="848"/>
+        
+          <line class="art-tick" x1="1560" y1="838" x2="1560" y2="848"/>
+        
+          <line class="art-tick" x1="1600" y1="838" x2="1600" y2="848"/>
+        
+        
+          <line class="art-tick-major" x1="0" y1="826" x2="0" y2="848"/>
+        
+          <line class="art-tick-major" x1="200" y1="826" x2="200" y2="848"/>
+        
+          <line class="art-tick-major" x1="400" y1="826" x2="400" y2="848"/>
+        
+          <line class="art-tick-major" x1="600" y1="826" x2="600" y2="848"/>
+        
+          <line class="art-tick-major" x1="800" y1="826" x2="800" y2="848"/>
+        
+          <line class="art-tick-major" x1="1000" y1="826" x2="1000" y2="848"/>
+        
+          <line class="art-tick-major" x1="1200" y1="826" x2="1200" y2="848"/>
+        
+          <line class="art-tick-major" x1="1400" y1="826" x2="1400" y2="848"/>
+        
+          <line class="art-tick-major" x1="1600" y1="826" x2="1600" y2="848"/>
+        
+      </g>
+
+      <g class="art-vscale">
+        <line class="art-ruler-base" x1="92" y1="120" x2="92" y2="560"/>
+        
+          <line class="art-tick" x1="84" y1="120" x2="92" y2="120"/>
+        
+          <line class="art-tick" x1="84" y1="160" x2="92" y2="160"/>
+        
+          <line class="art-tick" x1="84" y1="200" x2="92" y2="200"/>
+        
+          <line class="art-tick" x1="84" y1="240" x2="92" y2="240"/>
+        
+          <line class="art-tick" x1="84" y1="280" x2="92" y2="280"/>
+        
+          <line class="art-tick" x1="84" y1="320" x2="92" y2="320"/>
+        
+          <line class="art-tick" x1="84" y1="360" x2="92" y2="360"/>
+        
+          <line class="art-tick" x1="84" y1="400" x2="92" y2="400"/>
+        
+          <line class="art-tick" x1="84" y1="440" x2="92" y2="440"/>
+        
+          <line class="art-tick" x1="84" y1="480" x2="92" y2="480"/>
+        
+          <line class="art-tick" x1="84" y1="520" x2="92" y2="520"/>
+        
+          <line class="art-tick" x1="84" y1="560" x2="92" y2="560"/>
+        
+      </g>
+
+      <g class="art-marks">
+        <path d="M352 168 h22 M363 157 v22"/>
+        <path d="M1424 676 h22 M1435 665 v22"/>
+      </g>
+
+      <!-- 天体：白天是日，夜晚是月。
+           写实光照：径向渐变当受光面，外面再套一层模糊光晕 -->
+      <defs>
+        <radialGradient id="discGrad" cx="36%" cy="31%" r="76%">
+          <stop class="gstop-hi"  offset="0%"/>
+          <stop class="gstop-mid" offset="54%"/>
+          <stop class="gstop-lo"  offset="100%"/>
+        </radialGradient>
+      </defs>
+
+      <g class="art-disc">
+        <circle class="art-disc-glow" cx="1198" cy="284" r="126"/>
+        <circle class="art-disc-body" cx="1198" cy="284" r="74" fill="url(#discGrad)"/>
+        <path class="art-disc-ring" d="M1198 164 A120 120 0 0 1 1318 284"/>
+        <path class="art-disc-ring" d="M1198 404 A120 120 0 0 1 1078 284"/>
+        <circle class="art-moon-shade" cx="1168" cy="266" r="72"/>
+      </g>
+    </svg>
+  </div>
+
+  <div class="intro-stage">
+    <span class="intro-bracket tl" aria-hidden="true"></span>
+    <span class="intro-bracket tr" aria-hidden="true"></span>
+    <span class="intro-bracket bl" aria-hidden="true"></span>
+    <span class="intro-bracket br" aria-hidden="true"></span>
+
+    <div class="intro-core">
+      <div class="intro-greet" id="intro-greet"></div>
+
+      <div class="intro-seal" aria-hidden="true"><span>九</span></div>
+
+      
+      <div class="intro-display" aria-hidden="true">
+        <span class="dchar" style="--i:0">山</span>
+<span class="dchar" style="--i:1">水</span>
+
+      </div>
+      
+
+      <div class="intro-titles">
+        <div class="intro-wordmark">
+<svg class="wordmark" viewBox="-6 -12 712 124" role="img" aria-label="Singning901"
+     fill="none" stroke-linecap="round" stroke-linejoin="round" preserveAspectRatio="xMinYMid meet">
+
+  <!-- s -->
+  <g transform="translate(0,0)">
+    <path d="M45 31 C45 24 38 20 30 20 C22 20 15 24 15 31 C15 39 22 43 30 45 C38 47 45 51 45 60 C45 68 38 73 30 73 C22 73 15 69 15 62" />
+  </g>
+
+  <!-- i -->
+  <g transform="translate(66,0)">
+    <path d="M17 72 V22" />
+    <circle class="wm-accent" cx="17" cy="7" r="4.6" stroke="none" />
+  </g>
+
+  <!-- n -->
+  <g transform="translate(108,0)">
+    <path d="M8 72 V22 M8 38 C8 27 17 21 30 21 C43 21 52 27 52 38 V72" />
+  </g>
+
+  <!-- g：碗在 x-height，尾巴明确向左甩 -->
+  <g transform="translate(178,0)">
+    <path d="M54 47 A24 24 0 1 1 6 47 A24 24 0 1 1 54 47" />
+    <path d="M54 23 V80 C54 92 43 98 27 98" />
+  </g>
+
+  <!-- n -->
+  <g transform="translate(250,0)">
+    <path d="M8 72 V22 M8 38 C8 27 17 21 30 21 C43 21 52 27 52 38 V72" />
+  </g>
+
+  <!-- i -->
+  <g transform="translate(320,0)">
+    <path d="M17 72 V22" />
+    <circle class="wm-accent" cx="17" cy="7" r="4.6" stroke="none" />
+  </g>
+
+  <!-- n -->
+  <g transform="translate(362,0)">
+    <path d="M8 72 V22 M8 38 C8 27 17 21 30 21 C43 21 52 27 52 38 V72" />
+  </g>
+
+  <!-- g -->
+  <g transform="translate(432,0)">
+    <path d="M54 47 A24 24 0 1 1 6 47 A24 24 0 1 1 54 47" />
+    <path d="M54 23 V80 C54 92 43 98 27 98" />
+  </g>
+
+  <!-- 901：小圈 + 长竖，与 g 明确区分 -->
+  <g class="wm-digits" transform="translate(518,0)">
+    <path d="M50 24 A20 20 0 1 1 10 24 A20 20 0 1 1 50 24" />
+    <path d="M50 24 V72" />
+    <path transform="translate(70,0)" d="M55 38 A24 34 0 1 1 7 38 A24 34 0 1 1 55 38" />
+    <path transform="translate(140,0)" d="M14 18 L26 4 V72" />
+  </g>
+</svg>
+</div>
+        <div class="intro-sub">高考要加油啊！！！</div>
+        <div class="intro-latin">SINGNING901 / TALOS-II</div>
+      </div>
+
+      <div class="intro-line" aria-hidden="true"><i></i></div>
+
+      <button class="intro-enter" id="intro-enter" type="button">
+        <span class="intro-enter-cn">点击进入</span>
+        <span class="intro-enter-en">ENTER</span>
+        <span class="intro-enter-ring" aria-hidden="true"></span>
+      </button>
+    </div>
+
+    <div class="intro-status">
+      <span>九〇一 · 小世界</span>
+      <span class="intro-status-mid" id="intro-clock" aria-hidden="true">--:--</span>
+      <span>SYSTEM READY</span>
+    </div>
+  </div>
+
+  <!-- ── 退场动画：扫描线 → 切角幕布横向铺开 → 淡出交还首页 ───────────── -->
+  <div class="intro-veil" aria-hidden="true">
+    <span class="veil-scan"></span>
+  </div>
+</div>
+
+  <a class="skip-link" href="#main">跳到正文</a>
+
+  
+<!-- 鼠标进入这条不可见的顶部感应带，导航才滑出 -->
+<div class="nav-zone" style="height:90px" aria-hidden="true"></div>
+
+<header class="site-nav" id="site-nav" data-pin-after="260">
+  <div class="nav-inner">
+    <a class="nav-brand" href="/" aria-label="Singning901">
+      <span class="seal" aria-hidden="true">九</span>
+      <span class="brand-text">
+        <span class="brand-mark">
+<svg class="wordmark" viewBox="-6 -12 712 124" role="img" aria-label="Singning901"
+     fill="none" stroke-linecap="round" stroke-linejoin="round" preserveAspectRatio="xMinYMid meet">
+
+  <!-- s -->
+  <g transform="translate(0,0)">
+    <path d="M45 31 C45 24 38 20 30 20 C22 20 15 24 15 31 C15 39 22 43 30 45 C38 47 45 51 45 60 C45 68 38 73 30 73 C22 73 15 69 15 62" />
+  </g>
+
+  <!-- i -->
+  <g transform="translate(66,0)">
+    <path d="M17 72 V22" />
+    <circle class="wm-accent" cx="17" cy="7" r="4.6" stroke="none" />
+  </g>
+
+  <!-- n -->
+  <g transform="translate(108,0)">
+    <path d="M8 72 V22 M8 38 C8 27 17 21 30 21 C43 21 52 27 52 38 V72" />
+  </g>
+
+  <!-- g：碗在 x-height，尾巴明确向左甩 -->
+  <g transform="translate(178,0)">
+    <path d="M54 47 A24 24 0 1 1 6 47 A24 24 0 1 1 54 47" />
+    <path d="M54 23 V80 C54 92 43 98 27 98" />
+  </g>
+
+  <!-- n -->
+  <g transform="translate(250,0)">
+    <path d="M8 72 V22 M8 38 C8 27 17 21 30 21 C43 21 52 27 52 38 V72" />
+  </g>
+
+  <!-- i -->
+  <g transform="translate(320,0)">
+    <path d="M17 72 V22" />
+    <circle class="wm-accent" cx="17" cy="7" r="4.6" stroke="none" />
+  </g>
+
+  <!-- n -->
+  <g transform="translate(362,0)">
+    <path d="M8 72 V22 M8 38 C8 27 17 21 30 21 C43 21 52 27 52 38 V72" />
+  </g>
+
+  <!-- g -->
+  <g transform="translate(432,0)">
+    <path d="M54 47 A24 24 0 1 1 6 47 A24 24 0 1 1 54 47" />
+    <path d="M54 23 V80 C54 92 43 98 27 98" />
+  </g>
+
+  <!-- 901：小圈 + 长竖，与 g 明确区分 -->
+  <g class="wm-digits" transform="translate(518,0)">
+    <path d="M50 24 A20 20 0 1 1 10 24 A20 20 0 1 1 50 24" />
+    <path d="M50 24 V72" />
+    <path transform="translate(70,0)" d="M55 38 A24 34 0 1 1 7 38 A24 34 0 1 1 55 38" />
+    <path transform="translate(140,0)" d="M14 18 L26 4 V72" />
+  </g>
+</svg>
+</span>
+        <span class="brand-sub">高考要加油啊！！！</span>
+      </span>
+    </a>
+
+    <nav class="nav-links" aria-label="主导航">
+      
+        <a class="nav-link is-active" href="/">
+          <span class="nav-link-cn">首页</span>
+          <span class="nav-link-en">INDEX</span>
+        </a>
+      
+        <a class="nav-link" href="/links/">
+          <span class="nav-link-cn">友人帐</span>
+          <span class="nav-link-en">LINKS</span>
+        </a>
+      
+        <a class="nav-link" href="/comment/">
+          <span class="nav-link-cn">留言板</span>
+          <span class="nav-link-en">GUESTBOOK</span>
+        </a>
+      
+        <a class="nav-link" href="/about/">
+          <span class="nav-link-cn">关于</span>
+          <span class="nav-link-en">ABOUT</span>
+        </a>
+      
+    </nav>
+
+    
+
+    <!-- 昼夜模式：自动 / 日间 / 夜间 三态循环 -->
+    <button class="mode-toggle" id="mode-toggle" type="button" data-mode="auto"
+            title="切换昼夜模式（自动 / 日间 / 夜间）">
+      <span class="mode-icon" aria-hidden="true"></span>
+      <span class="mode-label" id="mode-label">自动</span>
+    </button>
+
+    <button class="nav-toggle" id="nav-toggle" aria-label="展开菜单" aria-expanded="false">
+      <span></span><span></span>
+    </button>
+  </div>
+</header>
+
+
+  
+    <main id="main">
+      
+
+<!-- ── 首屏 ───────────────────────────────────────────── -->
+<section class="hero has-media" style="--hero-h:66vh">
+  
+    <div class="hero-media" style="background-image:url('/img/chun3.webp');--scrim:0.34" aria-hidden="true"></div>
+  
+
+  <!-- 四角标记：方舟式 HUD 取景框 -->
+  <span class="hero-bracket tl" aria-hidden="true"></span>
+  <span class="hero-bracket tr" aria-hidden="true"></span>
+  <span class="hero-bracket bl" aria-hidden="true"></span>
+  <span class="hero-bracket br" aria-hidden="true"></span>
+
+  <div class="hero-body">
+    
+      <div class="hero-vertical" aria-hidden="true">九〇一小世界</div>
+    
+    <div class="hero-text">
+      <h1 class="hero-title"><span class="stagger hero-mark" style="--d:0">
+<svg class="wordmark" viewBox="-6 -12 712 124" role="img" aria-label="Singning901"
+     fill="none" stroke-linecap="round" stroke-linejoin="round" preserveAspectRatio="xMinYMid meet">
+
+  <!-- s -->
+  <g transform="translate(0,0)">
+    <path d="M45 31 C45 24 38 20 30 20 C22 20 15 24 15 31 C15 39 22 43 30 45 C38 47 45 51 45 60 C45 68 38 73 30 73 C22 73 15 69 15 62" />
+  </g>
+
+  <!-- i -->
+  <g transform="translate(66,0)">
+    <path d="M17 72 V22" />
+    <circle class="wm-accent" cx="17" cy="7" r="4.6" stroke="none" />
+  </g>
+
+  <!-- n -->
+  <g transform="translate(108,0)">
+    <path d="M8 72 V22 M8 38 C8 27 17 21 30 21 C43 21 52 27 52 38 V72" />
+  </g>
+
+  <!-- g：碗在 x-height，尾巴明确向左甩 -->
+  <g transform="translate(178,0)">
+    <path d="M54 47 A24 24 0 1 1 6 47 A24 24 0 1 1 54 47" />
+    <path d="M54 23 V80 C54 92 43 98 27 98" />
+  </g>
+
+  <!-- n -->
+  <g transform="translate(250,0)">
+    <path d="M8 72 V22 M8 38 C8 27 17 21 30 21 C43 21 52 27 52 38 V72" />
+  </g>
+
+  <!-- i -->
+  <g transform="translate(320,0)">
+    <path d="M17 72 V22" />
+    <circle class="wm-accent" cx="17" cy="7" r="4.6" stroke="none" />
+  </g>
+
+  <!-- n -->
+  <g transform="translate(362,0)">
+    <path d="M8 72 V22 M8 38 C8 27 17 21 30 21 C43 21 52 27 52 38 V72" />
+  </g>
+
+  <!-- g -->
+  <g transform="translate(432,0)">
+    <path d="M54 47 A24 24 0 1 1 6 47 A24 24 0 1 1 54 47" />
+    <path d="M54 23 V80 C54 92 43 98 27 98" />
+  </g>
+
+  <!-- 901：小圈 + 长竖，与 g 明确区分 -->
+  <g class="wm-digits" transform="translate(518,0)">
+    <path d="M50 24 A20 20 0 1 1 10 24 A20 20 0 1 1 50 24" />
+    <path d="M50 24 V72" />
+    <path transform="translate(70,0)" d="M55 38 A24 34 0 1 1 7 38 A24 34 0 1 1 55 38" />
+    <path transform="translate(140,0)" d="M14 18 L26 4 V72" />
+  </g>
+</svg>
+</span></h1>
+      
+        <p class="hero-tagline stagger" style="--d:1">高考要加油啊！！！</p>
+      
+      <div class="hero-rule stagger" style="--d:2"><span></span></div>
+    </div>
+  </div>
+
+  <div class="hero-foot">
+    <span class="hero-hud" aria-hidden="true"><i></i><span id="hero-daypart">--</span></span>
+    
+      <span class="hero-scroll">向下<i aria-hidden="true"></i></span>
+    
+  </div>
+</section>
+
+<!-- ── 链接卡片（主题配置里的 cards.items 驱动）─────────── -->
+
+<section class="section">
+  <header class="section-head">
+    <div class="section-label"><b class="sec-num">01</b>LINKS</div>
+    <h2 class="section-title">START:DASH!!</h2>
+    <p class="section-sub">正式上线！！！</p>
+  </header>
+
+  <div class="cards">
+    
+      <a class="card reveal" style="--i:0" href="https://live.bilibili.com/233" target="_blank" rel="noopener">
+        <div class="card-media">
+          
+            <img src="/img/chun5.webp" alt="" loading="lazy" />
+          
+        </div>
+        <div class="card-body">
+          <span class="card-tag">活动</span>
+          <h3 class="card-name">Bilibili拜年纪</h3>
+          <p class="card-desc">春节快乐！</p>
+          <span class="card-arrow" aria-hidden="true">→</span>
+        </div>
+      </a>
+    
+      <a class="card reveal" style="--i:1" href="https://space.bilibili.com/293793694" target="_blank" rel="noopener">
+        <div class="card-media">
+          
+            <img src="/img/bilibili.jpg" alt="" loading="lazy" />
+          
+        </div>
+        <div class="card-body">
+          <span class="card-tag">视频</span>
+          <h3 class="card-name">Bilibili</h3>
+          <p class="card-desc">我的 b 站视频</p>
+          <span class="card-arrow" aria-hidden="true">→</span>
+        </div>
+      </a>
+    
+      <a class="card reveal" style="--i:2" href="http://www.sxkszx.cn/index.html" target="_blank" rel="noopener">
+        <div class="card-media">
+          
+            <img src="/img/gaokao.png" alt="" loading="lazy" />
+          
+        </div>
+        <div class="card-body">
+          <span class="card-tag">加油</span>
+          <h3 class="card-name">高考加油</h3>
+          <p class="card-desc">不负韶华</p>
+          <span class="card-arrow" aria-hidden="true">→</span>
+        </div>
+      </a>
+    
+  </div>
+</section>
+
+
+<!-- ── 文章列表 ───────────────────────────────────────── -->
+<section class="section">
+  <header class="section-head">
+    <div class="section-label"><b class="sec-num">02</b>JOURNAL</div>
+    <h2 class="section-title">最近文章</h2>
+  </header>
+
+  
+  <ul class="post-list">
+    
+      <li class="post-item reveal" style="--i:0">
+        <a class="post-link" href="/2021/02/10/myfirstpost/">
+          <time class="post-date" datetime="2021-02-10T10:02:00.000Z">2021-02-10</time>
+          <span class="post-main">
+            <span class="post-title">第一篇！横空出世！！！！</span>
+            <span class="post-excerpt">啊啊啊啊啊终于做好了这个小网站，以后会在这里发布一些小消息嘿嘿！赶在除夕之前出来了，衷心祝愿各位老师，同学和朋友们春节快乐！ 在新的一年里！电势 磁势 引力势 事事得势重力 弹</span>
+          </span>
+          <span class="post-arrow" aria-hidden="true">→</span>
+        </a>
+      </li>
+    
+  </ul>
+  
+
+  
+</section>
+
+    </main>
+  
+
+  <footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-rule" aria-hidden="true"></div>
+
+    <div class="footer-cols">
+      <div class="footer-col">
+        <div class="footer-label">SITE</div>
+        <div class="footer-mark">
+<svg class="wordmark" viewBox="-6 -12 712 124" role="img" aria-label="Singning901"
+     fill="none" stroke-linecap="round" stroke-linejoin="round" preserveAspectRatio="xMinYMid meet">
+
+  <!-- s -->
+  <g transform="translate(0,0)">
+    <path d="M45 31 C45 24 38 20 30 20 C22 20 15 24 15 31 C15 39 22 43 30 45 C38 47 45 51 45 60 C45 68 38 73 30 73 C22 73 15 69 15 62" />
+  </g>
+
+  <!-- i -->
+  <g transform="translate(66,0)">
+    <path d="M17 72 V22" />
+    <circle class="wm-accent" cx="17" cy="7" r="4.6" stroke="none" />
+  </g>
+
+  <!-- n -->
+  <g transform="translate(108,0)">
+    <path d="M8 72 V22 M8 38 C8 27 17 21 30 21 C43 21 52 27 52 38 V72" />
+  </g>
+
+  <!-- g：碗在 x-height，尾巴明确向左甩 -->
+  <g transform="translate(178,0)">
+    <path d="M54 47 A24 24 0 1 1 6 47 A24 24 0 1 1 54 47" />
+    <path d="M54 23 V80 C54 92 43 98 27 98" />
+  </g>
+
+  <!-- n -->
+  <g transform="translate(250,0)">
+    <path d="M8 72 V22 M8 38 C8 27 17 21 30 21 C43 21 52 27 52 38 V72" />
+  </g>
+
+  <!-- i -->
+  <g transform="translate(320,0)">
+    <path d="M17 72 V22" />
+    <circle class="wm-accent" cx="17" cy="7" r="4.6" stroke="none" />
+  </g>
+
+  <!-- n -->
+  <g transform="translate(362,0)">
+    <path d="M8 72 V22 M8 38 C8 27 17 21 30 21 C43 21 52 27 52 38 V72" />
+  </g>
+
+  <!-- g -->
+  <g transform="translate(432,0)">
+    <path d="M54 47 A24 24 0 1 1 6 47 A24 24 0 1 1 54 47" />
+    <path d="M54 23 V80 C54 92 43 98 27 98" />
+  </g>
+
+  <!-- 901：小圈 + 长竖，与 g 明确区分 -->
+  <g class="wm-digits" transform="translate(518,0)">
+    <path d="M50 24 A20 20 0 1 1 10 24 A20 20 0 1 1 50 24" />
+    <path d="M50 24 V72" />
+    <path transform="translate(70,0)" d="M55 38 A24 34 0 1 1 7 38 A24 34 0 1 1 55 38" />
+    <path transform="translate(140,0)" d="M14 18 L26 4 V72" />
+  </g>
+</svg>
+</div>
+        <p class="footer-desc">901的小世界是一个有意思的小窝</p>
+      </div>
+
+      <div class="footer-col">
+        <div class="footer-label">NAVIGATE</div>
+        <ul class="footer-list">
+          
+            <li><a href="/">首页</a></li>
+          
+            <li><a href="/links/">友人帐</a></li>
+          
+            <li><a href="/comment/">留言板</a></li>
+          
+            <li><a href="/about/">关于</a></li>
+          
+        </ul>
+      </div>
+
+      
+      <div class="footer-col">
+        <div class="footer-label">ELSEWHERE</div>
+        <ul class="footer-list">
+          
+            <li><a href="https://github.com/singning901" target="_blank" rel="noopener">GitHub</a></li>
+          
+            <li><a href="https://space.bilibili.com/293793694" target="_blank" rel="noopener">Bilibili</a></li>
+          
+            <li><a href="mailto:1052868941@qq.com" target="_blank" rel="noopener">Email</a></li>
+          
+        </ul>
+      </div>
+      
+    </div>
+
+    <div class="footer-base">
+      <span>© 2021–2026 Singning901</span>
+      <!-- 旧版网站的完整副本，存放在 source/legacy/ -->
+      <a class="footer-legacy" href="/legacy/">
+        <span aria-hidden="true">←</span> 回到旧版网站
+      </a>
+      
+        <span class="footer-powered">Hexo · 留白</span>
+      
+    </div>
+  </div>
+</footer>
+
+
+  <div class="page-scan" aria-hidden="true"></div>
+
+  <script src="/js/liubai.js" defer></script>
+</body>
+</html>
