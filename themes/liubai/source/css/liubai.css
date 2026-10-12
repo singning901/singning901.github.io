@@ -2184,6 +2184,115 @@ html:not(.intro-active) .stagger { animation-duration: 1.05s; }
   .hero-bracket.tl, .hero-bracket.tr { opacity: .8 !important; }
 }
 
+/* ==========================================================================
+   25. 常驻动画加强版 —— 之前太克制，等于白做
+   ========================================================================== */
+
+/* 上角框：呼吸 + 缩放，明显能看见在动 */
+.hero-bracket.tl,
+.hero-bracket.tr {
+  animation: bracketIn .8s var(--ease) .35s forwards,
+             bracketLive 4s ease-in-out 1.4s infinite;
+}
+@keyframes bracketLive {
+  0%, 100% { opacity: .35; transform: scale(.86); }
+  50%      { opacity: 1;   transform: scale(1.1); }
+}
+/* 角框加一圈自己的回响 */
+.hero-bracket.tl::after,
+.hero-bracket.tr::after {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border: 1px solid rgba(255, 255, 255, .5);
+  opacity: 0;
+  animation: bracketEcho 4s ease-out 1.4s infinite;
+}
+@keyframes bracketEcho {
+  0%   { opacity: .7; transform: scale(.9); }
+  70%  { opacity: 0;  transform: scale(1.9); }
+  100% { opacity: 0;  transform: scale(1.9); }
+}
+
+/* 竖排小字：明暗 + 轻微上下漂 */
+.hero-vertical {
+  animation: vertLive 6s ease-in-out infinite;
+}
+@keyframes vertLive {
+  0%, 100% { opacity: .45; transform: translateY(-5px); }
+  50%      { opacity: 1;   transform: translateY(5px); }
+}
+
+/* 卡片反光：幅度加大，能明显看到一条亮带扫过 */
+.card::before {
+  background: linear-gradient(157deg,
+    transparent 0%,
+    rgba(255, 255, 255, .34) 38%,
+    rgba(255, 255, 255, .46) 50%,
+    rgba(255, 255, 255, .34) 62%,
+    transparent 100%);
+  background-size: 260% 100%;
+  animation: sheenSweep 5.5s ease-in-out infinite;
+}
+@keyframes sheenSweep {
+  0%   { background-position: -130% 0; }
+  100% { background-position: 230% 0; }
+}
+[data-daypart="night"] .card::before {
+  background: linear-gradient(157deg,
+    transparent 0%, rgba(255,255,255,.10) 40%,
+    rgba(255,255,255,.16) 50%,
+    rgba(255,255,255,.10) 60%, transparent 100%);
+  background-size: 260% 100%;
+}
+
+/* 章节编号：呼吸 + 缩放 */
+.sec-num {
+  display: inline-block;
+  animation: numLive 4.5s ease-in-out infinite;
+}
+@keyframes numLive {
+  0%, 100% { opacity: .45; transform: scale(.9); }
+  50%      { opacity: 1;   transform: scale(1.12); }
+}
+
+/* 章节头的网点带缓慢平移（面积很小，绘制开销可忽略） */
+.section-head::after { animation: hatchDrift 11s linear infinite; }
+@keyframes hatchDrift {
+  0%   { background-position: 0 0; }
+  100% { background-position: 56px 0; }
+}
+
+/* 首屏加一条持续横扫的竖向光带 —— 最显眼的一条 */
+.hero::before {
+  content: "";
+  position: absolute;
+  top: 0; bottom: 22px;
+  width: 180px;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(90deg,
+    transparent, rgba(255, 255, 255, .13), transparent);
+  animation: heroBeam 9s ease-in-out infinite;
+}
+@keyframes heroBeam {
+  0%   { transform: translateX(-220px); }
+  100% { transform: translateX(calc(100vw + 220px)); }
+}
+
+/* 页脚短线的明暗幅度加大 */
+@keyframes ruleGlow {
+  0%, 100% { opacity: .3; }
+  50%      { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-bracket.tl, .hero-bracket.tr,
+  .hero-vertical, .card::before, .sec-num,
+  .section-head::after, .hero::before { animation: none !important; }
+  .hero::before { display: none; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .card:hover .card-media::after,
   .card:hover .card-body::after,

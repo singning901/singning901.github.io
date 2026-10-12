@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>留白 · 管理面板</title>
+<style>
+  :root{
+    --paper:#faf7f1; --paper-2:#f3eee4; --ink:#16161a; --ink-2:#5a5a62; --ink-3:#96969e;
+    --rule:#e2dacb; --rule-2:#cfc5b2; --card:#fff; --red:#c8362b; --teal:#2f7d76;
+    --mono:ui-monospace,"Cascadia Mono",Consolas,monospace;
+    --sans:"Microsoft YaHei","PingFang SC","Noto Sans SC",system-ui,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font:14px/1.6 var(--sans);
+       background-image:linear-gradient(rgba(22,22,26,.028) 1px,transparent 1px),
+                        linear-gradient(90deg,rgba(22,22,26,.028) 1px,transparent 1px);
+       background-size:92px 92px}
+  header{position:sticky;top:0;z-index:9;display:flex;align-items:center;gap:18px;
+         padding:14px 22px;background:rgba(250,247,241,.86);backdrop-filter:blur(16px);
+         border-bottom:1px solid var(--rule)}
+  .logo{font:700 17px/1 var(--sans);letter-spacing:.02em}
+  .logo b{color:var(--red)}
+  nav{display:flex;gap:4px;margin-left:auto}
+  nav button{font:12px/1 var(--mono);letter-spacing:.12em;padding:9px 15px;cursor:pointer;
+    background:none;border:1px solid transparent;color:var(--ink-2);border-radius:0}
+  nav button.on{color:var(--ink);border-color:var(--rule-2);background:var(--card);
+    box-shadow:inset 0 1px 0 #fff}
+  main{max-width:1080px;margin:0 auto;padding:26px 22px 90px}
+  .pane{display:none} .pane.on{display:block}
+  h2{font:600 15px/1 var(--sans);margin:0 0 4px}
+  .hint{color:var(--ink-3);font-size:12.5px;margin:0 0 18px}
+  .box{background:var(--card);border:1px solid var(--rule);padding:20px;margin-bottom:18px;
+       clip-path:polygon(14px 0,100% 0,100% calc(100% - 14px),calc(100% - 14px) 100%,0 100%,0 14px)}
+  label{display:block;font:11px/1 var(--mono);letter-spacing:.14em;color:var(--ink-3);
+        margin:14px 0 6px;text-transform:uppercase}
+  label:first-child{margin-top:0}
+  input[type=text],input[type=datetime-local],textarea,select{
+    width:100%;padding:10px 12px;font:14px/1.5 var(--sans);color:var(--ink);
+    background:var(--paper);border:1px solid var(--rule-2);border-radius:0;outline:none}
+  textarea{min-height:330px;resize:vertical;font:13px/1.75 var(--mono)}
+  input:focus,textarea:focus,select:focus{border-color:var(--red)}
+  .row{display:flex;gap:12px;flex-wrap:wrap}
+  .row>div{flex:1;min-width:190px}
+  .btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+  button.b{font:12px/1 var(--mono);letter-spacing:.1em;padding:11px 18px;cursor:pointer;
+    background:var(--card);color:var(--ink);border:1px solid var(--rule-2);border-radius:0;
+    clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px);
+    transition:transform .3s cubic-bezier(.22,1,.36,1),border-color .25s,color .25s}
+  button.b:hover{border-color:var(--red);color:var(--red);transform:translateY(-2px)}
+  button.b.p{background:var(--red);border-color:var(--red);color:#fff}
+  button.b.p:hover{color:#fff;filter:brightness(1.08)}
+  button.b:disabled{opacity:.4;cursor:not-allowed;transform:none}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:14px}
+  .im{border:1px solid var(--rule);background:var(--paper);overflow:hidden}
+  .im img{display:block;width:100%;height:118px;object-fit:cover;background:var(--paper-2)}
+  .im .m{padding:8px 10px}
+  .im .n{font:11px/1.4 var(--mono);word-break:break-all;color:var(--ink-2)}
+  .im .s{font:10px/1.6 var(--mono);color:var(--ink-3)}
+  .im .a{display:flex;border-top:1px solid var(--rule)}
+  .im .a button{flex:1;padding:7px 4px;font:10px/1 var(--mono);cursor:pointer;background:none;
+    border:0;border-right:1px solid var(--rule);color:var(--ink-2)}
+  .im .a button:last-child{border-right:0}
+  .im .a button:hover{background:var(--paper-2);color:var(--red)}
+  .drop{border:1.5px dashed var(--rule-2);padding:30px;text-align:center;color:var(--ink-3);
+        font-size:13px;cursor:pointer;margin-bottom:18px}
+  .drop.hot{border-color:var(--red);color:var(--red);background:rgba(200,54,43,.04)}
+  pre#log{margin:0;padding:16px;background:#16161a;color:#d8dde8;font:12px/1.65 var(--mono);
+    max-height:440px;overflow:auto;white-space:pre-wrap;word-break:break-all;min-height:130px}
+  .pill{display:inline-block;padding:3px 9px;font:10.5px/1.6 var(--mono);letter-spacing:.1em;
+    border:1px solid var(--rule-2);color:var(--ink-2)}
+  .pill.run{border-color:var(--red);color:var(--red)}
+  .pill.ok{border-color:var(--teal);color:var(--teal)}
+  .pill.bad{border-color:var(--red);background:var(--red);color:#fff}
+  .plist{width:100%;border-collapse:collapse;font-size:13px}
+  .plist td{padding:9px 8px;border-bottom:1px solid var(--rule);vertical-align:top}
+  .plist tr:hover td{background:var(--paper-2)}
+  .plist .d{font:11px/1.6 var(--mono);color:var(--ink-3);white-space:nowrap}
+  .plist .x{width:34px;text-align:right}
+  .plist .x button{background:none;border:0;color:var(--ink-3);cursor:pointer;font-size:15px}
+  .plist .x button:hover{color:var(--red)}
+  .toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,20px);opacity:0;
+    padding:12px 22px;background:#16161a;color:#fff;font:12.5px/1 var(--mono);
+    transition:opacity .3s,transform .3s;pointer-events:none;z-index:99}
+  .toast.on{opacity:1;transform:translate(-50%,0)}
+  .toast.bad{background:var(--red)}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">留白 <b>·</b> 管理面板</div>
+  <nav>
+    <button data-t="write" class="on">写文章</button>
+    <button data-t="images">图片</button>
+    <button data-t="settings">首页设置</button>
+    <button data-t="publish">构建发布</button>
+  </nav>
+</header>
+<main>
+
+  <!-- ── 写文章 ─────────────────────────────────────────────── -->
+  <section class="pane on" id="p-write">
+    <div class="box">
+      <div class="row">
+        <div><label>标题</label><input type="text" id="f-title" placeholder="今天想写点什么"></div>
+        <div><label>日期时间</label><input type="datetime-local" id="f-date"></div>
+      </div>
+      <div class="row">
+        <div><label>标签（逗号或空格分隔）</label><input type="text" id="f-tags" placeholder="日常 随笔"></div>
+        <div><label>分类</label><input type="text" id="f-cats" placeholder="留白"></div>
+      </div>
+      <label>正文（Markdown）</label>
+      <textarea id="f-body" placeholder="# 小标题&#10;&#10;正文……&#10;&#10;![图片](/img/niao.jpg)"></textarea>
+      <div class="btns">
+        <button class="b p" id="btn-save">保存文章</button>
+        <button class="b" id="btn-save-go">保存并构建</button>
+        <button class="b" id="btn-clear">清空</button>
+      </div>
+      <p class="hint" style="margin:14px 0 0">
+        文件名即网址（permalink 为 <code>:year/:month/:day/:title/</code>）。同名文件会被覆盖。
+      </p>
+    </div>
+
+    <div class="box">
+      <h2>已有文章</h2>
+      <p class="hint">点标题载入编辑框。删除是移到 <code>.trash/</code>，不会真删。</p>
+      <table class="plist"><tbody id="posts"></tbody></table>
+    </div>
+  </section>
+
+  <!-- ── 图片 ──────────────────────────────────────────────── -->
+  <section class="pane" id="p-images">
+    <div class="drop" id="drop">把图片拖进来，或点这里选择文件<br>
+      <span style="font-size:12px">支持 jpg / png / gif / webp / svg，存到 source/img/</span>
+      <input type="file" id="file" accept="image/*" multiple hidden>
+    </div>
+    <div class="box">
+      <h2>图片库</h2>
+      <p class="hint">「设为首页大图」会改写主题配置的 <code>hero.image</code>。</p>
+      <div class="grid" id="images"></div>
+    </div>
+  </section>
+
+  <!-- ── 首页设置 ──────────────────────────────────────────── -->
+  <section class="pane" id="p-settings">
+    <div class="box">
+      <h2>首页大图与文案</h2>
+      <p class="hint">改完记得去「构建发布」跑一次，线上才会变。</p>
+      <label>首页大图</label>
+      <select id="s-image"></select>
+      <label>副标题（大图右侧那行小字）</label>
+      <input type="text" id="s-tagline">
+      <label>竖排小字</label>
+      <input type="text" id="s-vertical">
+      <div class="btns"><button class="b p" id="btn-settings">保存设置</button></div>
+      <div style="margin-top:22px;padding-top:18px;border-top:1px solid var(--rule)">
+        <label>当前生效值</label>
+        <div id="s-now" style="font:12px/1.9 var(--mono);color:var(--ink-2)"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 构建发布 ──────────────────────────────────────────── -->
+  <section class="pane" id="p-publish">
+    <div class="box">
+      <h2>构建与发布</h2>
+      <p class="hint">
+        <b>构建</b>只生成 <code>public/</code>，不影响线上。<br>
+        <b>发布</b>会构建后推送到 GitHub Pages，约 1–2 分钟生效。
+      </p>
+      <div class="btns">
+        <button class="b" id="btn-build">只构建</button>
+        <button class="b p" id="btn-publish">构建并发布</button>
+        <button class="b" id="btn-open-local">打开本地预览</button>
+        <button class="b" id="btn-open-live">打开线上</button>
+      </div>
+      <div style="margin:16px 0 8px"><span class="pill" id="job-pill">空闲</span></div>
+      <pre id="log">等待操作…</pre>
+    </div>
+  </section>
+
+</main>
+<div class="toast" id="toast"></div>
+
+<script>
+const $  = (s) => document.querySelector(s);
+const api = async (url, opt) => {
+  const r = await fetch(url, opt);
+  const t = await r.text();
+  try { return JSON.parse(t); } catch { return { ok: r.ok, raw: t }; }
+};
+const post = (url, body) => api(url, {
+  method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body),
+});
+let toastTimer;
+function toast(msg, bad) {
+  const el = $('#toast');
+  el.textContent = msg; el.className = 'toast on' + (bad ? ' bad' : '');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { el.className = 'toast'; }, 2600);
+}
+const kb = (n) => n > 1048576 ? (n/1048576).toFixed(1)+' MB' : Math.max(1, Math.round(n/1024)) + ' KB';
+
+/* 标签切换 */
+document.querySelectorAll('nav button').forEach((b) => {
+  b.onclick = () => {
+    document.querySelectorAll('nav button').forEach((x) => x.classList.toggle('on', x === b));
+    document.querySelectorAll('.pane').forEach((p) => p.classList.toggle('on', p.id === 'p-' + b.dataset.t));
+  };
+});
+
+/* ── 状态 ─────────────────────────────────────────────── */
+async function refresh() {
+  const s = await api('/api/state');
+  if (!s.posts) return;
+
+  // 文章列表
+  $('#posts').innerHTML = s.posts.length ? s.posts.map((p) => `
+    <tr>
+      <td><a href="#" data-f="${encodeURIComponent(p.file)}" class="lnk">${p.title}</a></td>
+      <td class="d">${(p.date||'').slice(0,16)}</td>
+      <td class="x"><button data-del="${encodeURIComponent(p.file)}" title="删除">×</button></td>
+    </tr>`).join('') : '<tr><td style="color:#999">还没有文章</td></tr>';
+
+  // 图片库
+  $('#images').innerHTML = s.images.length ? s.images.map((i) => `
+    <div class="im">
+      <img src="/img/${encodeURIComponent(i.name)}" loading="lazy" alt="">
+      <div class="m"><div class="n">${i.name}</div><div class="s">${kb(i.size)}</div></div>
+      <div class="a">
+        <button data-hero="${i.name}">设为首页大图</button>
+        <button data-copy="/img/${i.name}">复制路径</button>
+        <button data-rm="${i.name}">删除</button>
+      </div>
+    </div>`).join('') : '<div style="color:#999">还没有图片</div>';
+
+  // 首页设置
+  const opts = s.images.map((i) => `<option value="/img/${i.name}">/img/${i.name}</option>`).join('');
+  $('#s-image').innerHTML = opts || '<option value="">（没有图片）</option>';
+  $('#s-image').value = s.hero.image || '';
+  $('#s-tagline').value = s.hero.tagline || '';
+  $('#s-vertical').value = s.hero.vertical || '';
+  $('#s-now').innerHTML =
+    'hero.image&nbsp;&nbsp;&nbsp;= ' + (s.hero.image || '(空)') + '<br>' +
+    'hero.tagline&nbsp;= ' + (s.hero.tagline || '(空)') + '<br>' +
+    'hero.vertical = ' + (s.hero.vertical || '(空)') + '<br>' +
+    '图片 ' + s.images.length + ' 张 · 文章 ' + s.posts.length + ' 篇';
+
+  document.querySelectorAll('[data-hero]').forEach((b) => b.onclick = async () => {
+    await post('/api/settings', { image: '/img/' + b.dataset.hero });
+    toast('已设为首页大图（记得去发布）'); refresh();
+  });
+  document.querySelectorAll('[data-copy]').forEach((b) => b.onclick = () => {
+    navigator.clipboard.writeText(b.dataset.copy); toast('已复制 ' + b.dataset.copy);
+  });
+  document.querySelectorAll('[data-rm]').forEach((b) => b.onclick = async () => {
+    if (!confirm('删除 ' + b.dataset.rm + '？（会移到 .trash/）')) return;
+    await post('/api/delete-image', { name: b.dataset.rm }); toast('已移入 .trash/'); refresh();
+  });
+  document.querySelectorAll('[data-del]').forEach((b) => b.onclick = async () => {
+    const f = decodeURIComponent(b.dataset.del);
+    if (!confirm('删除文章 ' + f + '？（会移到 .trash/）')) return;
+    await post('/api/delete-post', { file: f }); toast('已移入 .trash/'); refresh();
+  });
+  document.querySelectorAll('.lnk').forEach((a) => a.onclick = async (e) => {
+    e.preventDefault();
+    const f = decodeURIComponent(a.dataset.f);
+    const r = await fetch('/api/state'); // 简单起见：从列表里取标题回填
+    $('#f-title').value = f.replace(/\.md$/, '');
+    toast('已载入标题。正文请直接编辑对应 md 文件，或在下方重写覆盖。');
+    document.querySelector('nav button[data-t=write]').click();
+  });
+}
+
+/* ── 写文章 ───────────────────────────────────────────── */
+$('#btn-save').onclick = async () => {
+  const r = await post('/api/post', {
+    title: $('#f-title').value, date: $('#f-date').value,
+    tags: $('#f-tags').value, categories: $('#f-cats').value, body: $('#f-body').value,
+  });
+  if (r.ok) { toast('已保存 source/_posts/' + r.file); refresh(); }
+  else toast(r.error || '保存失败', true);
+};
+$('#btn-save-go').onclick = async () => {
+  const r = await post('/api/post', {
+    title: $('#f-title').value, date: $('#f-date').value,
+    tags: $('#f-tags').value, categories: $('#f-cats').value, body: $('#f-body').value,
+  });
+  if (!r.ok) return toast(r.error || '保存失败', true);
+  toast('已保存，开始构建…');
+  document.querySelector('nav button[data-t=publish]').click();
+  runJob('build');
+};
+$('#btn-clear').onclick = () => {
+  ['#f-title','#f-tags','#f-cats','#f-body'].forEach((s) => $(s).value = '');
+  toast('已清空');
+};
+
+/* ── 图片上传 ─────────────────────────────────────────── */
+const drop = $('#drop'), file = $('#file');
+drop.onclick = () => file.click();
+['dragenter','dragover'].forEach((e) => drop.addEventListener(e, (ev) => {
+  ev.preventDefault(); drop.classList.add('hot');
+}));
+['dragleave','drop'].forEach((e) => drop.addEventListener(e, (ev) => {
+  ev.preventDefault(); drop.classList.remove('hot');
+}));
+drop.addEventListener('drop', (ev) => upload(ev.dataTransfer.files));
+file.onchange = () => upload(file.files);
+async function upload(files) {
+  if (!files || !files.length) return;
+  for (const f of files) {
+    const r = await fetch('/api/upload?name=' + encodeURIComponent(f.name), {
+      method: 'POST', body: f,
+    });
+    const j = await r.json();
+    toast(j.ok ? '已上传 ' + f.name : (j.error || '上传失败'), !j.ok);
+  }
+  file.value = ''; refresh();
+}
+
+/* ── 首页设置 ─────────────────────────────────────────── */
+$('#btn-settings').onclick = async () => {
+  const r = await post('/api/settings', {
+    image: $('#s-image').value, tagline: $('#s-tagline').value, vertical: $('#s-vertical').value,
+  });
+  toast(r.ok ? '已保存（记得去发布）' : (r.error || '保存失败'), !r.ok);
+  refresh();
+};
+
+/* ── 构建发布 ─────────────────────────────────────────── */
+let poll;
+async function runJob(action) {
+  const r = await post('/api/job', { action });
+  if (!r.ok) return toast(r.error || '启动失败', true);
+  $('#log').textContent = '启动中…';
+  document.querySelectorAll('.b').forEach((b) => b.disabled = true);
+  clearInterval(poll);
+  poll = setInterval(async () => {
+    const j = await api('/api/job?id=' + r.id);
+    $('#log').textContent = (j.log || []).join('\n');
+    $('#log').scrollTop = $('#log').scrollHeight;
+    const pill = $('#job-pill');
+    pill.textContent = ({ running: '进行中…', done: '完成', failed: '失败' })[j.status] || j.status;
+    pill.className = 'pill ' + ({ running: 'run', done: 'ok', failed: 'bad' }[j.status] || '');
+    if (j.status !== 'running') {
+      clearInterval(poll);
+      document.querySelectorAll('.b').forEach((b) => b.disabled = false);
+    }
+  }, 600);
+}
+$('#btn-build').onclick = () => runJob('build');
+$('#btn-publish').onclick = () => {
+  if (!confirm('会推送到 GitHub Pages，覆盖线上。确定？')) return;
+  runJob('publish');
+};
+$('#btn-open-local').onclick = () => window.open('http://localhost:4000/', '_blank');
+$('#btn-open-live').onclick  = () => window.open('https://singning901.github.io/', '_blank');
+
+/* 初始化 */
+const now = new Date(); now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+$('#f-date').value = now.toISOString().slice(0, 16);
+refresh(); setInterval(refresh, 30000);
+</script>
+</body>
+</html>
