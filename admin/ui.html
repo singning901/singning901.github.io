@@ -79,6 +79,24 @@
   .plist .x{width:34px;text-align:right}
   .plist .x button{background:none;border:0;color:var(--ink-3);cursor:pointer;font-size:15px}
   .plist .x button:hover{color:var(--red)}
+  /* 卡片编辑：用 grid 而不是 flex。
+     flex 项默认 min-width:auto，配图下拉里的长文件名会把列撑破，
+     右侧字段就被挤出可视区 —— 这就是「显示不全」的原因。 */
+  .cedit-grid{display:grid;grid-template-columns:96px minmax(0,1fr);gap:16px;align-items:start}
+  .cedit-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));
+                gap:0 14px;min-width:0}
+  .cedit-fields>div{min-width:0}
+  .cedit-fields input,.cedit-fields select{width:100%;min-width:0;max-width:100%}
+  .cedit-fields .full{grid-column:1/-1}
+  .cedit-fields label{margin:12px 0 6px}
+  .cedit-thumb{width:96px;height:64px;object-fit:cover;display:grid;place-items:center;
+               background:var(--paper-2);border:1px solid var(--rule);
+               font-size:24px;color:var(--ink-3)}
+  .cedit .b{padding:7px 12px;font-size:11px}
+  @media (max-width:620px){
+    .cedit-grid{grid-template-columns:1fr}
+    .cedit-thumb{width:100%;height:118px}
+  }
   .toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,20px);opacity:0;
     padding:12px 22px;background:#16161a;color:#fff;font:12.5px/1 var(--mono);
     transition:opacity .3s,transform .3s;pointer-events:none;z-index:99}
@@ -93,6 +111,7 @@
     <button data-t="write" class="on">写文章</button>
     <button data-t="images">图片</button>
     <button data-t="settings">首页设置</button>
+    <button data-t="cards">卡片</button>
     <button data-t="publish">构建发布</button>
   </nav>
 </header>
@@ -160,22 +179,63 @@
     </div>
   </section>
 
+  <!-- ── 首页卡片 ──────────────────────────────────────────── -->
+  <section class="pane" id="p-cards">
+    <div class="box">
+      <h2>卡片区标题</h2>
+      <p class="hint">首页「01 LINKS」那一段的大标题与副标题。</p>
+      <div class="row">
+        <div><label>大标题</label><input type="text" id="c-title"></div>
+        <div><label>副标题</label><input type="text" id="c-sub"></div>
+      </div>
+      <div class="btns">
+        <button class="b" id="btn-add-card">＋ 添加一张卡片</button>
+        <button class="b p" id="btn-save-cards">保存卡片</button>
+      </div>
+      <p class="hint" style="margin:14px 0 0">
+        配图留空会显示纯色块 + 标题首字。改完记得去「构建发布」跑一次。
+      </p>
+    </div>
+    <div id="card-editor"></div>
+    <input type="file" id="card-file" accept="image/*" hidden>
+  </section>
+
   <!-- ── 构建发布 ──────────────────────────────────────────── -->
   <section class="pane" id="p-publish">
     <div class="box">
+      <h2>本地预览</h2>
+      <p class="hint">在本机起一个站点副本，随便改随便看，不影响线上。</p>
+      <div class="btns">
+        <button class="b" id="btn-prev-toggle">启动预览</button>
+        <button class="b" id="btn-open-local">打开 http://localhost:4000/</button>
+      </div>
+      <div style="margin-top:12px"><span class="pill" id="prev-pill">未运行</span></div>
+    </div>
+
+    <div class="box">
       <h2>构建与发布</h2>
       <p class="hint">
-        <b>构建</b>只生成 <code>public/</code>，不影响线上。<br>
-        <b>发布</b>会构建后推送到 GitHub Pages，约 1–2 分钟生效。
+        <b>只构建</b>：生成 <code>public/</code>，线上完全不动，最安全。<br>
+        <b>发布</b>走保守流程：本地预检 → 快照 <code>public/</code> → 给线上现行版本打备份标签
+        → <b>普通 push（绝不强推）</b> → 回读线上验证。<br>
+        被拒绝或验证失败都会<b>停手并保持线上原样</b>，不会覆盖。
       </p>
       <div class="btns">
-        <button class="b" id="btn-build">只构建</button>
+        <button class="b" id="btn-build">只构建（不碰线上）</button>
         <button class="b p" id="btn-publish">构建并发布</button>
-        <button class="b" id="btn-open-local">打开本地预览</button>
         <button class="b" id="btn-open-live">打开线上</button>
       </div>
       <div style="margin:16px 0 8px"><span class="pill" id="job-pill">空闲</span></div>
       <pre id="log">等待操作…</pre>
+    </div>
+
+    <div class="box">
+      <h2>备份与回滚</h2>
+      <p class="hint">
+        每次发布会自动把当时线上版本存成一个标签。出问题就点「回滚」，
+        它会主动切换到那个版本并推送，约 1–2 分钟生效。
+      </p>
+      <table class="plist"><tbody id="backups"></tbody></table>
     </div>
   </section>
 
@@ -206,6 +266,7 @@ document.querySelectorAll('nav button').forEach((b) => {
   b.onclick = () => {
     document.querySelectorAll('nav button').forEach((x) => x.classList.toggle('on', x === b));
     document.querySelectorAll('.pane').forEach((p) => p.classList.toggle('on', p.id === 'p-' + b.dataset.t));
+    if (b.dataset.t === 'cards') loadCards();
   };
 });
 
@@ -245,6 +306,28 @@ async function refresh() {
     'hero.tagline&nbsp;= ' + (s.hero.tagline || '(空)') + '<br>' +
     'hero.vertical = ' + (s.hero.vertical || '(空)') + '<br>' +
     '图片 ' + s.images.length + ' 张 · 文章 ' + s.posts.length + ' 篇';
+
+  // 备份列表
+  const bk = (s.backups || []).filter((b) => b.type === 'tag');
+  const snaps = (s.backups || []).filter((b) => b.type === 'snapshot');
+  $('#backups').innerHTML = (bk.length || snaps.length) ? [
+    ...bk.map((b) => `<tr><td>${b.name}</td><td class="d">远端标签</td>
+      <td class="x"><button data-rb="${b.name}" title="回滚">↺</button></td></tr>`),
+    ...snaps.map((b) => `<tr><td style="color:var(--ink-3)">${b.name}</td>
+      <td class="d">本地快照</td><td class="x"></td></tr>`),
+  ].join('') : '<tr><td style="color:#999">还没有备份（首次发布会自动创建）</td></tr>';
+
+  // 预览状态
+  const pv = $('#prev-pill');
+  const running = s.preview && s.preview.running;
+  pv.textContent = running ? '运行中 :' + (s.preview.port || 4000) : '未运行';
+  pv.className = 'pill ' + (running ? 'ok' : '');
+  $('#btn-prev-toggle').textContent = running ? '停止预览' : '启动预览';
+
+  document.querySelectorAll('[data-rb]').forEach((b) => b.onclick = () => {
+    if (!confirm('回滚到 ' + b.dataset.rb + '？\n这会把它推成线上版本。')) return;
+    rollback(b.dataset.rb);
+  });
 
   document.querySelectorAll('[data-hero]').forEach((b) => b.onclick = async () => {
     await post('/api/settings', { image: '/img/' + b.dataset.hero });
@@ -328,6 +411,114 @@ $('#btn-settings').onclick = async () => {
   refresh();
 };
 
+/* ── 首页卡片 ─────────────────────────────────────────── */
+const esc = (s) => String(s == null ? '' : s)
+  .replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+let CARD_IMGS = [];
+
+async function loadCards() {
+  const r = await api('/api/cards');
+  if (!r.ok) return toast(r.error || '读取卡片失败', true);
+  CARD_IMGS = r.images || [];
+  $('#c-title').value = r.cards.title || '';
+  $('#c-sub').value = r.cards.subtitle || '';
+  renderCards(r.cards.items || []);
+}
+
+function collectCards() {
+  return [...document.querySelectorAll('.cedit')].map((el) => {
+    const o = {};
+    el.querySelectorAll('[data-k]').forEach((f) => { o[f.dataset.k] = f.value; });
+    return o;
+  });
+}
+
+let uploadTarget = null;
+
+function renderCards(items) {
+  $('#card-editor').innerHTML = items.map((it, i) => {
+    const opts = ['', ...CARD_IMGS];
+    if (it.img && !opts.includes(it.img)) opts.push(it.img);
+    const first = (it.name || '?').trim().charAt(0);
+    const thumb = it.img
+      ? `<img class="cedit-thumb" src="${esc(it.img)}" alt="">`
+      : `<div class="cedit-thumb">${esc(first)}</div>`;
+    return `
+    <div class="box cedit">
+      <div class="cedit-grid">
+        ${thumb}
+        <div class="cedit-fields">
+          <div><label>标题</label><input type="text" data-k="name" value="${esc(it.name)}"></div>
+          <div><label>右上角标签</label><input type="text" data-k="tag" value="${esc(it.tag)}"></div>
+          <div class="full"><label>一句话说明</label><input type="text" data-k="desc" value="${esc(it.desc)}"></div>
+          <div class="full"><label>跳转地址</label><input type="text" data-k="url" value="${esc(it.url)}"></div>
+          <div class="full"><label>配图</label><select data-k="img">
+            ${opts.map((v) => `<option value="${esc(v)}"${v === it.img ? ' selected' : ''}>${esc(v) || '（不用图）'}</option>`).join('')}
+          </select></div>
+          <div class="full" style="margin-top:8px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+            <button class="b" data-upimg="${i}">⤒ 导入新图</button>
+            <span style="font:10.5px/1.6 var(--mono);color:var(--ink-3)">上传后自动选中这张</span>
+          </div>
+        </div>
+      </div>
+      <div class="btns">
+        <button class="b" data-up="${i}">↑ 上移</button>
+        <button class="b" data-down="${i}">↓ 下移</button>
+        <button class="b" data-delcard="${i}" style="border-color:var(--red);color:var(--red)">删除这张</button>
+      </div>
+    </div>`;
+  }).join('');
+
+  $('#card-editor').querySelectorAll('[data-up]').forEach((b) => b.onclick = () => {
+    const c = collectCards(), i = +b.dataset.up;
+    if (i > 0) { [c[i - 1], c[i]] = [c[i], c[i - 1]]; renderCards(c); }
+  });
+  $('#card-editor').querySelectorAll('[data-down]').forEach((b) => b.onclick = () => {
+    const c = collectCards(), i = +b.dataset.down;
+    if (i < c.length - 1) { [c[i + 1], c[i]] = [c[i], c[i + 1]]; renderCards(c); }
+  });
+  $('#card-editor').querySelectorAll('[data-delcard]').forEach((b) => b.onclick = () => {
+    const c = collectCards(); c.splice(+b.dataset.delcard, 1);
+    if (!c.length) return toast('至少要保留一张卡片', true);
+    renderCards(c);
+  });
+  $('#card-editor').querySelectorAll('[data-upimg]').forEach((b) => b.onclick = () => {
+    uploadTarget = +b.dataset.upimg;
+    $('#card-file').click();
+  });
+}
+
+/* 导入新图：上传到 source/img/，然后自动选中为这张卡的配图 */
+$('#card-file').onchange = async () => {
+  const f = $('#card-file').files[0];
+  if (!f) return;
+  const r = await fetch('/api/upload?name=' + encodeURIComponent(f.name), { method: 'POST', body: f });
+  const j = await r.json();
+  if (!j.ok) { toast(j.error || '导入失败', true); return; }
+  const cards = collectCards();
+  const idx = uploadTarget;
+  const nx = '/img/' + f.name;
+  if (idx != null && cards[idx]) cards[idx].img = nx;
+  if (!CARD_IMGS.includes(nx)) CARD_IMGS.push(nx);
+  renderCards(cards);
+  refresh();
+  toast('已导入 ' + f.name + ' 并选中');
+  $('#card-file').value = '';
+};
+
+$('#btn-add-card').onclick = () => {
+  const c = collectCards();
+  c.push({ name: '新卡片', desc: '', url: 'https://', img: '', tag: '' });
+  renderCards(c);
+};
+$('#btn-save-cards').onclick = async () => {
+  const r = await post('/api/cards', {
+    title: $('#c-title').value, subtitle: $('#c-sub').value, items: collectCards(),
+  });
+  toast(r.ok ? '卡片已保存（记得去发布）' : (r.error || '保存失败'), !r.ok);
+  if (r.ok) loadCards();
+};
+
 /* ── 构建发布 ─────────────────────────────────────────── */
 let poll;
 async function runJob(action) {
@@ -351,8 +542,29 @@ async function runJob(action) {
 }
 $('#btn-build').onclick = () => runJob('build');
 $('#btn-publish').onclick = () => {
-  if (!confirm('会推送到 GitHub Pages，覆盖线上。确定？')) return;
+  if (!confirm('将执行保守发布流程：\n\n· 本地预检\n· 快照 public/\n· 给线上现行版本打备份标签\n· 普通 push（不强推）\n· 回读线上验证\n\n确认开始？')) return;
   runJob('publish');
+};
+async function rollback(tag) {
+  const r = await post('/api/rollback', { tag });
+  if (!r.ok) return toast(r.error || '回滚启动失败', true);
+  toast('开始回滚…');
+  clearInterval(poll);
+  poll = setInterval(async () => {
+    const j = await api('/api/job?id=' + r.id);
+    $('#log').textContent = (j.log || []).join('\n');
+    $('#log').scrollTop = $('#log').scrollHeight;
+    const pill = $('#job-pill');
+    pill.textContent = ({ running: '回滚中…', done: '已回滚', failed: '失败' })[j.status] || j.status;
+    pill.className = 'pill ' + ({ running: 'run', done: 'ok', failed: 'bad' }[j.status] || '');
+    if (j.status !== 'running') clearInterval(poll);
+  }, 600);
+}
+$('#btn-prev-toggle').onclick = async () => {
+  const on = $('#btn-prev-toggle').textContent.indexOf('停止') >= 0;
+  const r = await post('/api/preview', { action: on ? 'stop' : 'start' });
+  toast(r.ok ? (on ? '预览已停止' : '预览已启动，稍等几秒') : '操作失败', !r.ok);
+  setTimeout(refresh, 1500);
 };
 $('#btn-open-local').onclick = () => window.open('http://localhost:4000/', '_blank');
 $('#btn-open-live').onclick  = () => window.open('https://singning901.github.io/', '_blank');
@@ -360,7 +572,13 @@ $('#btn-open-live').onclick  = () => window.open('https://singning901.github.io/
 /* 初始化 */
 const now = new Date(); now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
 $('#f-date').value = now.toISOString().slice(0, 16);
-refresh(); setInterval(refresh, 30000);
+refresh(); loadCards(); setInterval(refresh, 30000);
+/* 支持 #cards 这类深链接，直接打开某个标签页 */
+const wantTab = location.hash.replace('#', '');
+if (wantTab) {
+  const b = document.querySelector('nav button[data-t="' + wantTab + '"]');
+  if (b) b.click();
+}
 </script>
 </body>
 </html>

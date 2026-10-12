@@ -14,3 +14,9 @@ pnpm-debug.log*
 
 # Ô¤ÀÀ½ØÍ¼
 preview/
+
+.deploy/
+
+.backups/
+
+.trash/
