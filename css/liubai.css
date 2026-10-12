@@ -2340,18 +2340,8 @@ html:not(.intro-active) .stagger { animation-duration: 1.05s; }
   animation: glassText 7s cubic-bezier(.4,0,.2,1) 2.2s infinite;
 }
 
-/* 导航条：一道很宽的柔光缓慢横穿 */
-.site-nav::before {
-  content: "";
-  position: absolute;
-  top: 0; bottom: 0;
-  left: 0; width: 32%;
-  pointer-events: none;
-  background: linear-gradient(100deg,
-    rgba(255,255,255,0) 0%, rgba(255,255,255,.42) 50%, rgba(255,255,255,0) 100%);
-  transform: translateX(-160%) skewX(-20deg);
-  animation: heroGlass 11s cubic-bezier(.4,0,.2,1) 1.2s infinite;
-}
+/* 导航条的玻璃反光已按你的要求去掉 —— 顶部那条只保留材质本身
+   （半透明 + 背景模糊），不再有白亮带扫过。 */
 
 /* 页脚短线的明暗幅度加大 */
 @keyframes ruleGlow {
