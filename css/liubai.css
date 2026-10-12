@@ -2262,30 +2262,7 @@ html:not(.intro-active) .stagger { animation-duration: 1.05s; }
     rgba(255, 255, 255, 0)  100%);
 }
 
-/* 首屏大字也来一道白玻璃反光 —— 最像抽卡立绘的一处 */
-.hero-title { position: relative; overflow: hidden; }
-.hero-title::after {
-  content: "";
-  position: absolute;
-  top: -40%; bottom: -40%;
-  left: 0;
-  width: 34%;
-  pointer-events: none;
-  z-index: 3;
-  background: linear-gradient(100deg,
-    rgba(255, 255, 255, 0)    0%,
-    rgba(255, 255, 255, .38) 42%,
-    rgba(255, 255, 255, .92) 50%,
-    rgba(255, 255, 255, .38) 58%,
-    rgba(255, 255, 255, 0)  100%);
-  transform: translateX(-220%) skewX(-20deg);
-  animation: glassText 6.5s cubic-bezier(.4, 0, .2, 1) .8s infinite;
-}
-@keyframes glassText {
-  0%   { transform: translateX(-220%) skewX(-20deg); }
-  32%  { transform: translateX(430%)  skewX(-20deg); }
-  100% { transform: translateX(430%)  skewX(-20deg); }
-}
+/* 首屏大字的玻璃反光已按你的要求取消 —— 只保留卡片上的那一道。 */
 
 /* 章节编号：呼吸 + 缩放 */
 .sec-num {
@@ -2304,41 +2281,7 @@ html:not(.intro-active) .stagger { animation-duration: 1.05s; }
   100% { background-position: 56px 0; }
 }
 
-/* 首屏大图：一整条斜向白玻璃扫过（比原来的竖向光带更像二次元） */
-.hero::before {
-  content: "";
-  position: absolute;
-  top: -30%; bottom: 22px;
-  left: 0;
-  width: 26%;
-  z-index: 2;
-  pointer-events: none;
-  background: linear-gradient(100deg,
-    rgba(255, 255, 255, 0)    0%,
-    rgba(255, 255, 255, .10) 40%,
-    rgba(255, 255, 255, .30) 50%,
-    rgba(255, 255, 255, .10) 60%,
-    rgba(255, 255, 255, 0)  100%);
-  transform: translateX(-160%) skewX(-16deg);
-  animation: heroGlass 8.5s cubic-bezier(.4, 0, .2, 1) infinite;
-}
-@keyframes heroGlass {
-  0%   { transform: translateX(-160%) skewX(-16deg); }
-  34%  { transform: translateX(560%)  skewX(-16deg); }
-  100% { transform: translateX(560%)  skewX(-16deg); }
-}
-
-/* 印章也过一道玻璃光 */
-.seal { position: relative; overflow: hidden; }
-.seal::after {
-  content: "";
-  position: absolute;
-  top: -60%; bottom: -60%;
-  left: 0; width: 60%;
-  background: linear-gradient(100deg, transparent 30%, rgba(255,255,255,.75) 50%, transparent 70%);
-  transform: translateX(-220%) skewX(-18deg);
-  animation: glassText 7s cubic-bezier(.4,0,.2,1) 2.2s infinite;
-}
+/* 首屏大图与印章的玻璃反光已按你的要求取消 —— 全站只留卡片上的那一道。 */
 
 /* 导航条的玻璃反光已按你的要求去掉 —— 顶部那条只保留材质本身
    （半透明 + 背景模糊），不再有白亮带扫过。 */
