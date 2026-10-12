@@ -1,0 +1,93 @@
+# Hexo Configuration
+# Docs: https://hexo.io/docs/configuration.html
+
+# Site
+title: Singning901
+subtitle: '高考要加油啊！！！'
+description: '901的小世界是一个有意思的小窝'
+keywords: 42team,42cloud,Linux,Python,Java,C++,漫画,Sakura
+author: Singning901
+language: zh-CN
+timezone: 'Asia/Shanghai'
+
+# URL
+# Keep :year/:month/:day/:title/ so existing post links stay valid
+url: https://singning901.github.io
+root: /
+permalink: :year/:month/:day/:title/
+permalink_defaults:
+pretty_urls:
+  trailing_index: true
+  trailing_html: true
+
+# Directory
+source_dir: source
+public_dir: public
+tag_dir: tags
+archive_dir: archives
+category_dir: categories
+code_dir: downloads/code
+i18n_dir: :lang
+skip_render:
+
+# Writing
+new_post_name: :title.md
+default_layout: post
+titlecase: false
+external_link:
+  enable: true
+  field: site
+  exclude:
+filename_case: 0
+render_drafts: false
+post_asset_folder: false
+relative_link: false
+future: true
+syntax_highlighter: highlight.js
+highlight:
+  line_number: true
+  auto_detect: false
+  tab_replace: ''
+  wrap: true
+  hljs: false
+
+# Keep single line breaks (the original post used <br>)
+marked:
+  breaks: true
+
+# Home page setting
+index_generator:
+  path: ''
+  per_page: 10
+  order_by: -date
+
+# Category & Tag
+default_category: uncategorized
+category_map:
+tag_map:
+
+# Metadata elements
+meta_generator: true
+
+# Date / Time format
+date_format: YYYY-MM-DD
+time_format: HH:mm:ss
+
+# Use post's updated date as the updated field
+updated_option: 'mtime'
+
+# Pagination
+per_page: 10
+pagination_dir: page
+
+# Extensions
+theme: butterfly
+
+# Deployment
+# The source lives on the `src` branch of this repo; the generated site is
+# pushed to `main`, which is what https://singning901.github.io serves.
+deploy:
+  type: git
+  repo: https://github.com/singning901/singning901.github.io.git
+  branch: main
+  message: "Site updated: {{ now('YYYY-MM-DD HH:mm:ss') }}"

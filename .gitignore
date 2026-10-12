@@ -1,0 +1,13 @@
+# Hexo / build output
+node_modules/
+public/
+db.json
+.deploy_git/
+
+# Hexo logs & caches
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Local tooling
+.tools/
