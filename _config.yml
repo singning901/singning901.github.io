@@ -29,6 +29,8 @@ category_dir: categories
 code_dir: downloads/code
 i18n_dir: :lang
 skip_render:
+  # 旧版网站整站副本，原样复制不渲染（见 source/legacy/）
+  - legacy/**
 
 # Writing
 new_post_name: :title.md
@@ -81,7 +83,7 @@ per_page: 10
 pagination_dir: page
 
 # Extensions
-theme: butterfly
+theme: liubai
 
 # Deployment
 # The source lives on the `src` branch of this repo; the generated site is

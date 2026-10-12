@@ -1,0 +1,44 @@
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-rule" aria-hidden="true"></div>
+
+    <div class="footer-cols">
+      <div class="footer-col">
+        <div class="footer-label">SITE</div>
+        <div class="footer-mark"><%- partial('_partial/wordmark') %></div>
+        <% if (config.description) { %><p class="footer-desc"><%= config.description %></p><% } %>
+      </div>
+
+      <div class="footer-col">
+        <div class="footer-label">NAVIGATE</div>
+        <ul class="footer-list">
+          <% (theme.nav.menu || []).forEach(function (item) { %>
+            <li><a href="<%- url_for(item.url) %>"><%= item.name %></a></li>
+          <% }); %>
+        </ul>
+      </div>
+
+      <% if (theme.footer.links && theme.footer.links.length) { %>
+      <div class="footer-col">
+        <div class="footer-label">ELSEWHERE</div>
+        <ul class="footer-list">
+          <% theme.footer.links.forEach(function (l) { %>
+            <li><a href="<%- l.url %>" target="_blank" rel="noopener"><%= l.name %></a></li>
+          <% }); %>
+        </ul>
+      </div>
+      <% } %>
+    </div>
+
+    <div class="footer-base">
+      <span>© <%= theme.footer.since || 2021 %>–<%= new Date().getFullYear() %> <%= config.author || config.title %></span>
+      <!-- 旧版网站的完整副本，存放在 source/legacy/ -->
+      <a class="footer-legacy" href="<%- url_for('/legacy/') %>">
+        <span aria-hidden="true">←</span> 回到旧版网站
+      </a>
+      <% if (theme.footer.powered) { %>
+        <span class="footer-powered">Hexo · 留白</span>
+      <% } %>
+    </div>
+  </div>
+</footer>

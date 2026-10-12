@@ -1,0 +1,57 @@
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title><% if (page.title && page.title !== config.title) { %><%= page.title %> · <% } %><%= config.title %></title>
+<meta name="description" content="<%= page.description || config.description || '' %>" />
+<% if (config.keywords) { %><meta name="keywords" content="<%= config.keywords %>" /><% } %>
+<meta name="theme-color" content="#faf7f1" />
+<meta name="color-scheme" content="light" />
+<link rel="icon" href="<%- url_for('/img/favicon.ico') %>" />
+<link rel="stylesheet" href="<%- url_for('/css/liubai.css') %>" />
+<% if (is_home() && theme.intro && theme.intro.enable) { %>
+<noscript><style>.intro{display:none !important}</style></noscript>
+<% } %>
+<script>
+(function () {
+  var d = document.documentElement;
+  // 渐显动画的初始隐藏态只在有 JS 时生效
+  d.classList.add('js');
+
+  // ── 昼夜：按访客本地时间决定，支持 ?daypart=night 预览 ──
+  var hour = new Date().getHours();
+  var part = 'day';
+  if (hour >= 5 && hour < 8)       part = 'dawn';   // 清晨
+  else if (hour >= 8 && hour < 17) part = 'day';    // 白天
+  else if (hour >= 17 && hour < 20) part = 'dusk';  // 傍晚
+  else                              part = 'night'; // 夜晚
+<% if (theme.intro && theme.intro.force_daypart) { %>
+  part = '<%= theme.intro.force_daypart %>';
+<% } %>
+  var forced = false;
+  /* 手动指定的昼夜模式优先于时间（存在 localStorage） */
+  try {
+    var m = localStorage.getItem('liubai-mode');
+    if (m === 'day' || m === 'night') { part = m; forced = true; }
+  } catch (e) {}
+<% if (theme.intro && theme.intro.force_daypart) { %>
+  part = '<%= theme.intro.force_daypart %>'; forced = true;
+<% } %>
+  try {
+    var q = new URLSearchParams(location.search).get('daypart');
+    if (q && /^(dawn|day|dusk|night)$/.test(q)) { part = q; forced = true; }
+  } catch (e) {}
+  d.setAttribute('data-daypart', part);
+  if (forced) d.setAttribute('data-forced', '1');
+<% if (is_home() && theme.intro && theme.intro.enable) { %>
+<% if (theme.intro.once_per_session) { %>
+  try {
+    if (sessionStorage.getItem('liubai-intro-seen') === '1') {
+      d.classList.add('intro-skip');   // 本会话已看过，直接跳过
+      return;
+    }
+  } catch (e) {}
+<% } %>
+  // 入场层存在期间，首屏动画挂起
+  d.classList.add('intro-active');
+<% } %>
+})();
+</script>

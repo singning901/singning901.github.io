@@ -1,0 +1,96 @@
+<%
+  var hero = theme.hero || {};
+  var cards = theme.cards || {};
+%>
+
+<!-- ── 首屏 ───────────────────────────────────────────── -->
+<section class="hero<%= hero.image ? ' has-media' : '' %>" style="--hero-h:<%= hero.height || '66vh' %>">
+  <% if (hero.image) { %>
+    <div class="hero-media" style="background-image:url('<%- url_for(hero.image) %>');--scrim:<%= hero.scrim == null ? 0.34 : hero.scrim %>" aria-hidden="true"></div>
+  <% } %>
+
+  <!-- 四角标记：方舟式 HUD 取景框 -->
+  <span class="hero-bracket tl" aria-hidden="true"></span>
+  <span class="hero-bracket tr" aria-hidden="true"></span>
+  <span class="hero-bracket bl" aria-hidden="true"></span>
+  <span class="hero-bracket br" aria-hidden="true"></span>
+
+  <div class="hero-body">
+    <% if (hero.vertical) { %>
+      <div class="hero-vertical" aria-hidden="true"><%= hero.vertical %></div>
+    <% } %>
+    <div class="hero-text">
+      <h1 class="hero-title"><span class="stagger hero-mark" style="--d:0"><%- partial('_partial/wordmark') %></span></h1>
+      <% if (hero.tagline) { %>
+        <p class="hero-tagline stagger" style="--d:1"><%= hero.tagline %></p>
+      <% } %>
+      <div class="hero-rule stagger" style="--d:2"><span></span></div>
+    </div>
+  </div>
+
+  <div class="hero-foot">
+    <span class="hero-hud" aria-hidden="true"><i></i><span id="hero-daypart">--</span></span>
+    <% if (hero.scroll_hint) { %>
+      <span class="hero-scroll"><%= hero.scroll_hint %><i aria-hidden="true"></i></span>
+    <% } %>
+  </div>
+</section>
+
+<!-- ── 链接卡片（主题配置里的 cards.items 驱动）─────────── -->
+<% if (cards.enable && cards.items && cards.items.length) { %>
+<section class="section">
+  <header class="section-head">
+    <div class="section-label"><b class="sec-num">01</b>LINKS</div>
+    <h2 class="section-title"><%= cards.title %></h2>
+    <% if (cards.subtitle) { %><p class="section-sub"><%= cards.subtitle %></p><% } %>
+  </header>
+
+  <div class="cards">
+    <% cards.items.forEach(function (c, i) { %>
+      <a class="card reveal" style="--i:<%= i %>" href="<%- c.url %>" target="_blank" rel="noopener">
+        <div class="card-media">
+          <% if (c.img) { %>
+            <img src="<%- url_for(c.img) %>" alt="" loading="lazy" />
+          <% } else { %>
+            <span class="card-glyph"><%= c.name.charAt(0) %></span>
+          <% } %>
+        </div>
+        <div class="card-body">
+          <% if (c.tag) { %><span class="card-tag"><%= c.tag %></span><% } %>
+          <h3 class="card-name"><%= c.name %></h3>
+          <% if (c.desc) { %><p class="card-desc"><%= c.desc %></p><% } %>
+          <span class="card-arrow" aria-hidden="true">→</span>
+        </div>
+      </a>
+    <% }); %>
+  </div>
+</section>
+<% } %>
+
+<!-- ── 文章列表 ───────────────────────────────────────── -->
+<section class="section">
+  <header class="section-head">
+    <div class="section-label"><b class="sec-num">02</b>JOURNAL</div>
+    <h2 class="section-title">最近文章</h2>
+  </header>
+
+  <% if (!page.posts || page.posts.length === 0) { %>
+    <p class="empty">还没有文章。</p>
+  <% } else { %>
+  <ul class="post-list">
+    <% page.posts.each(function (post, i) { %>
+      <li class="post-item reveal" style="--i:<%= i %>">
+        <a class="post-link" href="<%- url_for(post.path) %>">
+          <time class="post-date" datetime="<%- date_xml(post.date) %>"><%= date(post.date, 'YYYY-MM-DD') %></time>
+          <span class="post-main">
+            <span class="post-title"><%= post.title %></span>
+            <span class="post-excerpt"><%= strip_html(post.excerpt || post.content).trim().replace(/\s+/g, ' ').substring(0, 88) %></span>
+          </span>
+          <span class="post-arrow" aria-hidden="true">→</span>
+        </a>
+      </li>
+    <% }); %>
+  </ul>
+  <%- partial('_partial/paginator') %>
+  <% } %>
+</section>

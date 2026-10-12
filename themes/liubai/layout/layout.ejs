@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="<%= config.language || 'zh-CN' %>">
+<head>
+<%- partial('_partial/head') %>
+</head>
+<body class="tpl-<%= is_post() ? 'post' : is_page() ? 'page' : is_archive() ? 'archive' : 'home' %>">
+  <% if (is_home() && theme.intro && theme.intro.enable) { %><%- partial('_partial/intro') %><% } %>
+  <a class="skip-link" href="#main">跳到正文</a>
+
+  <%- partial('_partial/nav') %>
+
+  <% if (is_post() || is_page()) { %>
+    <main id="main" class="wrap">
+      <div class="reading-grid">
+        <article class="article">
+          <%- body %>
+        </article>
+        <%- partial('_partial/aside') %>
+      </div>
+    </main>
+  <% } else { %>
+    <main id="main">
+      <%- body %>
+    </main>
+  <% } %>
+
+  <%- partial('_partial/footer') %>
+
+  <div class="page-scan" aria-hidden="true"></div>
+
+  <script src="<%- url_for('/js/liubai.js') %>" defer></script>
+</body>
+</html>

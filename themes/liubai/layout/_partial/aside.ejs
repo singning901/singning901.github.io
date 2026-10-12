@@ -1,0 +1,38 @@
+<aside class="aside">
+  <% if (theme.author.enable) { %>
+  <div class="aside-block aside-author">
+    <div class="aside-label">AUTHOR</div>
+    <% if (theme.author.avatar) { %>
+      <img class="aside-avatar" src="<%- url_for(theme.author.avatar) %>" alt="<%= theme.author.name %>" />
+    <% } %>
+    <div class="aside-name"><%= theme.author.name %></div>
+    <% if (theme.author.bio) { %><p class="aside-bio"><%= theme.author.bio %></p><% } %>
+    <dl class="aside-stats">
+      <div><dt>文章</dt><dd><%= site.posts.length %></dd></div>
+      <div><dt>标签</dt><dd><%= site.tags.length %></dd></div>
+      <div><dt>分类</dt><dd><%= site.categories.length %></dd></div>
+    </dl>
+  </div>
+  <% } %>
+
+  <% if (page.toc !== false && page.content && page.content.indexOf('<h') > -1) { %>
+  <div class="aside-block aside-toc">
+    <div class="aside-label">CONTENTS</div>
+    <div class="toc" id="toc"></div>
+  </div>
+  <% } %>
+
+  <div class="aside-block">
+    <div class="aside-label">RECENT</div>
+    <ul class="aside-recent">
+      <% site.posts.sort('-date').limit(5).forEach(function (p) { %>
+        <li>
+          <a href="<%- url_for(p.path) %>">
+            <span class="recent-title"><%= p.title %></span>
+            <span class="recent-date"><%= date(p.date, 'YYYY-MM-DD') %></span>
+          </a>
+        </li>
+      <% }); %>
+    </ul>
+  </div>
+</aside>

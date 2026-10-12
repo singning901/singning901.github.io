@@ -12,6 +12,8 @@
     "clean": "hexo clean"
   },
   "dependencies": {
+    "@fontsource/nunito-sans": "^5.3.0",
+    "@fontsource/varela-round": "^5.3.0",
     "hexo": "^8.1.2",
     "hexo-cli": "^4.3.2",
     "hexo-deployer-git": "^4.0.0",

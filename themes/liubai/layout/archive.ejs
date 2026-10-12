@@ -1,0 +1,27 @@
+<header class="section-head wrap-head">
+  <div class="section-label">ARCHIVE</div>
+  <h1 class="section-title"><%= page.title || (page.year ? page.year + ' 年' : '归档') %></h1>
+</header>
+
+<section class="section">
+  <% var list = page.posts; %>
+  <% if (!list || list.length === 0) { %>
+    <p class="empty">这里还没有内容。</p>
+  <% } else { %>
+  <ul class="post-list">
+    <% list.each(function (post, i) { %>
+      <li class="post-item reveal" style="--i:<%= i %>">
+        <a class="post-link" href="<%- url_for(post.path) %>">
+          <time class="post-date" datetime="<%- date_xml(post.date) %>"><%= date(post.date, 'YYYY-MM-DD') %></time>
+          <span class="post-main">
+            <span class="post-title"><%= post.title %></span>
+            <span class="post-excerpt"><%= strip_html(post.excerpt || post.content).trim().replace(/\s+/g, ' ').substring(0, 88) %></span>
+          </span>
+          <span class="post-arrow" aria-hidden="true">→</span>
+        </a>
+      </li>
+    <% }); %>
+  </ul>
+  <%- partial('_partial/paginator') %>
+  <% } %>
+</section>

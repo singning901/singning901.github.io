@@ -1,0 +1,13 @@
+<% if (page.total > 1) { %>
+<nav class="paginator" aria-label="分页">
+  <% if (page.prev) { %>
+    <a class="pag-link prev" href="<%- url_for(page.prev_link) %>"><span aria-hidden="true">←</span> 上一页</a>
+  <% } else { %><span class="pag-link is-disabled">← 上一页</span><% } %>
+
+  <span class="pag-count"><%= page.current %> / <%= page.total %></span>
+
+  <% if (page.next) { %>
+    <a class="pag-link next" href="<%- url_for(page.next_link) %>">下一页 <span aria-hidden="true">→</span></a>
+  <% } else { %><span class="pag-link is-disabled">下一页 →</span><% } %>
+</nav>
+<% } %>
