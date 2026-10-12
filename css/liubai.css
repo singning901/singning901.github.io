@@ -2223,27 +2223,68 @@ html:not(.intro-active) .stagger { animation-duration: 1.05s; }
   50%      { opacity: 1;   transform: translateY(5px); }
 }
 
-/* 卡片反光：幅度加大，能明显看到一条亮带扫过 */
+/* 卡片：二次元白色玻璃反光 —— 斜向白亮带周期扫过，扫完停一下再来。
+   用 transform 位移（走合成器），不是 background-position（那是重绘）。 */
 .card::before {
-  background: linear-gradient(157deg,
-    transparent 0%,
-    rgba(255, 255, 255, .34) 38%,
-    rgba(255, 255, 255, .46) 50%,
-    rgba(255, 255, 255, .34) 62%,
-    transparent 100%);
-  background-size: 260% 100%;
-  animation: sheenSweep 5.5s ease-in-out infinite;
+  content: "";
+  position: absolute;
+  top: -70%; bottom: -70%;
+  left: 0;
+  width: 46%;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(100deg,
+    rgba(255, 255, 255, 0)    0%,
+    rgba(255, 255, 255, .28) 38%,
+    rgba(255, 255, 255, .82) 50%,
+    rgba(255, 255, 255, .28) 62%,
+    rgba(255, 255, 255, 0)  100%);
+  transform: translateX(-200%) skewX(-18deg);
+  animation: glassSweep 5.4s cubic-bezier(.4, 0, .2, 1) infinite;
 }
-@keyframes sheenSweep {
-  0%   { background-position: -130% 0; }
-  100% { background-position: 230% 0; }
+@keyframes glassSweep {
+  0%   { transform: translateX(-200%) skewX(-18deg); }
+  38%  { transform: translateX(420%)  skewX(-18deg); }
+  100% { transform: translateX(420%)  skewX(-18deg); }   /* 扫完停住，节奏才像二次元 */
 }
+/* 每张卡错开，不要一起闪 */
+.card:nth-child(2)::before { animation-delay: .7s; }
+.card:nth-child(3)::before { animation-delay: 1.4s; }
+.card:nth-child(4)::before { animation-delay: 2.1s; }
+.card:nth-child(5)::before { animation-delay: 2.8s; }
+.card:nth-child(6)::before { animation-delay: 3.5s; }
 [data-daypart="night"] .card::before {
-  background: linear-gradient(157deg,
-    transparent 0%, rgba(255,255,255,.10) 40%,
-    rgba(255,255,255,.16) 50%,
-    rgba(255,255,255,.10) 60%, transparent 100%);
-  background-size: 260% 100%;
+  background: linear-gradient(100deg,
+    rgba(255, 255, 255, 0)    0%,
+    rgba(255, 255, 255, .10) 38%,
+    rgba(255, 255, 255, .34) 50%,
+    rgba(255, 255, 255, .10) 62%,
+    rgba(255, 255, 255, 0)  100%);
+}
+
+/* 首屏大字也来一道白玻璃反光 —— 最像抽卡立绘的一处 */
+.hero-title { position: relative; overflow: hidden; }
+.hero-title::after {
+  content: "";
+  position: absolute;
+  top: -40%; bottom: -40%;
+  left: 0;
+  width: 34%;
+  pointer-events: none;
+  z-index: 3;
+  background: linear-gradient(100deg,
+    rgba(255, 255, 255, 0)    0%,
+    rgba(255, 255, 255, .38) 42%,
+    rgba(255, 255, 255, .92) 50%,
+    rgba(255, 255, 255, .38) 58%,
+    rgba(255, 255, 255, 0)  100%);
+  transform: translateX(-220%) skewX(-20deg);
+  animation: glassText 6.5s cubic-bezier(.4, 0, .2, 1) .8s infinite;
+}
+@keyframes glassText {
+  0%   { transform: translateX(-220%) skewX(-20deg); }
+  32%  { transform: translateX(430%)  skewX(-20deg); }
+  100% { transform: translateX(430%)  skewX(-20deg); }
 }
 
 /* 章节编号：呼吸 + 缩放 */
@@ -2263,21 +2304,53 @@ html:not(.intro-active) .stagger { animation-duration: 1.05s; }
   100% { background-position: 56px 0; }
 }
 
-/* 首屏加一条持续横扫的竖向光带 —— 最显眼的一条 */
+/* 首屏大图：一整条斜向白玻璃扫过（比原来的竖向光带更像二次元） */
 .hero::before {
   content: "";
   position: absolute;
-  top: 0; bottom: 22px;
-  width: 180px;
+  top: -30%; bottom: 22px;
+  left: 0;
+  width: 26%;
   z-index: 2;
   pointer-events: none;
-  background: linear-gradient(90deg,
-    transparent, rgba(255, 255, 255, .13), transparent);
-  animation: heroBeam 9s ease-in-out infinite;
+  background: linear-gradient(100deg,
+    rgba(255, 255, 255, 0)    0%,
+    rgba(255, 255, 255, .10) 40%,
+    rgba(255, 255, 255, .30) 50%,
+    rgba(255, 255, 255, .10) 60%,
+    rgba(255, 255, 255, 0)  100%);
+  transform: translateX(-160%) skewX(-16deg);
+  animation: heroGlass 8.5s cubic-bezier(.4, 0, .2, 1) infinite;
 }
-@keyframes heroBeam {
-  0%   { transform: translateX(-220px); }
-  100% { transform: translateX(calc(100vw + 220px)); }
+@keyframes heroGlass {
+  0%   { transform: translateX(-160%) skewX(-16deg); }
+  34%  { transform: translateX(560%)  skewX(-16deg); }
+  100% { transform: translateX(560%)  skewX(-16deg); }
+}
+
+/* 印章也过一道玻璃光 */
+.seal { position: relative; overflow: hidden; }
+.seal::after {
+  content: "";
+  position: absolute;
+  top: -60%; bottom: -60%;
+  left: 0; width: 60%;
+  background: linear-gradient(100deg, transparent 30%, rgba(255,255,255,.75) 50%, transparent 70%);
+  transform: translateX(-220%) skewX(-18deg);
+  animation: glassText 7s cubic-bezier(.4,0,.2,1) 2.2s infinite;
+}
+
+/* 导航条：一道很宽的柔光缓慢横穿 */
+.site-nav::before {
+  content: "";
+  position: absolute;
+  top: 0; bottom: 0;
+  left: 0; width: 32%;
+  pointer-events: none;
+  background: linear-gradient(100deg,
+    rgba(255,255,255,0) 0%, rgba(255,255,255,.42) 50%, rgba(255,255,255,0) 100%);
+  transform: translateX(-160%) skewX(-20deg);
+  animation: heroGlass 11s cubic-bezier(.4,0,.2,1) 1.2s infinite;
 }
 
 /* 页脚短线的明暗幅度加大 */
@@ -2289,8 +2362,9 @@ html:not(.intro-active) .stagger { animation-duration: 1.05s; }
 @media (prefers-reduced-motion: reduce) {
   .hero-bracket.tl, .hero-bracket.tr,
   .hero-vertical, .card::before, .sec-num,
-  .section-head::after, .hero::before { animation: none !important; }
-  .hero::before { display: none; }
+  .section-head::after, .hero::before,
+  .hero-title::after, .seal::after, .site-nav::before { animation: none !important; }
+  .hero::before, .hero-title::after, .seal::after, .site-nav::before { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
