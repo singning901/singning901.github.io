@@ -2684,6 +2684,16 @@ html:not([data-daypart="night"]) .hero-media::after { opacity: .18; }
 [data-tone="dark"].wm-num { color: var(--cinnabar); }
 [data-tone="dark"] { text-shadow: 0 1px 12px rgba(10,10,14,.5); }
 
+/* ★ 关键：标识 .wm-sq 自己写死了 color: var(--ink)，会挡住从父元素继承下来的
+   data-tone。所以必须用更高优先级的选择器把 S 和 ing/ning 的颜色也接管。
+   漏了这两条的话，深色头图上会出现「墨色 S 压在深色画面上」= 看不见。 */
+[data-tone="dark"]  .wm-sq,
+[data-tone="dark"].wm-sq  { color: #faf6f0; }
+[data-tone="light"] .wm-sq,
+[data-tone="light"].wm-sq { color: var(--ink); }
+[data-tone="light"] .wm-num,
+[data-tone="light"].wm-num { color: var(--cinnabar-deep, #a82a20); }
+
 /* 整页兜底：js 还没跑完（或 canvas 不可用）时，沿用昼夜的默认白字 */
 html:not([data-hero-tone]) .hero-title,
 html:not([data-hero-tone]) .hero-tagline { color: inherit; }
