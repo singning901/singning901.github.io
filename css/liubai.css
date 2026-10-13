@@ -253,10 +253,25 @@ body.nav-pinned .site-nav {
 
 .hero-media {
   position: absolute; inset: 0;
-  background-size: cover;
-  background-position: center 42%;
   transform: scale(1.04);
 }
+
+/* ── 昼夜双头图：两层叠着，靠透明度交叉淡入 ────────────────────────────
+   白天/清晨/傍晚显示 image，夜晚显示 image_night。
+   两层都放在 .hero-media 里，所以 kenburns 缩放对两层同时生效。 */
+.hero-img {
+  position: absolute; inset: 0;
+  background-size: cover;
+  background-position: center 42%;
+  transition: opacity 1.1s ease;
+  will-change: opacity;
+}
+.hero-img-night { opacity: 0; }
+[data-daypart="night"] .hero-img-day   { opacity: 0; }
+[data-daypart="night"] .hero-img-night { opacity: 1; }
+/* 没有配夜晚图时，只渲染一层，别让它被藏起来 */
+.hero-img-day:only-child { opacity: 1 !important; }
+@media (prefers-reduced-motion: reduce) { .hero-img { transition: none; } }
 /* 头图只挂一条动画：Ken Burns 常驻。
    绝对不要再给同一个元素第二条 animation 规则 —— 入场层移除时属性被换掉，
    动画会从头重启，表现为头图「抽一下」。入场交接交给幕布和文字。 */
@@ -264,6 +279,7 @@ body.nav-pinned .site-nav {
 .hero-media::after {
   content: "";
   position: absolute; inset: 0;
+  z-index: 2;                    /* 压在两张头图之上 */
   background:
     linear-gradient(180deg,
       rgba(20,18,24, calc(var(--scrim) + .12)) 0%,
@@ -1391,7 +1407,8 @@ a.pag-link:hover { color: var(--cinnabar); }
 
 .brand-mark {
   display: block;
-  width: 116px;
+  width: auto;            /* 原来是 116px —— 旧的手绘 SVG 宽词标留下的，
+                             现在标识是 34px 方块，116px 是多余且错误的 */
   color: var(--ink);
   transition: color .3s ease;
 }
@@ -2334,3 +2351,324 @@ body.intro-lock { overflow: hidden; }
   .intro-enter-ring { display: none; }
   .intro-panel { transition: none !important; }
 }
+
+/* ==========================================================================
+   26. 性能修缮 · 封面动画加强 · Q弹点击
+   ========================================================================== */
+
+/* ── 性能 ────────────────────────────────────────────────────────────────
+   之前卡顿的主因是头图：原来那张 PNG 有 16.9 MB，解码一次就要上百毫秒，
+   滚动时每次重绘都要重新采样。现已压到 170 KB WebP。这里再补几道。 */
+
+/* 头图两层只在需要时合成，减少图层 */
+.hero-img { contain: paint; }
+
+/* 卡片容器统一开启独立合成层，滚动时不连带父层重绘 */
+.card, .post-link, .aside-block { transform: translateZ(0); }
+
+/* 长列表用内容可见性跳过屏外渲染（文章列表长了以后很有用） */
+.post-list .post-link { content-visibility: auto; contain-intrinsic-size: auto 92px; }
+
+/* 图片一律懒解码，别让它们在主线程上排队 */
+.prose img, .card-media img, .aside-avatar img { decoding: async; }
+
+/* ── 封面动画加强 ────────────────────────────────────────────────────────
+   原来 48 秒推 4%，肉眼几乎看不出。现在 26 秒推 14%，并加一点横向漂移。 */
+@keyframes kenburns {
+  0%   { transform: scale(1.02) translate3d(0, 0, 0); }
+  100% { transform: scale(1.16) translate3d(-2.2%, -2.6%, 0); }
+}
+.hero-media { animation: kenburns 26s ease-in-out infinite alternate; }
+
+/* 大图上方再叠一层极缓的「呼吸」，让静止时也有起伏 */
+.hero::before {
+  content: "";
+  position: absolute; inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(120% 90% at 50% 30%, rgba(255,255,255,.10), transparent 62%);
+  animation: heroBreathe 9s ease-in-out infinite;
+}
+@keyframes heroBreathe {
+  0%, 100% { opacity: .25; }
+  50%      { opacity: .75; }
+}
+
+/* 词标入场：从下方带一点回弹浮上来 */
+@keyframes markPop {
+  0%   { opacity: 0; transform: translateY(26px) scale(.965); }
+  62%  { opacity: 1; transform: translateY(-4px) scale(1.006); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+html:not(.intro-active) .hero-mark {
+  animation: markPop .95s cubic-bezier(.34, 1.32, .5, 1) both;
+}
+
+/* ── Q弹点击 ─────────────────────────────────────────────────────────────
+   按下时快速缩一点，松手用「回弹曲线」弹回来 —— 这就是那种 Q 弹手感。
+   回弹曲线 cubic-bezier(.34,1.56,.64,1) 会冲过终点再回来。 */
+.card,
+.post-link,
+.nav-link,
+.pag-link, #pagination .page-number, #pagination .extend,
+.tag-cloud a,
+.mode-toggle,
+.nav-toggle,
+.tag,
+.footer-legacy {
+  transition-timing-function: cubic-bezier(.34, 1.56, .64, 1);
+}
+.card                  { transition: transform .5s cubic-bezier(.34,1.56,.64,1), filter .45s ease, border-color .4s ease, background-color .9s ease; }
+.post-link             { transition: padding-left .45s cubic-bezier(.34,1.56,.64,1), background-color .3s ease; }
+.pag-link, #pagination .page-number, #pagination .extend { transition: transform .42s cubic-bezier(.34,1.56,.64,1), background-color .3s ease, color .3s ease, border-color .3s ease; }
+
+.card:active {
+  transform: translateY(-2px) scale(.978);
+  transition-duration: .12s;
+  transition-timing-function: ease-out;
+}
+.post-link:active { padding-left: 30px; transition-duration: .1s; }
+.pag-link:active, #pagination .page-number:active, #pagination .extend:active {
+  transform: scale(.93);
+  transition-duration: .1s;
+  transition-timing-function: ease-out;
+}
+.nav-link:active .nav-link-cn { transform: translateY(1px) scale(.96); transition: transform .1s ease-out; }
+.nav-link .nav-link-cn { transition: transform .4s cubic-bezier(.34,1.56,.64,1); }
+.mode-toggle:active, .nav-toggle:active { transform: scale(.92); transition-duration: .1s; transition-timing-function: ease-out; }
+.tag-cloud a:active { transform: scale(.92); transition-duration: .1s; transition-timing-function: ease-out; }
+.intro-enter:active { transform: scale(.955); transition-duration: .1s; transition-timing-function: ease-out; }
+
+/* 箭头图标也跟着弹 */
+.post-arrow, .card-arrow { transition: transform .45s cubic-bezier(.34,1.56,.64,1); }
+.post-link:hover .post-arrow { transform: translateX(6px); }
+.card:hover .card-arrow     { transform: translateX(6px); }
+
+/* 「展开」类元素点击也带弹性 */
+.card-media img { transition: transform .55s cubic-bezier(.34,1.56,.64,1); }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-media, .hero::before, html:not(.intro-active) .hero-mark { animation: none !important; }
+  .card:active, .post-link:active, .pag-link:active,
+  .mode-toggle:active, .nav-toggle:active, .intro-enter:active { transform: none !important; }
+}
+
+/* ==========================================================================
+   27. 交互时长校正（依据 ui-ux-pro-max 的 Duration Timing 规则）
+   ==========================================================================
+   规则原文：
+     Animations should feel responsive not sluggish.
+     Use 150-300ms for micro-interactions.
+     Don't use animations longer than 500ms for UI.
+   我原来的 hover/press 过渡全是 .42~.6s，比专业区间慢一倍多 ——
+   表现出来就是「发闷、不跟手」。这里把**交互类**收进 180–300ms。
+   注意：环境动效（呼吸、Ken Burns、扫光）不受此限，它们本来就该慢。 */
+
+.card {
+  transition: transform .26s cubic-bezier(.34,1.56,.64,1),
+              filter .3s ease,
+              border-color .22s ease,
+              background-color .9s ease;      /* 昼夜换色保持慢 */
+}
+.card:hover { transition-duration: .26s, .3s, .22s, .9s; }
+.card::after { transition: background-size .28s var(--ease); }   /* 四角标记 */
+.card-media img { transition: transform .34s cubic-bezier(.34,1.56,.64,1); }
+.card-media::after { transition: transform .5s var(--ease); }    /* 网点扫过 */
+.card::before { animation-duration: 5.4s; }                      /* 玻璃反光：保持慢 */
+
+.post-link {
+  transition: padding-left .22s cubic-bezier(.34,1.56,.64,1),
+              background-color .2s ease;
+}
+.post-link::after { transition: transform .28s var(--ease); }    /* 底线描写 */
+.post-link::before { transition: background-size .26s var(--ease); }
+.post-main::before { animation-duration: 1.6s; }                 /* 悬停扫光：略快 */
+.post-arrow, .card-arrow { transition: transform .24s cubic-bezier(.34,1.56,.64,1); }
+
+.nav-link .nav-link-cn { transition: transform .2s cubic-bezier(.34,1.56,.64,1); }
+.nav-link::after { transition: transform .22s var(--ease), opacity .22s ease; }
+.nav-link:hover::after { animation-duration: 1.4s; }
+
+.mode-toggle { transition: color .2s ease, border-color .2s ease, background-color .9s ease, transform .22s cubic-bezier(.34,1.56,.64,1); }
+.mode-toggle:hover .mode-icon { animation-duration: 2.6s; }
+
+.pag-link, #pagination .page-number, #pagination .extend {
+  transition: transform .24s cubic-bezier(.34,1.56,.64,1),
+              background-color .2s ease, color .2s ease, border-color .2s ease;
+}
+.tag-cloud a { transition: transform .22s cubic-bezier(.34,1.56,.64,1), background-color .2s ease, color .2s ease; }
+.footer-legacy { transition: color .2s ease, border-color .2s ease, transform .24s cubic-bezier(.34,1.56,.64,1); }
+.intro-enter { transition: color .2s ease, border-color .2s ease, background-color .2s ease, transform .2s cubic-bezier(.34,1.56,.64,1); }
+
+/* 焦点可见性（技能列为 High 严重度：键盘用户需要明确焦点环） */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--cinnabar);
+  outline-offset: 2px;
+}
+
+/* 可点击的都该是手型光标（技能清单项） */
+a, button, [role="button"], summary, label[for] { cursor: pointer; }
+button:disabled, [aria-disabled="true"] { cursor: not-allowed; }
+
+/* ==========================================================================
+   28. 模数体系（modular scale）
+   ==========================================================================
+   ui-ux-pro-max 反复强调 modular scale / mathematical spacing，
+   而我原来的字号与间距是散的（clamp(64px,13vw,118px) 这类拍脑袋值）。
+   这里建两套模数，全站只从这两套里取值。
+
+   字号：基准 16px，比例 1.25（大三度），四舍五入到整数
+   间距：4 的倍数，形成 4-8-12-16-24-32-48-64-96 的节奏 */
+:root {
+  /* ── 字号模数 ── */
+  --t-2xs: 11px;    /* 11  = 16 / 1.25² 取整，用于角标 */
+  --t-xs:  13px;    /* 13  = 16 / 1.25   取整，用于辅助文字 */
+  --t-sm:  14px;
+  --t-md:  16px;    /* 基准 */
+  --t-lg:  20px;    /* 16 × 1.25 */
+  --t-xl:  25px;    /* 16 × 1.25² */
+  --t-2xl: 31px;    /* 16 × 1.25³ */
+  --t-3xl: 39px;    /* 16 × 1.25⁴ */
+  --t-4xl: 49px;    /* 16 × 1.25⁵ */
+  --t-5xl: 61px;    /* 16 × 1.25⁶ */
+
+  /* ── 间距模数（4 的倍数）── */
+  --s-1:  4px;
+  --s-2:  8px;
+  --s-3:  12px;
+  --s-4:  16px;
+  --s-6:  24px;
+  --s-8:  32px;
+  --s-12: 48px;
+  --s-16: 64px;
+  --s-24: 96px;
+
+  /* ── 行高：正文 1.7，标题随字号收紧。字体越大，行高越紧 ── */
+  --lh-body:  1.75;
+  --lh-tight: 1.24;
+
+  /* ── 字距：随字号递减（技能与方舟研究都强调这点）── */
+  --track-body: 0;
+  --track-lg:   -.012em;
+  --track-xl:   -.02em;
+  --track-2xl:  -.028em;
+}
+
+/* 让全站主要留白都落在模数上 */
+.section        { padding-block: var(--s-16) var(--s-12); }
+.cards          { gap: var(--s-6); }
+.card-body      { padding: var(--s-4) var(--s-4) var(--s-6); }
+.post-list      { gap: var(--s-2); }
+.aside-stack    { gap: var(--s-4); }
+.site-footer    { padding-block: var(--s-12) var(--s-8); }
+.reading-grid   { gap: var(--s-12); }
+.prose h2       { margin-top: var(--s-12); margin-bottom: var(--s-4); }
+.prose h3       { margin-top: var(--s-8);  margin-bottom: var(--s-3); }
+
+/* 字号与字距按模数归位 */
+.section-title  { font-size: var(--t-2xl); line-height: var(--lh-tight); letter-spacing: var(--track-2xl); }
+.section-sub    { font-size: var(--t-sm); }
+.section-label  { font-size: var(--t-2xs); letter-spacing: .24em; }
+.card-title     { font-size: var(--t-lg); line-height: 1.35; letter-spacing: var(--track-lg); }
+.card-desc      { font-size: var(--t-xs); }
+.card-tag       { font-size: var(--t-2xs); }
+.post-title     { font-size: var(--t-lg); letter-spacing: var(--track-lg); }
+.post-date      { font-size: var(--t-2xs); }
+.prose          { font-size: var(--t-md); line-height: var(--lh-body); letter-spacing: var(--track-body); }
+.prose h2       { font-size: var(--t-xl); letter-spacing: var(--track-xl); }
+.prose h3       { font-size: var(--t-lg); letter-spacing: var(--track-lg); }
+.prose h4       { font-size: var(--t-md); }
+.aside-title    { font-size: var(--t-2xs); letter-spacing: .2em; }
+
+/* ==========================================================================
+   29. 方形标识（大 S 挤压结构）
+   ==========================================================================
+   结构照搬《明日方舟：终末地》的语言：
+     · 大 S 压左边，顶到框边
+     · ing / ning 缩到右上，尺度对比约 4:1
+     · 901 朱砂撑满右下角，压住重心
+   整块用 --wm 控制边长，内部全部按比例换算，改一个值就能整体缩放。 */
+.wm-sq {
+  --wm: 200px;                       /* 方框边长：唯一的尺寸旋钮 */
+  position: relative;
+  display: inline-block;
+  width: var(--wm);
+  height: var(--wm);
+  font-family: Bahnschrift, "DIN Alternate", "Segoe UI Variable Display",
+               "Segoe UI", system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: -.02em;
+  color: var(--ink);
+  vertical-align: middle;
+  flex: none;
+  overflow: hidden;                  /* 三层叠压，防止任何一层跑出方框 */
+}
+.wm-sq > span { position: absolute; display: block; }
+/* S：V3 结构，占满左上，整体下移 10% */
+.wm-s  { left: -2%; top: 10%; font-size: calc(var(--wm) * 1.020); line-height: .72;
+         letter-spacing: -.035em; z-index: 1; }
+/* ing/ning：往左移，右缘与 901 里「1」的可见右缘齐平。
+   「1」因字身窄 + 负字距，可见右缘落在框宽约 92% 处，所以 right 给 8%。
+   （间距不管 —— 与 S 重叠没关系） */
+.wm-rest { right: 8%; top: 4%; font-size: calc(var(--wm) * .220); line-height: .94;
+           letter-spacing: -.015em; text-align: right; z-index: 3; }
+/* 901：朱砂，水平居中到方框的竖向中线上。
+   宽度 ≈ 1.545 × 字号；.66em 时约 .99em，居中后两侧各留 0.5%。 */
+.wm-num  { left: 50%; transform: translateX(-50%); bottom: 4%;
+           font-size: calc(var(--wm) * .660); line-height: .72;
+           letter-spacing: -.085em; color: var(--cinnabar); z-index: 2; }
+/* 深色底上朱砂要提亮一档，否则压在黑 S 上会糊 */
+[data-daypart="night"] .wm-num { color: var(--cinnabar-lit, #e2564a); }
+
+/* 各处尺寸 */
+.hero-mark .wm-sq      { --wm: clamp(150px, 17vw, 232px); }
+.intro-wordmark .wm-sq { --wm: clamp(120px, 15vw, 190px); }
+.footer-mark .wm-sq    { --wm: 116px; }
+/* 导航：方形标识取代原来的「九」印章，做成站点 LOGO。
+   尺寸账（--wm = 方框边长）：
+     S   字号 1.16em → 宽 .673em，cap 高 .835em
+     901 字号 .44em → 宽 1.545×.44 = .680em  ← 与 S 同宽，居中叠上去正好
+   之前给 901 用 .72em，宽达 1.11em（超过方框本身），居中后左侧溢出 24%
+   被 overflow:hidden 裁掉 —— 这就是"S 和 901 显示不全"的原因。 */
+.brand-mark .wm-sq     { --wm: 34px; vertical-align: middle;
+                         overflow: visible;   /* line-height:.72 会让字形溢出
+                                                 行盒约 .14em，overflow:hidden 会把
+                                                 S 的顶切掉 —— 导航这里放开 */ }
+.brand-mark .wm-rest   { display: none; }
+/* S 收到 left:0，不再出血 */
+.brand-mark .wm-s       { left: 0; font-size: calc(var(--wm) * 1.16); top: 6%; }
+/* 901 叠在 S 的下部正中央：水平中心 = S 中心 (.673/2 ≈ 33.7%)，垂直取 68% */
+.brand-mark .wm-num     { left: 33.7%; right: auto; bottom: auto; top: 68%;
+                          transform: translate(-50%, -50%);
+                          font-size: calc(var(--wm) * .440); }
+.site-nav .wm-sq { color: var(--ink); }
+.site-nav .wm-num { color: var(--cinnabar); }
+
+/* 旧的「九」印章已不再使用（保留选择器以防别处引用） */
+.seal { display: none; }
+
+/* 导航紧凑版：只留 901，跟左边的「九」印章配对 */
+.wm-mini {
+  font-family: Bahnschrift, "DIN Alternate", "Segoe UI Variable Display",
+               "Segoe UI", system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  letter-spacing: -.035em;
+  color: var(--cinnabar);
+  line-height: 1;
+}
+
+/* 旧的手绘 SVG 词标规则已作废，保留选择器以免其它地方引用报空 */
+.wordmark { max-width: 100%; }
+
+@media (max-width: 700px) {
+  .hero-mark .wm-sq   { --wm: clamp(110px, 30vw, 150px); }
+  .footer-mark .wm-sq { --wm: 92px; }
+}
+
+
