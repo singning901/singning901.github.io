@@ -2649,6 +2649,44 @@ button:disabled, [aria-disabled="true"] { cursor: not-allowed; }
 .site-nav .wm-sq { color: var(--ink); }
 .site-nav .wm-num { color: var(--cinnabar); }
 
+/* ==========================================================================
+   30. 头图明暗自适应
+   ==========================================================================
+   用户要求：白天头图不要再压暗。但压暗本来是为了保证白字可读 ——
+   去掉之后亮图上白字会糊。所以改成**按头图实际明暗自动切换字色**：
+
+   js/liubai.js 把头图缩到 48×48 画进 canvas，只取左侧 60%×70% 那块
+   （标题所在区域）算平均亮度，写到 <html data-hero-tone="light|dark">。
+   亮底 → 墨色字 + 加重阴影；暗底 → 白字（原样）。 */
+
+/* 白天/清晨/傍晚不压暗，晚上留一点 */
+html:not([data-daypart="night"]) .hero-media::after { opacity: .18; }
+[data-daypart="night"] .hero-media::after { opacity: 1; }
+.hero-media::after { transition: opacity 1.1s ease; }
+
+/* 亮底：所有首屏文字转墨色 */
+[data-hero-tone="light"] .hero-title,
+[data-hero-tone="light"] .hero-mark,
+[data-hero-tone="light"] .hero-tagline,
+[data-hero-tone="light"] .hero-vertical,
+[data-hero-tone="light"] .hero-bracket { color: var(--ink); }
+[data-hero-tone="light"] .hero-num,
+[data-hero-tone="light"] .wm-num { color: var(--cinnabar-deep, #a82a20); }
+[data-hero-tone="light"] .hero-rule span { background: var(--ink); }
+[data-hero-tone="light"] .hero-bracket { border-color: rgba(22,22,26,.42); }
+/* 亮底上给字加一圈极淡的光晕，避免压在杂色上读不清 */
+[data-hero-tone="light"] .hero-title,
+[data-hero-tone="light"] .hero-tagline {
+  text-shadow: 0 0 18px rgba(250,247,241,.85), 0 1px 0 rgba(250,247,241,.6);
+}
+/* 暗底保持白字，给一点投影增加分离度 */
+[data-hero-tone="dark"] .hero-title,
+[data-hero-tone="dark"] .hero-tagline {
+  text-shadow: 0 1px 12px rgba(10,10,14,.45);
+}
+[data-hero-tone="dark"] .hero-num,
+[data-hero-tone="dark"] .wm-num { color: var(--cinnabar); }
+
 /* 旧的「九」印章已不再使用（保留选择器以防别处引用） */
 .seal { display: none; }
 

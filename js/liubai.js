@@ -332,4 +332,82 @@
       applyMode(nextMode, true);
     });
   }
+
+  /* ── 头图明暗自适应 ───────────────────────────────────────────────────
+     白天不压暗之后，白字在亮图上会糊。这里把头图缩到 48×48 画进 canvas，
+     只取左侧 60% × 上方 70% 那块（标题和图标的实际位置）算平均亮度，
+     再把结果写到 <html data-hero-tone>，CSS 据此切黑字/白字。
+
+     亮度的判定用的是感知公式 0.2126R + 0.7152G + 0.0722B，比直接平均
+     RGB 准 —— 同样亮度的蓝和绿，人眼觉得绿亮得多。 */
+  (function () {
+    var media = document.querySelector('.hero-media');
+    if (!media) return;
+
+    var layer = media.querySelector('.hero-img-day') || media.querySelector('.hero-img');
+    var url = '';
+    if (layer) {
+      var bg = getComputedStyle(layer).backgroundImage || '';
+      var m = bg.match(/url\(["']?(.*?)["']?\)/);
+      if (m) url = m[1];
+    }
+    if (!url) return;
+
+    var d = document.documentElement;
+
+    function apply(tone) {
+      if (d.getAttribute('data-hero-tone') !== tone) d.setAttribute('data-hero-tone', tone);
+    }
+
+    function sample(img) {
+      try {
+        var N = 48;
+        var cv = document.createElement('canvas');
+        cv.width = N; cv.height = N;
+        var cx = cv.getContext('2d', { willReadFrequently: true });
+        if (!cx) return null;
+        /* 只画左上那块：源图 left 0~60%、top 0~70% */
+        var sw = Math.max(1, Math.floor(img.naturalWidth * 0.60));
+        var sh = Math.max(1, Math.floor(img.naturalHeight * 0.70));
+        cx.drawImage(img, 0, 0, sw, sh, 0, 0, N, N);
+        var px = cx.getImageData(0, 0, N, N).data;
+        var sum = 0, n = 0;
+        for (var i = 0; i < px.length; i += 4) {
+          if (px[i + 3] < 24) continue;                 /* 跳过透明像素 */
+          sum += 0.2126 * px[i] + 0.7152 * px[i + 1] + 0.0722 * px[i + 2];
+          n++;
+        }
+        return n ? sum / n : null;                       /* 0~255 */
+      } catch (e) {
+        return null;                                     /* 跨域或 canvas 被禁 */
+      }
+    }
+
+    var probe = new Image();
+    probe.decoding = 'async';
+    probe.onload = function () {
+      var lum = sample(probe);
+      if (lum == null) { apply('dark'); return; }        /* 取不到就按暗底处理（白字） */
+      /* 阈值 150：偏亮的图切黑字。压在中间地带时宁可留白字 + 阴影 */
+      apply(lum >= 150 ? 'light' : 'dark');
+    };
+    probe.onerror = function () { apply('dark'); };
+    probe.src = url;
+
+    /* 切到夜晚会换成另一张图 —— 重新采样 */
+    var lastUrl = url;
+    setInterval(function () {
+      var l = media.querySelector('.hero-img-day') || media.querySelector('.hero-img');
+      if (!l) return;
+      var b = getComputedStyle(l).backgroundImage || '';
+      var mm = b.match(/url\(["']?(.*?)["']?\)/);
+      if (mm && mm[1] !== lastUrl) {
+        lastUrl = mm[1];
+        var p2 = new Image(); p2.decoding = 'async';
+        p2.onload = function () { var v = sample(p2); apply(v == null ? 'dark' : (v >= 150 ? 'light' : 'dark')); };
+        p2.onerror = function () { apply('dark'); };
+        p2.src = lastUrl;
+      }
+    }, 1200);
+  })();
 })();
