@@ -333,131 +333,37 @@
     });
   }
 
-  /* ── 头图明暗自适应（逐元素）────────────────────────────────────────────
-     白天不压暗之后，白字在亮图上会糊。这里不是整页一个判断，而是**每个文字
-     各自采样自己正后方的画面**：
-
-       1. 把头图按 background-size:cover 的规则映射回原图像素坐标
-          （要求出 scale、offsetX、offsetY，否则位置全错）
-       2. 对每个元素，取它的 bounding rect 映射到原图上的那块
-       3. 算那块的平均感知亮度，写在该元素自己的 data-tone 上
-
-     亮度用感知公式 0.2126R + 0.7152G + 0.0722B —— 同样数值的蓝和绿，
-     人眼觉得绿亮得多，直接平均 RGB 会判错。 */
+  /* ── 首屏文字明暗（按昼夜手动指定）────────────────────────────────────
+     不再猜图。主题配置里 hero.tone_day / tone_night 各给一个值：
+       light = 墨色字（浅色头图）    dark = 白色字（深色头图）
+     这里只负责把它写到每个文字元素的 data-tone 上，CSS 照此上色。
+     切换昼夜时重新应用一次。 */
   (function () {
     var hero = document.querySelector('.hero');
-    var media = document.querySelector('.hero-media');
-    if (!hero || !media) return;
+    if (!hero) return;
 
     var TARGETS = ['.hero-title', '.hero-tagline', '.hero-vertical'];
-    var THRESHOLD = 150;
+    var dayTone   = hero.getAttribute('data-tone-day')   || 'dark';
+    var nightTone = hero.getAttribute('data-tone-night') || 'dark';
 
-    /* 主题配置里 hero.tone 设成 light / dark 就强制，设 auto 才走识别 */
-    var forced = hero.getAttribute('data-tone-force');
-    if (forced === 'light' || forced === 'dark') {
+    function apply() {
+      var part = document.documentElement.getAttribute('data-daypart') || 'day';
+      var want = (part === 'night') ? nightTone : dayTone;
+      if (want !== 'light' && want !== 'dark') want = 'dark';
       TARGETS.forEach(function (sel) {
         var el = document.querySelector(sel);
-        if (el) el.setAttribute('data-tone', forced);
-      });
-      return;
-    }
-
-    function currentImg() {
-      var l = media.querySelector('.hero-img-day') || media.querySelector('.hero-img');
-      if (!l) return null;
-      var cs = getComputedStyle(l);
-      var m = (cs.backgroundImage || '').match(/url\(["']?(.*?)["']?\)/);
-      if (!m) return null;
-      var pos = (cs.backgroundPosition || '50% 50%').split(/\s+/);
-      var px = parseFloat(pos[0]) / 100; if (isNaN(px)) px = .5;
-      var py = parseFloat(pos[1]) / 100; if (isNaN(py)) py = .5;
-      return { url: m[1], px: px, py: py };
-    }
-
-    function paint(img, meta) {
-      var hw = hero.clientWidth, hh = hero.clientHeight;
-      var iw = img.naturalWidth, ih = img.naturalHeight;
-      if (!hw || !hh || !iw || !ih) return;
-
-      /* cover 映射：等比放大到铺满，再按 background-position 偏移 */
-      var scale = Math.max(hw / iw, hh / ih);
-      var dw = iw * scale, dh = ih * scale;
-      var offX = (hw - dw) * meta.px;
-      var offY = (hh - dh) * meta.py;
-
-      /* 原图缩到最长边 160 画进 canvas，够算平均又不慢 */
-      var k = 160 / Math.max(iw, ih);
-      var cw = Math.max(1, Math.round(iw * k)), ch = Math.max(1, Math.round(ih * k));
-      var cv = document.createElement('canvas');
-      cv.width = cw; cv.height = ch;
-      var cx = cv.getContext('2d', { willReadFrequently: true });
-      if (!cx) return;
-      cx.drawImage(img, 0, 0, cw, ch);
-
-      var hb = hero.getBoundingClientRect();
-
-      TARGETS.forEach(function (sel) {
-        var el = document.querySelector(sel);
-        if (!el) return;
-        var r = el.getBoundingClientRect();
-        if (!r.width || !r.height) return;
-
-        /* 元素相对 hero 的位置 → 原图像素 → canvas 像素 */
-        var x0 = r.left - hb.left, y0 = r.top - hb.top;
-        var ix0 = (x0 - offX) / scale, iy0 = (y0 - offY) / scale;
-        var ix1 = (x0 + r.width - offX) / scale, iy1 = (y0 + r.height - offY) / scale;
-
-        var sx = Math.max(0, Math.floor(ix0 * k));
-        var sy = Math.max(0, Math.floor(iy0 * k));
-        var ex = Math.min(cw, Math.ceil(ix1 * k));
-        var ey = Math.min(ch, Math.ceil(iy1 * k));
-        if (ex <= sx || ey <= sy) return;
-
-        var d;
-        try { d = cx.getImageData(sx, sy, ex - sx, ey - sy).data; }
-        catch (e) { return; }
-
-        var sum = 0, n = 0;
-        for (var i = 0; i < d.length; i += 4) {
-          if (d[i + 3] < 24) continue;
-          sum += 0.2126 * d[i] + 0.7152 * d[i + 1] + 0.0722 * d[i + 2];
-          n++;
-        }
-        if (!n) return;
-        el.setAttribute('data-tone', (sum / n) >= THRESHOLD ? 'light' : 'dark');
+        if (el && el.getAttribute('data-tone') !== want) el.setAttribute('data-tone', want);
       });
     }
 
-    var meta = currentImg();
-    if (meta) {
-      var probe = new Image();
-      probe.decoding = 'async';
-      probe.onload = function () { paint(probe, meta); };
-      probe.src = meta.url;
+    apply();
+    /* 昼夜切换是改 <html data-daypart>，监听它 */
+    try {
+      new MutationObserver(apply).observe(document.documentElement,
+        { attributes: true, attributeFilter: ['data-daypart'] });
+    } catch (e) {
+      setInterval(apply, 1500);          /* MutationObserver 不可用就轮询兜底 */
     }
-
-    /* 换图（切昼夜）或改窗口大小都要重算 —— 尺寸一变，映射就全变了 */
-    var lastUrl = meta && meta.url;
-    var t = null;
-    function recheck() {
-      var m = currentImg();
-      if (!m) return;
-      if (m.url !== lastUrl) {
-        lastUrl = m.url;
-        var p2 = new Image();
-        p2.decoding = 'async';
-        p2.onload = function () { paint(p2, m); };
-        p2.src = m.url;
-      } else if (window.__liubaiLastW !== hero.clientWidth) {
-        window.__liubaiLastW = hero.clientWidth;
-        var p3 = new Image();
-        p3.onload = function () { paint(p3, m); };
-        p3.src = m.url;
-      }
-    }
-    setInterval(recheck, 1000);
-    window.addEventListener('resize', function () {
-      clearTimeout(t); t = setTimeout(recheck, 250);
-    }, { passive: true });
+    window.addEventListener('resize', apply, { passive: true });
   })();
 })();
