@@ -524,6 +524,20 @@ html:not(.intro-active) .stagger {
 }
 .card:hover .card-media img { transform: scale(1.07); filter: saturate(1.05); }
 
+/* 视频配图（mp4 / webm）：跟 img 走同一套尺寸与悬停规则，
+   这样卡片里放静态图还是放视频，观感完全一致 */
+.card-media video {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  transition: transform .8s var(--ease), filter .5s ease;
+  filter: saturate(.92);
+  background: var(--paper-2);      /* 视频还没解码出来时不闪白 */
+}
+.card:hover .card-media video { transform: scale(1.07); filter: saturate(1.05); }
+/* 尊重「减少动态效果」：不自动播，只显示第一帧 */
+@media (prefers-reduced-motion: reduce) {
+  .card-media video { animation: none; }
+}
+
 .card-glyph {
   position: absolute; inset: 0;
   display: grid; place-items: center;
