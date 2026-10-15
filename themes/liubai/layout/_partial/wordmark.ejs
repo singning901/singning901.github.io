@@ -1,61 +1,13 @@
 <%
-/* 手绘词标：singning + 901
-   等宽单线几何字形，round 端点
-   基线 y=72，x-height 顶 y=22，数字顶 y=4，降部到 y≈97
-   两个 i 的点用朱砂；901 整组用朱砂，与字母拉开距离形成层级 */
+/* 方形标识（大 S 挤压结构 · 三层叠压）
+   ──────────────────────────────────────────────────────────────
+   大 S 铺满左上 · 901 朱砂撑满底宽压住 S 下半 · ing/ning 咬在右上角
+   三层 z-index：S(1) → 901(2) → ing/ning(3)
+   整块由 --wm 控制边长，内部全部按比例换算。
+   本文件已取代原来手绘的 SVG 词标，同时也作为站点 LOGO 使用。 */
 %>
-<svg class="wordmark" viewBox="-6 -12 712 124" role="img" aria-label="<%= config.title %>"
-     fill="none" stroke-linecap="round" stroke-linejoin="round" preserveAspectRatio="xMinYMid meet">
-
-  <!-- s -->
-  <g transform="translate(0,0)">
-    <path d="M45 31 C45 24 38 20 30 20 C22 20 15 24 15 31 C15 39 22 43 30 45 C38 47 45 51 45 60 C45 68 38 73 30 73 C22 73 15 69 15 62" />
-  </g>
-
-  <!-- i -->
-  <g transform="translate(66,0)">
-    <path d="M17 72 V22" />
-    <circle class="wm-accent" cx="17" cy="7" r="4.6" stroke="none" />
-  </g>
-
-  <!-- n -->
-  <g transform="translate(108,0)">
-    <path d="M8 72 V22 M8 38 C8 27 17 21 30 21 C43 21 52 27 52 38 V72" />
-  </g>
-
-  <!-- g：碗在 x-height，尾巴明确向左甩 -->
-  <g transform="translate(178,0)">
-    <path d="M54 47 A24 24 0 1 1 6 47 A24 24 0 1 1 54 47" />
-    <path d="M54 23 V80 C54 92 43 98 27 98" />
-  </g>
-
-  <!-- n -->
-  <g transform="translate(250,0)">
-    <path d="M8 72 V22 M8 38 C8 27 17 21 30 21 C43 21 52 27 52 38 V72" />
-  </g>
-
-  <!-- i -->
-  <g transform="translate(320,0)">
-    <path d="M17 72 V22" />
-    <circle class="wm-accent" cx="17" cy="7" r="4.6" stroke="none" />
-  </g>
-
-  <!-- n -->
-  <g transform="translate(362,0)">
-    <path d="M8 72 V22 M8 38 C8 27 17 21 30 21 C43 21 52 27 52 38 V72" />
-  </g>
-
-  <!-- g -->
-  <g transform="translate(432,0)">
-    <path d="M54 47 A24 24 0 1 1 6 47 A24 24 0 1 1 54 47" />
-    <path d="M54 23 V80 C54 92 43 98 27 98" />
-  </g>
-
-  <!-- 901：小圈 + 长竖，与 g 明确区分 -->
-  <g class="wm-digits" transform="translate(518,0)">
-    <path d="M50 24 A20 20 0 1 1 10 24 A20 20 0 1 1 50 24" />
-    <path d="M50 24 V72" />
-    <path transform="translate(70,0)" d="M55 38 A24 34 0 1 1 7 38 A24 34 0 1 1 55 38" />
-    <path transform="translate(140,0)" d="M14 18 L26 4 V72" />
-  </g>
-</svg>
+<span class="wm-sq" role="img" aria-label="<%= config.title %> 901">
+  <span class="wm-s">S</span>
+  <span class="wm-rest">ing<br>ning</span>
+  <span class="wm-num">901</span>
+</span>

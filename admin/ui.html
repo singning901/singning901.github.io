@@ -57,10 +57,13 @@
   .im .m{padding:8px 10px}
   .im .n{font:11px/1.4 var(--mono);word-break:break-all;color:var(--ink-2)}
   .im .s{font:10px/1.6 var(--mono);color:var(--ink-3)}
-  .im .a{display:flex;border-top:1px solid var(--rule)}
-  .im .a button{flex:1;padding:7px 4px;font:10px/1 var(--mono);cursor:pointer;background:none;
-    border:0;border-right:1px solid var(--rule);color:var(--ink-2)}
-  .im .a button:last-child{border-right:0}
+  /* 每个图片 4 个操作按钮：折成两行，每行两个 */
+  .im .a{display:flex;flex-wrap:wrap;border-top:1px solid var(--rule)}
+  .im .a button{flex:1 1 50%;box-sizing:border-box;padding:8px 4px;font:10px/1 var(--mono);
+    cursor:pointer;background:none;border:0;border-right:1px solid var(--rule);
+    border-bottom:1px solid var(--rule);color:var(--ink-2);transition:background .2s,color .2s}
+  .im .a button:nth-child(2n){border-right:0}
+  .im .a button:nth-last-child(-n+2){border-bottom:0}
   .im .a button:hover{background:var(--paper-2);color:var(--red)}
   .drop{border:1.5px dashed var(--rule-2);padding:30px;text-align:center;color:var(--ink-3);
         font-size:13px;cursor:pointer;margin-bottom:18px}
@@ -149,13 +152,18 @@
 
   <!-- ── 图片 ──────────────────────────────────────────────── -->
   <section class="pane" id="p-images">
-    <div class="drop" id="drop">把图片拖进来，或点这里选择文件<br>
-      <span style="font-size:12px">支持 jpg / png / gif / webp / svg，存到 source/img/</span>
-      <input type="file" id="file" accept="image/*" multiple hidden>
+    <div class="drop" id="drop">把图片或视频拖进来，或点这里选择文件<br>
+      <span style="font-size:12px">图片 jpg / png / gif / webp / svg · 视频 mp4 / webm / mov，存到 source/img/</span>
+      <input type="file" id="file" accept="image/*,video/mp4,video/webm,video/quicktime" multiple hidden>
     </div>
     <div class="box">
       <h2>图片库</h2>
-      <p class="hint">「设为首页大图」会改写主题配置的 <code>hero.image</code>。</p>
+      <p class="hint">上传 PNG / JPG 会<b>自动压成 WebP</b>（原图保留）。<b>视频</b>也能压（会转成动图 WebP，
+        但注意：<b>视频转 WebP 通常反而变大</b>，WebP 动图的压缩效率远不如 mp4）。已存在的文件可以逐张点「⇩ 压 WebP」。
+        上面两个按钮直接把文件设成<b>白天</b>或<b>夜晚</b>头图。</p>
+      <div class="btns" style="margin:0 0 14px">
+        <button class="b" id="btn-webp-all">⇩ 全部压成 WebP</button>
+      </div>
       <div class="grid" id="images"></div>
     </div>
   </section>
@@ -165,11 +173,24 @@
     <div class="box">
       <h2>首页大图与文案</h2>
       <p class="hint">改完记得去「构建发布」跑一次，线上才会变。</p>
-      <label>首页大图</label>
+      <label>首页大图 —— 白天 / 清晨 / 傍晚</label>
       <select id="s-image"></select>
+      <label>首页大图 —— 夜晚（留空则沿用上面那张）</label>
+      <select id="s-image-night"></select>
+      <p class="hint" style="margin:6px 0 0">夜晚那张会在访客本地时间 20:00–05:00 自动淡入替换，切换是交叉淡出，不是硬切。</p>
+      <label>首屏文字明暗 —— 白天 / 清晨 / 傍晚</label>
+      <select id="s-tone-day">
+        <option value="dark">白色字（配深色头图）</option>
+        <option value="light">墨色字（配浅色头图）</option>
+      </select>
+      <label>首屏文字明暗 —— 夜晚</label>
+      <select id="s-tone-night">
+        <option value="dark">白色字（配深色头图）</option>
+        <option value="light">墨色字（配浅色头图）</option>
+      </select>
+      <p class="hint" style="margin:6px 0 0">白天和夜晚各管各的，可以不一样。首屏三个文字（大标识 / 副标题 / 竖排小字）统一用这个设置。</p>
       <label>副标题（大图右侧那行小字）</label>
-      <input type="text" id="s-tagline">
-      <label>竖排小字</label>
+      <input type="text" id="s-tagline">      <label>竖排小字</label>
       <input type="text" id="s-vertical">
       <div class="btns"><button class="b p" id="btn-settings">保存设置</button></div>
       <div style="margin-top:22px;padding-top:18px;border-top:1px solid var(--rule)">
@@ -197,7 +218,7 @@
       </p>
     </div>
     <div id="card-editor"></div>
-    <input type="file" id="card-file" accept="image/*" hidden>
+    <input type="file" id="card-file" accept="image/*,video/mp4,video/webm" hidden>
   </section>
 
   <!-- ── 构建发布 ──────────────────────────────────────────── -->
@@ -284,12 +305,22 @@ async function refresh() {
     </tr>`).join('') : '<tr><td style="color:#999">还没有文章</td></tr>';
 
   // 图片库
+  const curDay   = (s.hero.image || '').replace('/img/','');
+  const curNight = (s.hero.image_night || '').replace('/img/','');
   $('#images').innerHTML = s.images.length ? s.images.map((i) => `
     <div class="im">
-      <img src="/img/${encodeURIComponent(i.name)}" loading="lazy" alt="">
-      <div class="m"><div class="n">${i.name}</div><div class="s">${kb(i.size)}</div></div>
+      ${/\.(mp4|webm|mov|m4v|ogv)$/i.test(i.name)
+        ? `<video src="/img/${encodeURIComponent(i.name)}" muted loop playsinline preload="metadata"
+                  onmouseover="this.play()" onmouseout="this.pause()"></video>`
+        : `<img src="/img/${encodeURIComponent(i.name)}" loading="lazy" alt="">`}
+      <div class="m">
+        <div class="n">${i.name}</div>
+        <div class="s">${kb(i.size)}${i.name===curDay?' · <b style="color:var(--red)">白天在用</b>':''}${i.name===curNight?' · <b style="color:var(--teal)">夜晚在用</b>':''}</div>
+      </div>
       <div class="a">
-        <button data-hero="${i.name}">设为首页大图</button>
+        <button data-day="${i.name}" data-iscur="${i.name===curDay?1:0}" ${i.name===curDay?'style="color:var(--red)"':''}>${i.name===curDay?'✕ 取消白天':'☀ 白天头图'}</button>
+        <button data-night="${i.name}" data-iscur="${i.name===curNight?1:0}" ${i.name===curNight?'style="color:var(--teal)"':''}>${i.name===curNight?'✕ 取消夜晚':'☾ 夜晚头图'}</button>
+        ${/\.webp$/i.test(i.name) ? '' : `<button data-webp="${i.name}">⇩ 压 WebP</button>`}
         <button data-copy="/img/${i.name}">复制路径</button>
         <button data-rm="${i.name}">删除</button>
       </div>
@@ -299,10 +330,17 @@ async function refresh() {
   const opts = s.images.map((i) => `<option value="/img/${i.name}">/img/${i.name}</option>`).join('');
   $('#s-image').innerHTML = opts || '<option value="">（没有图片）</option>';
   $('#s-image').value = s.hero.image || '';
+  $('#s-image-night').innerHTML = '<option value="">（沿用白天那张）</option>' + opts;
+  $('#s-image-night').value = s.hero.image_night || '';
   $('#s-tagline').value = s.hero.tagline || '';
+  $('#s-tone-day').value = s.hero.tone_day || 'dark';
+  $('#s-tone-night').value = s.hero.tone_night || 'dark';
   $('#s-vertical').value = s.hero.vertical || '';
   $('#s-now').innerHTML =
     'hero.image&nbsp;&nbsp;&nbsp;= ' + (s.hero.image || '(空)') + '<br>' +
+    'hero.image_night = ' + (s.hero.image_night || '(沿用白天)') + '<br>' +
+    'hero.tone&nbsp;&nbsp;&nbsp;&nbsp;= 白天 ' + (s.hero.tone_day || 'dark') +
+      ' / 夜晚 ' + (s.hero.tone_night || 'dark') + '<br>' +
     'hero.tagline&nbsp;= ' + (s.hero.tagline || '(空)') + '<br>' +
     'hero.vertical = ' + (s.hero.vertical || '(空)') + '<br>' +
     '图片 ' + s.images.length + ' 张 · 文章 ' + s.posts.length + ' 篇';
@@ -310,11 +348,15 @@ async function refresh() {
   // 备份列表
   const bk = (s.backups || []).filter((b) => b.type === 'tag');
   const snaps = (s.backups || []).filter((b) => b.type === 'snapshot');
+  // 名字去掉 backup- / public- 前缀显示，改回去时再补上
+  const showName = (n, type) => type === 'tag' ? n.replace(/^backup-/, '') : n.replace(/^public-/, '');
   $('#backups').innerHTML = (bk.length || snaps.length) ? [
-    ...bk.map((b) => `<tr><td>${b.name}</td><td class="d">远端标签</td>
-      <td class="x"><button data-rb="${b.name}" title="回滚">↺</button></td></tr>`),
-    ...snaps.map((b) => `<tr><td style="color:var(--ink-3)">${b.name}</td>
-      <td class="d">本地快照</td><td class="x"></td></tr>`),
+    ...bk.map((b) => `<tr><td>${showName(b.name,'tag')}</td><td class="d">远端标签</td>
+      <td class="x"><button data-rb="${b.name}" title="回滚到这个版本">↺</button>
+      <button data-rn="${b.name}" data-rnt="tag" title="改名">✎</button></td></tr>`),
+    ...snaps.map((b) => `<tr><td style="color:var(--ink-3)">${showName(b.name,'snapshot')}</td>
+      <td class="d">本地快照</td><td class="x">
+      <button data-rn="${b.name}" data-rnt="snapshot" title="改名">✎</button></td></tr>`),
   ].join('') : '<tr><td style="color:#999">还没有备份（首次发布会自动创建）</td></tr>';
 
   // 预览状态
@@ -329,9 +371,63 @@ async function refresh() {
     rollback(b.dataset.rb);
   });
 
-  document.querySelectorAll('[data-hero]').forEach((b) => b.onclick = async () => {
-    await post('/api/settings', { image: '/img/' + b.dataset.hero });
-    toast('已设为首页大图（记得去发布）'); refresh();
+  // 版本改名：方便回档时认得出（如 backup-2026-10-13T13-33 → v2-方形标识）
+  document.querySelectorAll('[data-rn]').forEach((b) => b.onclick = async () => {
+    const from = b.dataset.rn, type = b.dataset.rnt;
+    const cur = type === 'tag' ? from.replace(/^backup-/, '') : from.replace(/^public-/, '');
+    const to = prompt('给这个版本起个名字：\n（只用中英文、数字、点、横线）', cur);
+    if (to === null || to.trim() === '' || to.trim() === cur) return;
+    const r = await post('/api/rename-version', { type, from, to: to.trim() });
+    if (r && r.ok) {
+      toast(r.note ? ('已改名，但' + r.note) : '已改名');
+      refresh();
+    } else {
+      toast('改名失败：' + ((r && r.error) || '未知错误'));
+    }
+  });
+
+  document.querySelectorAll('[data-day]').forEach((b) => b.onclick = async () => {
+    const isCur = b.dataset.iscur === '1';            /* 再点一次 = 取消 */
+    await post('/api/settings', { image: isCur ? '' : '/img/' + b.dataset.day });
+    toast(isCur ? '已取消白天头图（会改用纯色底）' : '已设为「白天 / 清晨 / 傍晚」头图（记得去发布）');
+    refresh();
+  });
+  document.querySelectorAll('[data-night]').forEach((b) => b.onclick = async () => {
+    const isCur = b.dataset.iscur === '1';            /* 再点一次 = 取消 */
+    await post('/api/settings', { image_night: isCur ? '' : '/img/' + b.dataset.night });
+    toast(isCur ? '已取消夜晚头图（夜晚将沿用白天那张）' : '已设为「夜晚」头图（记得去发布）');
+    refresh();
+  });
+  // 全部压 WebP
+  const btnAll = $('#btn-webp-all');
+  if (btnAll) btnAll.onclick = async () => {
+    if (!confirm('把图片库里所有 PNG / JPG「以及视频」都压成 WebP？\n\n⚠ 视频转 WebP 会变大（WebP 动图压缩效率不如 mp4），\n   只是统一格式用。想省空间应该反过来把 GIF 转成视频。\n\n原文件都会保留。')) return;
+    btnAll.disabled = true; btnAll.textContent = '压缩中…（大图可能几十秒）';
+    const r = await post('/api/webp', { all: true });
+    btnAll.disabled = false; btnAll.textContent = '⇩ 全部压成 WebP';
+    if (r && r.ok) {
+      const done = r.results.filter((x) => x.ok);
+      const fail = r.results.filter((x) => !x.ok);
+      const saved = done.reduce((a, x) => a + (x.before - x.after), 0);
+      toast(`压了 ${done.length} 张，共省 ${(saved / 1048576).toFixed(1)} MB` +
+            (fail.length ? `；${fail.length} 张失败：${fail[0].error}` : ''));
+    } else {
+      toast('压缩失败：' + ((r && r.error) || '未知错误'));
+    }
+    refresh();
+  };
+
+  // 单张压 WebP
+  document.querySelectorAll('[data-webp]').forEach((b) => b.onclick = async () => {
+    const n = b.dataset.webp;
+    b.textContent = '压缩中…'; b.disabled = true;
+    const r = await post('/api/webp', { name: n });
+    if (r && r.ok) {
+      toast(`${n} → ${r.file}：${kb(r.before)} → ${kb(r.after)}（省 ${r.saved}%，${r.w}×${r.h}）`);
+    } else {
+      toast('压缩失败：' + ((r && r.error) || '未知错误'));
+    }
+    refresh();
   });
   document.querySelectorAll('[data-copy]').forEach((b) => b.onclick = () => {
     navigator.clipboard.writeText(b.dataset.copy); toast('已复制 ' + b.dataset.copy);
@@ -405,7 +501,9 @@ async function upload(files) {
 /* ── 首页设置 ─────────────────────────────────────────── */
 $('#btn-settings').onclick = async () => {
   const r = await post('/api/settings', {
-    image: $('#s-image').value, tagline: $('#s-tagline').value, vertical: $('#s-vertical').value,
+    image: $('#s-image').value, image_night: $('#s-image-night').value,
+    tone_day: $('#s-tone-day').value, tone_night: $('#s-tone-night').value,
+    tagline: $('#s-tagline').value, vertical: $('#s-vertical').value,
   });
   toast(r.ok ? '已保存（记得去发布）' : (r.error || '保存失败'), !r.ok);
   refresh();
@@ -441,7 +539,10 @@ function renderCards(items) {
     if (it.img && !opts.includes(it.img)) opts.push(it.img);
     const first = (it.name || '?').trim().charAt(0);
     const thumb = it.img
-      ? `<img class="cedit-thumb" src="${esc(it.img)}" alt="">`
+      ? (/\.(mp4|webm|mov|m4v|ogv)$/i.test(it.img)
+          ? `<video class="cedit-thumb" src="${esc(it.img)}" muted loop playsinline preload="metadata"
+                    onmouseover="this.play()" onmouseout="this.pause()"></video>`
+          : `<img class="cedit-thumb" src="${esc(it.img)}" alt="">`)
       : `<div class="cedit-thumb">${esc(first)}</div>`;
     return `
     <div class="box cedit">

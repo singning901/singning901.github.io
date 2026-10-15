@@ -35,8 +35,14 @@ nav:
 hero:
   # 首屏高度（CSS 长度）。留白风建议 62vh ~ 78vh
   height: 66vh
-  # 底图，留空则用纯色宣纸底
-  image: /img/chun3.webp
+  # 底图（白天 / 清晨 / 傍晚共用），留空则用纯色宣纸底
+  image: /img/fulilian.webp
+  # 夜晚头图，留空则沿用上面那张
+  image_night: /img/chenqianyulizhiyan.webp
+  # 首屏文字明暗：白天（含清晨/傍晚）与夜晚分别指定，不再自动识别
+  #   light = 墨色字（配浅色头图）    dark = 白色字（配深色头图）
+  tone_day: dark
+  tone_night: dark
   # 压暗程度 0 ~ 1，图片亮的时候调高
   scrim: 0.34
   # 标题下方的一句话
@@ -101,7 +107,7 @@ cards:
     - name: 高考加油
       desc: 不负韶华
       url: http://www.sxkszx.cn/index.html
-      img: /img/gaokao.png
+      img: /img/gaokao.webp
       tag: 加油
 
 # ---------------------------------------------------------------------------

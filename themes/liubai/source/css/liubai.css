@@ -1,11 +1,11 @@
 /* ==========================================================================
-   留白 liubai — 中式简约 · 前卫
-   配色取自站点自有素材：宣纸白 / 墨黑 / 朱砂红 / 靛青
+   鐣欑櫧 liubai 鈥?涓紡绠€绾?路 鍓嶅崼
+   閰嶈壊鍙栬嚜绔欑偣鑷湁绱犳潗锛氬绾哥櫧 / 澧ㄩ粦 / 鏈辩爞绾?/ 闈涢潚
    ========================================================================== */
 
-/* ── 1. 设计令牌 ────────────────────────────────────────────────────────── */
+/* 鈹€鈹€ 1. 璁捐浠ょ墝 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
 :root {
-  /* 纸与墨 */
+  /* 绾镐笌澧?*/
   --paper:     #faf7f1;
   --paper-2:   #f3eee4;
   --paper-3:   #ece5d8;
@@ -15,31 +15,31 @@
   --rule:      #e2dacb;
   --rule-2:    #cfc5b2;
 
-  /* 朱砂（主强调）/ 靛青（次强调） */
+  /* 鏈辩爞锛堜富寮鸿皟锛? 闈涢潚锛堟寮鸿皟锛?*/
   --cinnabar:   #c8362b;
   --cinnabar-2: #e0483a;
   --indigo:     #1b2440;
 
-  /* 排版 */
+  /* 鎺掔増 */
   --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
                "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
   --font-serif: "Songti SC", "SimSun", "Noto Serif SC", Georgia, serif;
   --font-mono: "Cascadia Mono", "SFMono-Regular", "Consolas", ui-monospace,
                "Segoe UI Mono", monospace;
 
-  /* 尺度 */
+  /* 灏哄害 */
   --wrap: 1180px;
   --gap: clamp(20px, 4vw, 56px);
   --sec-y: clamp(56px, 9vw, 132px);
 
-  /* 缓动 */
+  /* 缂撳姩 */
   --ease: cubic-bezier(.22, 1, .36, 1);
   --ease-2: cubic-bezier(.65, 0, .35, 1);
 
   --nav-h: 72px;
 }
 
-/* ── 2. 基础 ────────────────────────────────────────────────────────────── */
+/* 鈹€鈹€ 2. 鍩虹 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
 *, *::before, *::after { box-sizing: border-box; }
 
 html {
@@ -49,7 +49,7 @@ html {
 
 body {
   margin: 0;
-  overflow-x: hidden;          /* 兜底：任何元素都不该产生横向滚动 */
+  overflow-x: hidden;          /* 鍏滃簳锛氫换浣曞厓绱犻兘涓嶈浜х敓妯悜婊氬姩 */
   background: var(--paper);
   color: var(--ink);
   font-family: var(--font-sans);
@@ -60,7 +60,7 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-/* 极淡的宣纸颗粒，纯 CSS，不加图片请求 */
+/* 鏋佹贰鐨勫绾搁绮掞紝绾?CSS锛屼笉鍔犲浘鐗囪姹?*/
 body::before {
   content: "";
   position: fixed;
@@ -93,7 +93,7 @@ a { color: inherit; text-decoration: none; }
   outline-offset: 3px;
 }
 
-/* 小标签：等宽 + 大字距，是这套视觉的骨架元素 */
+/* 灏忔爣绛撅細绛夊 + 澶у瓧璺濓紝鏄繖濂楄瑙夌殑楠ㄦ灦鍏冪礌 */
 .section-label,
 .aside-label,
 .footer-label {
@@ -104,9 +104,9 @@ a { color: inherit; text-decoration: none; }
   color: var(--ink-3);
 }
 
-/* ── 3. 顶部导航：默认藏起来，鼠标靠近顶部才出现 ───────────────────────── */
+/* 鈹€鈹€ 3. 椤堕儴瀵艰埅锛氶粯璁よ棌璧锋潵锛岄紶鏍囬潬杩戦《閮ㄦ墠鍑虹幇 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
 
-/* 顶部感应带：只用来量高度，不占文档流、不吃鼠标事件（悬停由 JS 判定） */
+/* 椤堕儴鎰熷簲甯︼細鍙敤鏉ラ噺楂樺害锛屼笉鍗犳枃妗ｆ祦銆佷笉鍚冮紶鏍囦簨浠讹紙鎮仠鐢?JS 鍒ゅ畾锛?*/
 .nav-zone {
   position: fixed;
   top: 0; left: 0; right: 0;
@@ -130,7 +130,7 @@ a { color: inherit; text-decoration: none; }
               box-shadow .5s ease, backdrop-filter .5s ease;
 }
 
-/* 露出一条极细的朱砂线，并缓慢来回扫动 */
+/* 闇插嚭涓€鏉℃瀬缁嗙殑鏈辩爞绾匡紝骞剁紦鎱㈡潵鍥炴壂鍔?*/
 .site-nav::after {
   content: "";
   position: absolute; left: 0; right: 0; bottom: -1px;
@@ -168,7 +168,7 @@ body.nav-pinned .site-nav {
 
 .nav-brand { display: flex; align-items: center; gap: 12px; margin-right: auto; }
 
-/* 朱砂印章方块 —— 现代做法：纯色方块 + 反白字，不做篆刻质感 */
+/* 鏈辩爞鍗扮珷鏂瑰潡 鈥斺€?鐜颁唬鍋氭硶锛氱函鑹叉柟鍧?+ 鍙嶇櫧瀛楋紝涓嶅仛绡嗗埢璐ㄦ劅 */
 .seal {
   display: grid; place-items: center;
   width: 30px; height: 30px;
@@ -204,7 +204,7 @@ body.nav-pinned .site-nav {
   letter-spacing: .2em; color: var(--ink-3);
   transition: color .25s ease;
 }
-/* 下划线从中间长出来 */
+/* 涓嬪垝绾夸粠涓棿闀垮嚭鏉?*/
 .nav-link::after {
   content: "";
   position: absolute; left: 14px; right: 14px; bottom: 3px;
@@ -241,7 +241,7 @@ body.nav-pinned .site-nav {
   background: var(--ink); transition: transform .3s var(--ease);
 }
 
-/* ── 4. 首屏 ────────────────────────────────────────────────────────────── */
+/* 鈹€鈹€ 4. 棣栧睆 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
 .hero {
   position: relative;
   min-height: var(--hero-h, 66vh);
@@ -253,17 +253,30 @@ body.nav-pinned .site-nav {
 
 .hero-media {
   position: absolute; inset: 0;
-  background-size: cover;
-  background-position: center 42%;
   transform: scale(1.04);
 }
-/* 头图只挂一条动画：Ken Burns 常驻。
-   绝对不要再给同一个元素第二条 animation 规则 —— 入场层移除时属性被换掉，
-   动画会从头重启，表现为头图「抽一下」。入场交接交给幕布和文字。 */
-/* 只用暗部压光保证白字可读，底部不再淡出成白色 */
+
+/* 鈹€鈹€ 鏄煎鍙屽ご鍥撅細涓ゅ眰鍙犵潃锛岄潬閫忔槑搴︿氦鍙夋贰鍏?鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+   鐧藉ぉ/娓呮櫒/鍌嶆櫄鏄剧ず image锛屽鏅氭樉绀?image_night銆?   涓ゅ眰閮芥斁鍦?.hero-media 閲岋紝鎵€浠?kenburns 缂╂斁瀵逛袱灞傚悓鏃剁敓鏁堛€?*/
+.hero-img {
+  position: absolute; inset: 0;
+  background-size: cover;
+  background-position: center 42%;
+  transition: opacity 1.1s ease;
+  will-change: opacity;
+}
+.hero-img-night { opacity: 0; }
+[data-daypart="night"] .hero-img-day   { opacity: 0; }
+[data-daypart="night"] .hero-img-night { opacity: 1; }
+/* 娌℃湁閰嶅鏅氬浘鏃讹紝鍙覆鏌撲竴灞傦紝鍒瀹冭钘忚捣鏉?*/
+.hero-img-day:only-child { opacity: 1 !important; }
+@media (prefers-reduced-motion: reduce) { .hero-img { transition: none; } }
+/* 澶村浘鍙寕涓€鏉″姩鐢伙細Ken Burns 甯搁┗銆?   缁濆涓嶈鍐嶇粰鍚屼竴涓厓绱犵浜屾潯 animation 瑙勫垯 鈥斺€?鍏ュ満灞傜Щ闄ゆ椂灞炴€ц鎹㈡帀锛?   鍔ㄧ敾浼氫粠澶撮噸鍚紝琛ㄧ幇涓哄ご鍥俱€屾娊涓€涓嬨€嶃€傚叆鍦轰氦鎺ヤ氦缁欏箷甯冨拰鏂囧瓧銆?*/
+/* 鍙敤鏆楅儴鍘嬪厜淇濊瘉鐧藉瓧鍙锛屽簳閮ㄤ笉鍐嶆贰鍑烘垚鐧借壊 */
 .hero-media::after {
   content: "";
   position: absolute; inset: 0;
+  z-index: 2;                    /* 鍘嬪湪涓ゅ紶澶村浘涔嬩笂 */
   background:
     linear-gradient(180deg,
       rgba(20,18,24, calc(var(--scrim) + .12)) 0%,
@@ -271,7 +284,7 @@ body.nav-pinned .site-nav {
       rgba(20,18,24, calc(var(--scrim) * .42)) 100%);
 }
 
-/* 头图收口：硬边 + 朱砂细线 + 斜向网点带（替代原来的白色渐变） */
+/* 澶村浘鏀跺彛锛氱‖杈?+ 鏈辩爞缁嗙嚎 + 鏂滃悜缃戠偣甯︼紙鏇夸唬鍘熸潵鐨勭櫧鑹叉笎鍙橈級 */
 .hero::after {
   content: "";
   position: absolute;
@@ -301,7 +314,7 @@ body.nav-pinned .site-nav {
   gap: 28px;
 }
 
-/* 竖排小字：中式元素，但用等宽字 + 大字距，避免"古风小生"味 */
+/* 绔栨帓灏忓瓧锛氫腑寮忓厓绱狅紝浣嗙敤绛夊瀛?+ 澶у瓧璺濓紝閬垮厤"鍙ら灏忕敓"鍛?*/
 .hero-vertical {
   writing-mode: vertical-rl;
   text-orientation: upright;
@@ -321,9 +334,7 @@ body.nav-pinned .site-nav {
   color: #fff;
 }
 
-/* 首屏词标：白线 + 投影保证在照片上读得清。
-   这里不用朱砂数字 —— 底图红灯笼会把红色数字吃掉，纯白反而更利落；
-   朱砂留给导航、页脚、入场层这些浅底场合。 */
+/* 棣栧睆璇嶆爣锛氱櫧绾?+ 鎶曞奖淇濊瘉鍦ㄧ収鐗囦笂璇诲緱娓呫€?   杩欓噷涓嶇敤鏈辩爞鏁板瓧 鈥斺€?搴曞浘绾㈢伅绗间細鎶婄孩鑹叉暟瀛楀悆鎺夛紝绾櫧鍙嶈€屾洿鍒╄惤锛?   鏈辩爞鐣欑粰瀵艰埅銆侀〉鑴氥€佸叆鍦哄眰杩欎簺娴呭簳鍦哄悎銆?*/
 .hero-mark {
   display: block;
   width: min(520px, 74vw);
@@ -371,7 +382,7 @@ body.nav-pinned .site-nav {
   50%      { transform: scaleY(1);   opacity: 1; }
 }
 
-/* 首屏左下角的 HUD 状态点 */
+/* 棣栧睆宸︿笅瑙掔殑 HUD 鐘舵€佺偣 */
 .hero-hud {
   display: inline-flex; align-items: center; gap: 9px;
   font-family: var(--font-mono);
@@ -388,7 +399,7 @@ body.nav-pinned .site-nav {
   50%      { opacity: 1;   transform: scale(1); }
 }
 
-/* 首屏四角标记：方舟式取景框 */
+/* 棣栧睆鍥涜鏍囪锛氭柟鑸熷紡鍙栨櫙妗?*/
 .hero-bracket {
   position: absolute;
   width: 30px; height: 30px;
@@ -406,14 +417,14 @@ body.nav-pinned .site-nav {
   to   { opacity: 1; transform: scale(1); }
 }
 
-/* 首屏底图：持续极缓慢推近，不是只在载入时动一次 */
+/* 棣栧睆搴曞浘锛氭寔缁瀬缂撴參鎺ㄨ繎锛屼笉鏄彧鍦ㄨ浇鍏ユ椂鍔ㄤ竴娆?*/
 .hero-media { animation: kenburns 48s ease-in-out infinite alternate; }
 @keyframes kenburns {
   0%   { transform: scale(1.04) translate3d(0, 0, 0); }
   100% { transform: scale(1.13) translate3d(-1.4%, -1.7%, 0); }
 }
 
-/* 编号章节标签 */
+/* 缂栧彿绔犺妭鏍囩 */
 .sec-num {
   display: inline-block;
   margin-right: 12px;
@@ -421,7 +432,7 @@ body.nav-pinned .site-nav {
   color: var(--cinnabar);
 }
 
-/* 首屏文字错峰入场 */
+/* 棣栧睆鏂囧瓧閿欏嘲鍏ュ満 */
 .stagger {
   display: inline-block;
   opacity: 0;
@@ -435,7 +446,7 @@ html:not(.intro-active) .stagger {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* ── 5. 区块通用 ────────────────────────────────────────────────────────── */
+/* 鈹€鈹€ 5. 鍖哄潡閫氱敤 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
 .section {
   position: relative;
   z-index: 1;
@@ -468,7 +479,7 @@ html:not(.intro-active) .stagger {
 
 .empty { color: var(--ink-3); padding: 32px 0; }
 
-/* ── 6. 链接卡片 ────────────────────────────────────────────────────────── */
+/* 鈹€鈹€ 6. 閾炬帴鍗＄墖 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
 .cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(268px, 1fr));
@@ -513,6 +524,20 @@ html:not(.intro-active) .stagger {
 }
 .card:hover .card-media img { transform: scale(1.07); filter: saturate(1.05); }
 
+/* 视频配图（mp4 / webm）：跟 img 走同一套尺寸与悬停规则，
+   这样卡片里放静态图还是放视频，观感完全一致 */
+.card-media video {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  transition: transform .8s var(--ease), filter .5s ease;
+  filter: saturate(.92);
+  background: var(--paper-2);      /* 视频还没解码出来时不闪白 */
+}
+.card:hover .card-media video { transform: scale(1.07); filter: saturate(1.05); }
+/* 尊重「减少动态效果」：不自动播，只显示第一帧 */
+@media (prefers-reduced-motion: reduce) {
+  .card-media video { animation: none; }
+}
+
 .card-glyph {
   position: absolute; inset: 0;
   display: grid; place-items: center;
@@ -554,7 +579,7 @@ html:not(.intro-active) .stagger {
   color: var(--cinnabar);
 }
 
-/* ── 7. 文章列表 ────────────────────────────────────────────────────────── */
+/* 鈹€鈹€ 7. 鏂囩珷鍒楄〃 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
 .post-list { list-style: none; margin: 0; padding: 0; }
 
 .post-item { border-top: 1px solid var(--rule); }
@@ -569,7 +594,7 @@ html:not(.intro-active) .stagger {
   position: relative;
   transition: padding-left .45s var(--ease), color .3s ease;
 }
-/* 悬停时整行右移，左侧浮出朱砂竖线 */
+/* 鎮仠鏃舵暣琛屽彸绉伙紝宸︿晶娴嚭鏈辩爞绔栫嚎 */
 .post-link::before {
   content: "";
   position: absolute; left: 0; top: 18px; bottom: 18px;
@@ -612,7 +637,7 @@ html:not(.intro-active) .stagger {
   transform: translateX(5px); color: var(--cinnabar);
 }
 
-/* 分页 */
+/* 鍒嗛〉 */
 .paginator {
   display: flex;
   align-items: center;
@@ -633,7 +658,7 @@ a.pag-link:hover { color: var(--cinnabar); }
   font-size: 11px; letter-spacing: .2em; color: var(--ink-3);
 }
 
-/* ── 8. 正文阅读区 ──────────────────────────────────────────────────────── */
+/* 鈹€鈹€ 8. 姝ｆ枃闃呰鍖?鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
 .reading-grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 268px;
@@ -671,7 +696,7 @@ a.pag-link:hover { color: var(--cinnabar); }
 }
 .post-tags a:hover { color: var(--cinnabar); }
 
-/* 正文排版 */
+/* 姝ｆ枃鎺掔増 */
 .prose { color: var(--ink); }
 .prose > * + * { margin-top: 1.15em; }
 .prose p { margin: 0; line-height: 1.95; }
@@ -685,7 +710,7 @@ a.pag-link:hover { color: var(--cinnabar); }
   position: relative;
   padding-left: 16px;
 }
-/* 标题左侧的朱砂短竖线 */
+/* 鏍囬宸︿晶鐨勬湵鐮傜煭绔栫嚎 */
 .prose h2::before, .prose h3::before, .prose h4::before {
   content: "";
   position: absolute; left: 0; top: .28em; bottom: .28em;
@@ -747,7 +772,7 @@ a.pag-link:hover { color: var(--cinnabar); }
   letter-spacing: .14em; text-transform: uppercase; color: var(--ink-3);
 }
 
-/* 相邻文章 */
+/* 鐩搁偦鏂囩珷 */
 .post-nav {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -768,7 +793,7 @@ a.pag-link:hover { color: var(--cinnabar); }
 }
 .post-nav-item:hover .post-nav-title { color: var(--cinnabar); }
 
-/* ── 9. 侧栏 ────────────────────────────────────────────────────────────── */
+/* 鈹€鈹€ 9. 渚ф爮 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
 .aside { position: sticky; top: calc(var(--nav-h) + 28px); align-self: start; }
 
 .aside-block {
@@ -779,7 +804,7 @@ a.pag-link:hover { color: var(--cinnabar); }
 
 .aside-avatar {
   width: 76px; height: 76px;
-  border-radius: 3px;              /* 方形圆角，不做圆形也不做旋转 */
+  border-radius: 3px;              /* 鏂瑰舰鍦嗚锛屼笉鍋氬渾褰篃涓嶅仛鏃嬭浆 */
   object-fit: cover;
   border: 1px solid var(--rule);
   margin: 14px 0 14px;
@@ -825,7 +850,7 @@ a.pag-link:hover { color: var(--cinnabar); }
   font-size: 10px; letter-spacing: .12em; color: var(--ink-3);
 }
 
-/* 目录 */
+/* 鐩綍 */
 .toc { margin-top: 14px; }
 .toc ol { list-style: none; margin: 0; padding: 0; counter-reset: toc; }
 .toc li { counter-increment: toc; }
@@ -847,7 +872,7 @@ a.pag-link:hover { color: var(--cinnabar); }
 .toc .toc-h3 a { padding-left: 40px; font-size: .82rem; }
 .toc .toc-h3 a::before { left: 18px; }
 
-/* ── 10. 页脚 ───────────────────────────────────────────────────────────── */
+/* 鈹€鈹€ 10. 椤佃剼 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
 .site-footer {
   margin-top: var(--sec-y);
   background: var(--paper-2);
@@ -892,9 +917,9 @@ a.pag-link:hover { color: var(--cinnabar); }
   font-size: 11px; letter-spacing: .1em; color: var(--ink-3);
 }
 
-/* ── 11. 滚动渐显 ─────────────────────────────────────────────────────────
-   初始隐藏状态只在有 JS 时生效（<html class="js">）：
-   这样 JS 加载失败时内容依然可见，不会白屏。 */
+/* 鈹€鈹€ 11. 婊氬姩娓愭樉 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+   鍒濆闅愯棌鐘舵€佸彧鍦ㄦ湁 JS 鏃剁敓鏁堬紙<html class="js">锛夛細
+   杩欐牱 JS 鍔犺浇澶辫触鏃跺唴瀹逛緷鐒跺彲瑙侊紝涓嶄細鐧藉睆銆?*/
 .js .reveal {
   opacity: 0;
   transform: translateY(22px);
@@ -903,7 +928,7 @@ a.pag-link:hover { color: var(--cinnabar); }
 }
 .js .reveal.is-in { opacity: 1; transform: translateY(0); }
 
-/* ── 12. 响应式 ─────────────────────────────────────────────────────────── */
+/* 鈹€鈹€ 12. 鍝嶅簲寮?鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
 @media (max-width: 980px) {
   .reading-grid { grid-template-columns: 1fr; }
   .aside { position: static; }
@@ -913,7 +938,7 @@ a.pag-link:hover { color: var(--cinnabar); }
 @media (max-width: 720px) {
   :root { --nav-h: 62px; }
 
-  /* 移动端没有 hover：导航改为按钮切换，且常驻 */
+  /* 绉诲姩绔病鏈?hover锛氬鑸敼涓烘寜閽垏鎹紝涓斿父椹?*/
   .site-nav { transform: translateY(0); }
   .nav-toggle { display: flex; }
   .nav-links {
@@ -949,7 +974,7 @@ a.pag-link:hover { color: var(--cinnabar); }
   .footer-cols { grid-template-columns: 1fr; }
 }
 
-/* ── 13. 无障碍：尊重减弱动效 ───────────────────────────────────────────── */
+/* 鈹€鈹€ 13. 鏃犻殰纰嶏細灏婇噸鍑忓急鍔ㄦ晥 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after {
@@ -963,10 +988,9 @@ a.pag-link:hover { color: var(--cinnabar); }
 }
 
 /* ==========================================================================
-   14. 入场层 —— 平面几何 + 终末地式 HUD
-   深墨底 + 发丝线 + 等宽罗马字，点击后上下两片幕布拉开
-   由 themes/liubai/_config.yml 的 intro 段驱动
-   ========================================================================== */
+   14. 鍏ュ満灞?鈥斺€?骞抽潰鍑犱綍 + 缁堟湯鍦板紡 HUD
+   娣卞ⅷ搴?+ 鍙戜笣绾?+ 绛夊缃楅┈瀛楋紝鐐瑰嚮鍚庝笂涓嬩袱鐗囧箷甯冩媺寮€
+   鐢?themes/liubai/_config.yml 鐨?intro 娈甸┍鍔?   ========================================================================== */
 :root {
   --intro-bg: #faf7f1;
   --intro-fg: #16161a;
@@ -983,7 +1007,7 @@ a.pag-link:hover { color: var(--cinnabar); }
   overflow: hidden;
 }
 
-/* 上下两片幕布 */
+/* 涓婁笅涓ょ墖骞曞竷 */
 .intro-panel {
   position: absolute;
   left: 0; right: 0;
@@ -995,10 +1019,9 @@ a.pag-link:hover { color: var(--cinnabar); }
 .intro-panel-top { top: 0; }
 .intro-panel-bottom { bottom: 0; }
 
-/* ── 昼夜配色（全站）─────────────────────────────────────────────────────
-   由 html[data-daypart] 切换。这套变量不只管入场层，也管正文、卡片、页脚，
-   所以「外面」和「里面」是同一套光。
-   所有颜色都带 transition，跨时段是渐变而不是跳变。 */
+/* 鈹€鈹€ 鏄煎閰嶈壊锛堝叏绔欙級鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+   鐢?html[data-daypart] 鍒囨崲銆傝繖濂楀彉閲忎笉鍙鍏ュ満灞傦紝涔熺姝ｆ枃銆佸崱鐗囥€侀〉鑴氾紝
+   鎵€浠ャ€屽闈€嶅拰銆岄噷闈€嶆槸鍚屼竴濂楀厜銆?   鎵€鏈夐鑹查兘甯?transition锛岃法鏃舵鏄笎鍙樿€屼笉鏄烦鍙樸€?*/
 :root {
   --art-sky: #faf7f1;
   --art-ink: rgba(22, 22, 26, .15);
@@ -1065,16 +1088,16 @@ a.pag-link:hover { color: var(--cinnabar); }
   --ink: #eef1f8;    --ink-2: #b3bac9;    --ink-3: #7d8595;
   --rule: #232735;   --rule-2: #2f3546;   --card: #151824;
   --cinnabar: #e0564a;
-  --teal: #5fb0a8;             /* 冷调副强调：夜里不只是黑白 */
+  --teal: #5fb0a8;             /* 鍐疯皟鍓己璋冿細澶滈噷涓嶅彧鏄粦鐧?*/
   --hatch: rgba(226, 232, 245, .07);
   --art-sky: #12141d;
   --art-ink: rgba(226, 232, 245, .13);
   --art-ink-2: rgba(226, 232, 245, .27);
   --art-panel: rgba(226, 232, 245, .035);
-  --art-disc: #e9edf6;          /* 月亮 */
+  --art-disc: #e9edf6;          /* 鏈堜寒 */
   --art-ring: rgba(226, 232, 245, .30);
   --art-band: rgba(110, 168, 200, .45);
-  --art-moon: #12141d;          /* 月牙遮挡 = 天空色 */
+  --art-moon: #12141d;          /* 鏈堢墮閬尅 = 澶╃┖鑹?*/
   --intro-accent: #e0564a;
   --intro-bg: #12141d; --intro-fg: #eef1f8;
   --intro-line: rgba(238, 241, 248, .22); --intro-dim: rgba(238, 241, 248, .54);
@@ -1095,7 +1118,7 @@ a.pag-link:hover { color: var(--cinnabar); }
 .art-sky { fill: var(--art-sky); transition: fill .9s ease; }
 .art-panel { fill: var(--art-panel); transition: fill .9s ease; }
 
-/* 同心弧：做成断弧，缓慢旋转才看得出来（整圆旋转是看不出的） */
+/* 鍚屽績寮э細鍋氭垚鏂姬锛岀紦鎱㈡棆杞墠鐪嬪緱鍑烘潵锛堟暣鍦嗘棆杞槸鐪嬩笉鍑虹殑锛?*/
 .art-arcs {
   fill: none;
   stroke: var(--art-ink);
@@ -1133,7 +1156,7 @@ a.pag-link:hover { color: var(--cinnabar); }
 }
 .art-moon-shade { fill: var(--art-moon); transition: fill .9s ease; }
 
-/* 天体缓慢浮动 */
+/* 澶╀綋缂撴參娴姩 */
 .art-disc {
   transform-box: view-box;
   transform-origin: 1198px 284px;
@@ -1144,7 +1167,7 @@ a.pag-link:hover { color: var(--cinnabar); }
   50%      { transform: translateY(-11px); }
 }
 
-/* 幕布接缝处那条发丝线 */
+/* 骞曞竷鎺ョ紳澶勯偅鏉″彂涓濈嚎 */
 .intro-panel-top::after {
   content: "";
   position: absolute; left: 0; right: 0; bottom: 0;
@@ -1152,11 +1175,9 @@ a.pag-link:hover { color: var(--cinnabar); }
   background: var(--intro-line);
 }
 
-/* ── 退场编排（约 1.7s，分四拍，全部缓动）────────────────────────────────
-   一拍  内容各自溃散：四角标记外扩、印章旋转、文字上浮
-   二拍  一条朱砂扫描线自上而下扫过
-   三拍  切角幕布从画面中线横向铺开，盖满整屏
-   四拍  幕布淡出，把首页交还出来（首页首屏这时才开始播） */
+/* 鈹€鈹€ 閫€鍦虹紪鎺掞紙绾?1.7s锛屽垎鍥涙媿锛屽叏閮ㄧ紦鍔級鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+   涓€鎷? 鍐呭鍚勮嚜婧冩暎锛氬洓瑙掓爣璁板鎵┿€佸嵃绔犳棆杞€佹枃瀛椾笂娴?   浜屾媿  涓€鏉℃湵鐮傛壂鎻忕嚎鑷笂鑰屼笅鎵繃
+   涓夋媿  鍒囪骞曞竷浠庣敾闈腑绾挎í鍚戦摵寮€锛岀洊婊℃暣灞?   鍥涙媿  骞曞竷娣″嚭锛屾妸棣栭〉浜よ繕鍑烘潵锛堥椤甸灞忚繖鏃舵墠寮€濮嬫挱锛?*/
 .intro.is-leaving .intro-bracket {
   opacity: 0;
   transform: scale(1.7);
@@ -1200,7 +1221,7 @@ a.pag-link:hover { color: var(--cinnabar); }
   transition: opacity .6s ease, transform .6s var(--ease);
 }
 
-/* ── 四角标记（终末地 HUD 的标志性元素）────────────────────────────────── */
+/* 鈹€鈹€ 鍥涜鏍囪锛堢粓鏈湴 HUD 鐨勬爣蹇楁€у厓绱狅級鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
 .intro-bracket {
   position: absolute;
   width: 22px; height: 22px;
@@ -1216,7 +1237,7 @@ a.pag-link:hover { color: var(--cinnabar); }
 
 .intro-core { display: grid; justify-items: center; gap: clamp(16px, 3vw, 28px); }
 
-/* 随时段变化的问候语 */
+/* 闅忔椂娈靛彉鍖栫殑闂€欒 */
 .intro-greet {
   font-family: var(--font-mono);
   font-size: 11px;
@@ -1226,7 +1247,7 @@ a.pag-link:hover { color: var(--cinnabar); }
   animation: charIn .8s var(--ease) .18s forwards;
 }
 
-/* ── 朱砂印章 ───────────────────────────────────────────────────────────── */
+/* 鈹€鈹€ 鏈辩爞鍗扮珷 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
 .intro-seal {
   width: 48px; height: 48px;
   display: grid; place-items: center;
@@ -1243,7 +1264,7 @@ a.pag-link:hover { color: var(--cinnabar); }
   100% { opacity: 1; transform: scale(1) rotate(0); }
 }
 
-/* ── 中间大字：逐字入场 ─────────────────────────────────────────────────── */
+/* 鈹€鈹€ 涓棿澶у瓧锛氶€愬瓧鍏ュ満 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
 .intro-display {
   display: flex;
   gap: clamp(6px, 1.4vw, 16px);
@@ -1263,7 +1284,7 @@ a.pag-link:hover { color: var(--cinnabar); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* ── 标题组 ─────────────────────────────────────────────────────────────── */
+/* 鈹€鈹€ 鏍囬缁?鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
 .intro-titles { display: grid; gap: 8px; }
 .intro-title {
   font-size: clamp(1.05rem, 2.4vw, 1.5rem);
@@ -1287,7 +1308,7 @@ a.pag-link:hover { color: var(--cinnabar); }
   animation: charIn .8s var(--ease) .96s forwards;
 }
 
-/* ── 横线：从中间向两侧展开 ─────────────────────────────────────────────── */
+/* 鈹€鈹€ 妯嚎锛氫粠涓棿鍚戜袱渚у睍寮€ 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
 .intro-line {
   width: min(320px, 70%);
   height: 1px;
@@ -1308,7 +1329,7 @@ a.pag-link:hover { color: var(--cinnabar); }
   100% { transform: scaleX(0); transform-origin: 50% 50%; }
 }
 
-/* ── 进入按钮 ───────────────────────────────────────────────────────────── */
+/* 鈹€鈹€ 杩涘叆鎸夐挳 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
 .intro-enter {
   position: relative;
   appearance: none;
@@ -1337,7 +1358,7 @@ a.pag-link:hover { color: var(--cinnabar); }
   font-size: 9.5px; letter-spacing: .3em;
   color: var(--intro-dim);
 }
-/* 呼吸光环 */
+/* 鍛煎惛鍏夌幆 */
 .intro-enter-ring {
   position: absolute;
   inset: -1px;
@@ -1353,7 +1374,7 @@ a.pag-link:hover { color: var(--cinnabar); }
   100% { opacity: 0;   transform: scale(1.14); }
 }
 
-/* ── 底部状态行 ─────────────────────────────────────────────────────────── */
+/* 鈹€鈹€ 搴曢儴鐘舵€佽 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
 .intro-status {
   display: flex;
   justify-content: space-between;
@@ -1367,9 +1388,9 @@ a.pag-link:hover { color: var(--cinnabar); }
 }
 .intro-status-mid { color: var(--intro-accent); font-variant-numeric: tabular-nums; }
 
-/* ── 15. 手绘词标 ─────────────────────────────────────────────────────────
-   singning + 901，等宽单线几何字形，见 _partial/wordmark.ejs
-   放在导航、入场层、页脚三处，尺寸由外层容器控制 */
+/* 鈹€鈹€ 15. 鎵嬬粯璇嶆爣 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+   singning + 901锛岀瓑瀹藉崟绾垮嚑浣曞瓧褰紝瑙?_partial/wordmark.ejs
+   鏀惧湪瀵艰埅銆佸叆鍦哄眰銆侀〉鑴氫笁澶勶紝灏哄鐢卞灞傚鍣ㄦ帶鍒?*/
 .wordmark {
   display: block;
   width: 100%;
@@ -1391,7 +1412,7 @@ a.pag-link:hover { color: var(--cinnabar); }
 
 .brand-mark {
   display: block;
-  width: 116px;
+  width: auto;            /* 鍘熸潵鏄?116px 鈥斺€?鏃х殑鎵嬬粯 SVG 瀹借瘝鏍囩暀涓嬬殑锛?                             鐜板湪鏍囪瘑鏄?34px 鏂瑰潡锛?16px 鏄浣欎笖閿欒鐨?*/
   color: var(--ink);
   transition: color .3s ease;
 }
@@ -1403,9 +1424,9 @@ a.pag-link:hover { color: var(--cinnabar); }
   color: var(--ink);
 }
 
-/* ── 17. 手绘汉字字形 ─────────────────────────────────────────────────────
-   山 / 水 是手画矢量，不是字体。用 pathLength="1" 做描边动画：
-   笔画像被写出来一样逐渐成形，而不是整体淡入。 */
+/* 鈹€鈹€ 17. 鎵嬬粯姹夊瓧瀛楀舰 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+   灞?/ 姘?鏄墜鐢荤煝閲忥紝涓嶆槸瀛椾綋銆傜敤 pathLength="1" 鍋氭弿杈瑰姩鐢伙細
+   绗旂敾鍍忚鍐欏嚭鏉ヤ竴鏍烽€愭笎鎴愬舰锛岃€屼笉鏄暣浣撴贰鍏ャ€?*/
 .intro-display {
   display: flex;
   gap: clamp(10px, 2vw, 26px);
@@ -1440,7 +1461,7 @@ a.pag-link:hover { color: var(--cinnabar); }
 @keyframes dcharIn { to { opacity: 1; } }
 @keyframes drawIn  { to { stroke-dashoffset: 0; } }
 
-/* ── 18. 退场幕布 ──────────────────────────────────────────────────────── */
+/* 鈹€鈹€ 18. 閫€鍦哄箷甯?鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
 .intro-veil {
   position: absolute;
   inset: 0;
@@ -1473,9 +1494,9 @@ a.pag-link:hover { color: var(--cinnabar); }
   100% { opacity: 0;   transform: translateY(100vh); }
 }
 
-/* ── 19. 环境动效：不依赖交互，一直在缓慢运动 ──────────────────────────── */
+/* 鈹€鈹€ 19. 鐜鍔ㄦ晥锛氫笉渚濊禆浜や簰锛屼竴鐩村湪缂撴參杩愬姩 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
 
-/* 全页缓慢下扫的淡线，暗示这是一台在运行的设备 */
+/* 鍏ㄩ〉缂撴參涓嬫壂鐨勬贰绾匡紝鏆楃ず杩欐槸涓€鍙板湪杩愯鐨勮澶?*/
 .page-scan {
   position: fixed;
   left: 0; right: 0; top: -2px;
@@ -1492,40 +1513,40 @@ a.pag-link:hover { color: var(--cinnabar); }
   100% { transform: translateY(100vh);  opacity: 0; }
 }
 
-/* 印章缓慢呼吸 */
+/* 鍗扮珷缂撴參鍛煎惛 */
 .seal { animation: sealBreath 6.5s ease-in-out infinite; }
 @keyframes sealBreath {
   0%, 100% { box-shadow: 0 0 0 0 rgba(200, 54, 43, 0); }
   50%      { box-shadow: 0 0 0 5px rgba(200, 54, 43, .10); }
 }
 
-/* 页脚那条朱砂短线缓慢明暗 */
+/* 椤佃剼閭ｆ潯鏈辩爞鐭嚎缂撴參鏄庢殫 */
 .footer-rule { animation: ruleGlow 5s ease-in-out infinite; }
 @keyframes ruleGlow {
   0%, 100% { opacity: .55; }
   50%      { opacity: 1; }
 }
 
-/* 卡片：悬停之外还有极缓慢的阴影呼吸，让页面"活着" */
+/* 鍗＄墖锛氭偓鍋滀箣澶栬繕鏈夋瀬缂撴參鐨勯槾褰卞懠鍚革紝璁╅〉闈?娲荤潃" */
 .card { animation: cardBreath 11s ease-in-out infinite alternate; }
 @keyframes cardBreath {
   from { box-shadow: 0 0 0 0 rgba(0, 0, 0, 0); }
   to   { box-shadow: 0 16px 34px -26px rgba(0, 0, 0, .38); }
 }
 
-/* 正文标题左侧朱砂竖线缓慢呼吸 */
+/* 姝ｆ枃鏍囬宸︿晶鏈辩爞绔栫嚎缂撴參鍛煎惛 */
 .prose h2::before, .prose h3::before, .prose h4::before {
   animation: ruleGlow 4.5s ease-in-out infinite;
 }
 /* ==========================================================================
-   20. 方舟化：底色、切角、阴影、交互语言
+   20. 鏂硅垷鍖栵細搴曡壊銆佸垏瑙掋€侀槾褰便€佷氦浜掕瑷€
    ========================================================================== */
 :root                   { --hatch: rgba(22, 22, 26, .055); --teal: #2f7d76; --grid: rgba(22, 22, 26, .028); }
 [data-daypart="dawn"]   { --hatch: rgba(46, 33, 30, .055); --teal: #3a8074; --grid: rgba(46, 33, 30, .028); }
 [data-daypart="dusk"]   { --hatch: rgba(54, 31, 25, .055); --teal: #2f7d76; --grid: rgba(54, 31, 25, .028); }
 [data-daypart="night"]  { --grid: rgba(226, 232, 245, .030); }
 
-/* 底色不再纯白 / 纯黑：铺一层极淡的工程网格 */
+/* 搴曡壊涓嶅啀绾櫧 / 绾粦锛氶摵涓€灞傛瀬娣＄殑宸ョ▼缃戞牸 */
 body {
   background-color: var(--paper);
   background-image:
@@ -1536,7 +1557,7 @@ body {
   transition: background-color .9s ease, color .9s ease;
 }
 
-/* 章节头：斜向网点收口 */
+/* 绔犺妭澶达細鏂滃悜缃戠偣鏀跺彛 */
 .section-head { position: relative; padding-bottom: 16px; }
 .section-head::after {
   content: "";
@@ -1547,7 +1568,7 @@ body {
   transition: border-color .9s ease;
 }
 
-/* 卡片：切角 + 投影（clip-path 会裁掉 box-shadow，所以用 drop-shadow） */
+/* 鍗＄墖锛氬垏瑙?+ 鎶曞奖锛坈lip-path 浼氳鎺?box-shadow锛屾墍浠ョ敤 drop-shadow锛?*/
 .card {
   border-radius: 0;
   clip-path: polygon(16px 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%, 0 16px);
@@ -1560,7 +1581,7 @@ body {
 .card:hover { transform: translateY(-6px); filter: drop-shadow(0 22px 36px rgba(0, 0, 0, .18)); }
 [data-daypart="night"] .card:hover { filter: drop-shadow(0 22px 38px rgba(0, 0, 0, .62)); }
 
-/* 悬停：四角标记从角上长出来，取代原来那条红色竖条 */
+/* 鎮仠锛氬洓瑙掓爣璁颁粠瑙掍笂闀垮嚭鏉ワ紝鍙栦唬鍘熸潵閭ｆ潯绾㈣壊绔栨潯 */
 .card::after {
   content: "";
   position: absolute; inset: 9px;
@@ -1584,7 +1605,7 @@ body {
                    20px 1px, 1px 20px, 20px 1px, 1px 20px;
 }
 
-/* 配图上斜向网点扫过 */
+/* 閰嶅浘涓婃枩鍚戠綉鐐规壂杩?*/
 .card-media::after {
   content: "";
   position: absolute; inset: 0;
@@ -1595,7 +1616,7 @@ body {
 }
 .card:hover .card-media::after { transform: translateX(0); }
 
-/* 文章行悬停：刻度浮现 + 底线描写，不再用红竖条 */
+/* 鏂囩珷琛屾偓鍋滐細鍒诲害娴幇 + 搴曠嚎鎻忓啓锛屼笉鍐嶇敤绾㈢珫鏉?*/
 .post-link::before {
   content: "";
   position: absolute; left: 0; top: 50%;
@@ -1621,7 +1642,7 @@ body {
 .post-link:hover::after { transform: scaleX(1); }
 .post-link:hover { padding-left: 26px; }
 
-/* 正文里的方舟元素 */
+/* 姝ｆ枃閲岀殑鏂硅垷鍏冪礌 */
 .prose h2, .prose h3, .prose h4 { padding-left: 18px; }
 .prose h2::after, .prose h3::after {
   content: ""; display: block; margin-top: .42em; height: 7px;
@@ -1663,7 +1684,7 @@ body {
 .prose a { border-bottom: 1px solid rgba(200,54,43,.3); }
 .prose a:hover { background: rgba(200,54,43,.08); border-bottom-color: var(--cinnabar); }
 
-/* 侧栏块：切角 + 投影 */
+/* 渚ф爮鍧楋細鍒囪 + 鎶曞奖 */
 .aside-block {
   padding: 20px 18px;
   border: 1px solid var(--rule);
@@ -1676,13 +1697,13 @@ body {
 [data-daypart="night"] .aside-block { filter: drop-shadow(0 8px 18px rgba(0,0,0,.45)); }
 .aside-block:first-child { border-top: 1px solid var(--rule); }
 
-/* 入场层切角面板加重，让方块感真的看得见 */
+/* 鍏ュ満灞傚垏瑙掗潰鏉垮姞閲嶏紝璁╂柟鍧楁劅鐪熺殑鐪嬪緱瑙?*/
 :root                  { --art-panel: rgba(22, 22, 26, .075); }
 [data-daypart="dawn"]  { --art-panel: rgba(226, 142, 82, .11); }
 [data-daypart="dusk"]  { --art-panel: rgba(200, 54, 43, .105); }
 [data-daypart="night"] { --art-panel: rgba(226, 232, 245, .075); }
 
-/* 标签 / 分页：切角化 */
+/* 鏍囩 / 鍒嗛〉锛氬垏瑙掑寲 */
 .tag-cloud a, #pagination .page-number, #pagination .extend {
   border-radius: 0;
   clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
@@ -1701,10 +1722,10 @@ body {
 }
 
 /* ==========================================================================
-   21. 写实光照 · 玻璃质感 · 昼夜过渡
+   21. 鍐欏疄鍏夌収 路 鐜荤拑璐ㄦ劅 路 鏄煎杩囨浮
    ========================================================================== */
 
-/* 天体：径向渐变做受光面，外面套模糊光晕 */
+/* 澶╀綋锛氬緞鍚戞笎鍙樺仛鍙楀厜闈紝澶栭潰濂楁ā绯婂厜鏅?*/
 .gstop-hi  { stop-color: var(--disc-hi); }
 .gstop-mid { stop-color: var(--disc-mid); }
 .gstop-lo  { stop-color: var(--disc-lo); }
@@ -1725,15 +1746,14 @@ body {
 .art-disc-glow { fill: var(--disc-glow); filter: blur(30px); transition: fill 1s ease; }
 .art-disc-body { transition: fill .3s ease; }
 
-/* 天体随昼夜移动到不同高度与方位。
-   用独立的 translate 属性，不占用 transform，discFloat 的浮动动画照常跑。 */
+/* 澶╀綋闅忔樇澶滅Щ鍔ㄥ埌涓嶅悓楂樺害涓庢柟浣嶃€?   鐢ㄧ嫭绔嬬殑 translate 灞炴€э紝涓嶅崰鐢?transform锛宒iscFloat 鐨勬诞鍔ㄥ姩鐢荤収甯歌窇銆?*/
 .art-disc { transition: translate 1.6s var(--ease); }
 [data-daypart="day"]   .art-disc { translate: 0 0; }
 [data-daypart="dawn"]  .art-disc { translate: -150px 168px; }
 [data-daypart="dusk"]  .art-disc { translate: 118px 196px; }
 [data-daypart="night"] .art-disc { translate: -60px -34px; }
 
-/* 昼夜切换：一层纸色扫过，把变色过程盖住，读起来是一次「天色变了」 */
+/* 鏄煎鍒囨崲锛氫竴灞傜焊鑹叉壂杩囷紝鎶婂彉鑹茶繃绋嬬洊浣忥紝璇昏捣鏉ユ槸涓€娆°€屽ぉ鑹插彉浜嗐€?*/
 html.is-shifting::after {
   content: "";
   position: fixed;
@@ -1750,7 +1770,7 @@ html.is-shifting::after {
   100% { opacity: 0; transform: translateY(100%); }
 }
 
-/* 写实渲染：卡片给一点纵向渐层，不再是死板的纯色块 */
+/* 鍐欏疄娓叉煋锛氬崱鐗囩粰涓€鐐圭旱鍚戞笎灞傦紝涓嶅啀鏄鏉跨殑绾壊鍧?*/
 .card {
   background-image: linear-gradient(180deg,
     color-mix(in srgb, var(--card) 100%, #fff 22%) 0%,
@@ -1758,7 +1778,7 @@ html.is-shifting::after {
     color-mix(in srgb, var(--card) 100%, #000 3%) 100%);
 }
 
-/* 印章：磨砂金属感 */
+/* 鍗扮珷锛氱（鐮傞噾灞炴劅 */
 .seal {
   background-image: linear-gradient(160deg,
     color-mix(in srgb, var(--cinnabar) 100%, #fff 28%) 0%,
@@ -1767,7 +1787,7 @@ html.is-shifting::after {
   box-shadow: inset 0 1px 0 rgba(255,255,255,.35), 0 2px 8px -3px rgba(0,0,0,.4);
 }
 
-/* 统计数字：渐层文字，像被打了光 */
+/* 缁熻鏁板瓧锛氭笎灞傛枃瀛楋紝鍍忚鎵撲簡鍏?*/
 .aside-stats dd {
   background-image: linear-gradient(180deg, var(--cinnabar), color-mix(in srgb, var(--cinnabar) 100%, #000 22%));
   -webkit-background-clip: text;
@@ -1775,9 +1795,8 @@ html.is-shifting::after {
   color: transparent;
 }
 
-/* ── iOS 26 液态玻璃 ─────────────────────────────────────────────────────
-   半透明 + 强饱和模糊 + 顶缘内高光 + 一层倾斜反光。
-   形状仍是方舟的切角，所以是「方舟的玻璃」，不是圆角气泡。 */
+/* 鈹€鈹€ iOS 26 娑叉€佺幓鐠?鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+   鍗婇€忔槑 + 寮洪ケ鍜屾ā绯?+ 椤剁紭鍐呴珮鍏?+ 涓€灞傚€炬枩鍙嶅厜銆?   褰㈢姸浠嶆槸鏂硅垷鐨勫垏瑙掞紝鎵€浠ユ槸銆屾柟鑸熺殑鐜荤拑銆嶏紝涓嶆槸鍦嗚姘旀场銆?*/
 .intro-enter,
 .hero-hud,
 .hero-scroll,
@@ -1813,7 +1832,7 @@ html.is-shifting::after {
 }
 .aside-block > * { position: relative; z-index: 1; }
 
-/* 导航条单独一层玻璃（它的 ::before 另有用处，这里直接上材质） */
+/* 瀵艰埅鏉″崟鐙竴灞傜幓鐠冿紙瀹冪殑 ::before 鍙︽湁鐢ㄥ锛岃繖閲岀洿鎺ヤ笂鏉愯川锛?*/
 .site-nav {
   background-color: color-mix(in srgb, var(--card) 55%, transparent);
   backdrop-filter: blur(22px) saturate(190%);
@@ -1823,7 +1842,7 @@ html.is-shifting::after {
     0 14px 34px -24px rgba(0, 0, 0, .42);
 }
 
-/* 夜间玻璃更透更亮，层次才出得来 */
+/* 澶滈棿鐜荤拑鏇撮€忔洿浜紝灞傛鎵嶅嚭寰楁潵 */
 [data-daypart="night"] .aside-block,
 [data-daypart="night"] .intro-enter,
 [data-daypart="night"] .hero-hud,
@@ -1836,7 +1855,7 @@ html.is-shifting::after {
     0 16px 38px -22px rgba(0, 0, 0, .8);
 }
 
-/* 按钮也带切角 */
+/* 鎸夐挳涔熷甫鍒囪 */
 .intro-enter {
   clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
 }
@@ -1847,10 +1866,10 @@ html.is-shifting::after {
 }
 
 /* ==========================================================================
-   22. 大字改用真字体 · 卡片玻璃 · 昼夜模式按钮
+   22. 澶у瓧鏀圭敤鐪熷瓧浣?路 鍗＄墖鐜荤拑 路 鏄煎妯″紡鎸夐挳
    ========================================================================== */
 
-/* 大字：系统黑体加粗（微软雅黑 / 苹方 / Noto Sans SC），底部上wipe 揭幕 */
+/* 澶у瓧锛氱郴缁熼粦浣撳姞绮楋紙寰蒋闆呴粦 / 鑻规柟 / Noto Sans SC锛夛紝搴曢儴涓妛ipe 鎻箷 */
 .dchar {
   display: block;
   font-family: var(--font-sans);
@@ -1869,7 +1888,7 @@ html.is-shifting::after {
   100% { opacity: 1; clip-path: inset(-25% 0 -25% 0); transform: translateY(0); }
 }
 
-/* ── 卡片也上玻璃 ──────────────────────────────────────────────────────── */
+/* 鈹€鈹€ 鍗＄墖涔熶笂鐜荤拑 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
 .card {
   background-color: color-mix(in srgb, var(--card) 74%, transparent);
   background-image: none;
@@ -1880,7 +1899,7 @@ html.is-shifting::after {
     inset 0 1px 0 color-mix(in srgb, #fff 46%, transparent),
     inset 0 -1px 0 color-mix(in srgb, var(--ink) 6%, transparent);
 }
-/* 卡片玻璃的倾斜反光（::before 之前没被占用） */
+/* 鍗＄墖鐜荤拑鐨勫€炬枩鍙嶅厜锛?:before 涔嬪墠娌¤鍗犵敤锛?*/
 .card::before {
   content: "";
   position: absolute;
@@ -1891,7 +1910,7 @@ html.is-shifting::after {
     color-mix(in srgb, #fff 20%, transparent) 0%,
     transparent 44%);
 }
-/* 内容和配图要压在反光之上 */
+/* 鍐呭鍜岄厤鍥捐鍘嬪湪鍙嶅厜涔嬩笂 */
 .card-media, .card-body { position: relative; z-index: 2; }
 [data-daypart="night"] .card {
   background-color: color-mix(in srgb, var(--card) 58%, transparent);
@@ -1900,7 +1919,7 @@ html.is-shifting::after {
     inset 0 -1px 0 rgba(0, 0, 0, .4);
 }
 
-/* ── 昼夜模式按钮 ──────────────────────────────────────────────────────── */
+/* 鈹€鈹€ 鏄煎妯″紡鎸夐挳 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
 .mode-toggle {
   display: inline-flex;
   align-items: center;
@@ -1947,12 +1966,10 @@ html.is-shifting::after {
 }
 
 /* ==========================================================================
-   23. 性能修缮 + 持续型悬停动画 + 更丝滑的入场交接
+   23. 鎬ц兘淇籍 + 鎸佺画鍨嬫偓鍋滃姩鐢?+ 鏇翠笣婊戠殑鍏ュ満浜ゆ帴
    ==========================================================================
-   backdrop-filter 会让合成器每帧重新采样背后的内容。卡片数量多、又跟着滚动，
-   是掉帧的主因。所以玻璃只留在「固定不动、数量少」的元素上：
-   导航条、模式按钮、入场按钮。卡片改成「视觉玻璃」——
-   半透明 + 反光，但不做实时模糊，肉眼几乎无差别却省掉整层采样。 */
+   backdrop-filter 浼氳鍚堟垚鍣ㄦ瘡甯ч噸鏂伴噰鏍疯儗鍚庣殑鍐呭銆傚崱鐗囨暟閲忓銆佸張璺熺潃婊氬姩锛?   鏄帀甯х殑涓诲洜銆傛墍浠ョ幓鐠冨彧鐣欏湪銆屽浐瀹氫笉鍔ㄣ€佹暟閲忓皯銆嶇殑鍏冪礌涓婏細
+   瀵艰埅鏉°€佹ā寮忔寜閽€佸叆鍦烘寜閽€傚崱鐗囨敼鎴愩€岃瑙夌幓鐠冦€嶁€斺€?   鍗婇€忔槑 + 鍙嶅厜锛屼絾涓嶅仛瀹炴椂妯＄硦锛岃倝鐪煎嚑涔庢棤宸埆鍗寸渷鎺夋暣灞傞噰鏍枫€?*/
 .card,
 .aside-block,
 .tag-cloud a,
@@ -1963,21 +1980,21 @@ html.is-shifting::after {
   background-color: color-mix(in srgb, var(--card) 90%, transparent);
 }
 
-/* 卡片的 drop-shadow 常驻也是每帧一次滤镜。改成只在悬停时给。 */
+/* 鍗＄墖鐨?drop-shadow 甯搁┗涔熸槸姣忓抚涓€娆℃护闀溿€傛敼鎴愬彧鍦ㄦ偓鍋滄椂缁欍€?*/
 .card { filter: none; transition: transform .5s var(--ease), filter .45s var(--ease), border-color .4s ease, background-color .9s ease; }
 .card:hover { filter: drop-shadow(0 20px 34px rgba(0, 0, 0, .16)); }
 [data-daypart="night"] .card:hover { filter: drop-shadow(0 20px 34px rgba(0, 0, 0, .6)); }
 .aside-block { filter: none; }
 [data-daypart="night"] .aside-block { filter: none; }
 
-/* 印章的 box-shadow 呼吸要重绘；换成 transform 缩放，走合成器 */
+/* 鍗扮珷鐨?box-shadow 鍛煎惛瑕侀噸缁橈紱鎹㈡垚 transform 缂╂斁锛岃蛋鍚堟垚鍣?*/
 .seal { animation: sealBreath 6.5s ease-in-out infinite; }
 @keyframes sealBreath {
   0%, 100% { transform: scale(1); }
   50%      { transform: scale(1.045); }
 }
 
-/* 导航下扫线改成 transform 位移（原来动的是 background-position，属重绘） */
+/* 瀵艰埅涓嬫壂绾挎敼鎴?transform 浣嶇Щ锛堝師鏉ュ姩鐨勬槸 background-position锛屽睘閲嶇粯锛?*/
 .site-nav::after {
   left: 0; width: 38%;
   background-image: linear-gradient(90deg, transparent, var(--cinnabar), transparent);
@@ -1989,23 +2006,23 @@ html.is-shifting::after {
   100% { transform: translateX(365%); }
 }
 
-/* 正文标题竖线的明暗循环只留 h2/h3，减轻图层数 */
+/* 姝ｆ枃鏍囬绔栫嚎鐨勬槑鏆楀惊鐜彧鐣?h2/h3锛屽噺杞诲浘灞傛暟 */
 .prose h4::before { animation: none; }
 
-/* 入场层的大圆弧：加合成提示，避免旋转时重绘整个 SVG */
+/* 鍏ュ満灞傜殑澶у渾寮э細鍔犲悎鎴愭彁绀猴紝閬垮厤鏃嬭浆鏃堕噸缁樻暣涓?SVG */
 .art-arcs { will-change: transform; }
 .art-disc { will-change: transform; }
 
-/* ── 持续型悬停：鼠标在的时候一直动，移开才回普通状态 ───────────────────── */
+/* 鈹€鈹€ 鎸佺画鍨嬫偓鍋滐細榧犳爣鍦ㄧ殑鏃跺€欎竴鐩村姩锛岀Щ寮€鎵嶅洖鏅€氱姸鎬?鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
 
-/* 卡片：悬停期间斜向网点持续横扫 */
+/* 鍗＄墖锛氭偓鍋滄湡闂存枩鍚戠綉鐐规寔缁í鎵?*/
 .card:hover .card-media::after { animation: hatchSweep 1.7s linear infinite; }
 @keyframes hatchSweep {
   0%   { transform: translateX(-100%); }
   100% { transform: translateX(100%); }
 }
 
-/* 卡片：一条朱砂扫描线在卡面上循环下扫 */
+/* 鍗＄墖锛氫竴鏉℃湵鐮傛壂鎻忕嚎鍦ㄥ崱闈笂寰幆涓嬫壂 */
 .card-body { position: relative; overflow: hidden; }
 .card:hover .card-body::after {
   content: "";
@@ -2022,7 +2039,7 @@ html.is-shifting::after {
   100% { transform: translateY(86px); opacity: 0; }
 }
 
-/* 文章行：悬停期间一道光持续扫过标题区 */
+/* 鏂囩珷琛岋細鎮仠鏈熼棿涓€閬撳厜鎸佺画鎵繃鏍囬鍖?*/
 .post-main { position: relative; overflow: hidden; }
 .post-link:hover .post-main::before {
   content: "";
@@ -2036,21 +2053,21 @@ html.is-shifting::after {
   100% { transform: translateX(100%); }
 }
 
-/* 导航项：悬停期间下划线持续呼吸 */
+/* 瀵艰埅椤癸細鎮仠鏈熼棿涓嬪垝绾挎寔缁懠鍚?*/
 .nav-link:hover::after { animation: linkShimmer 1.8s ease-in-out infinite; }
 @keyframes linkShimmer {
   0%, 100% { opacity: 1; }
   50%      { opacity: .35; }
 }
 
-/* 模式按钮：悬停期间图标持续微转 */
+/* 妯″紡鎸夐挳锛氭偓鍋滄湡闂村浘鏍囨寔缁井杞?*/
 .mode-toggle:hover .mode-icon { animation: iconSpin 3.4s linear infinite; }
 @keyframes iconSpin { to { transform: rotate(360deg); } }
 .mode-toggle[data-mode="night"]:hover .mode-icon { animation: none; transform: rotate(-18deg); }
 
-/* ── 更丝滑的入场交接 ────────────────────────────────────────────────────
-   原来用 clip-path 动画铺幕布，属重绘；改成「一个圆从按钮位置放大」，
-   全程只动 transform + opacity，走合成器，所以丝滑。 */
+/* 鈹€鈹€ 鏇翠笣婊戠殑鍏ュ満浜ゆ帴 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+   鍘熸潵鐢?clip-path 鍔ㄧ敾閾哄箷甯冿紝灞為噸缁橈紱鏀规垚銆屼竴涓渾浠庢寜閽綅缃斁澶с€嶏紝
+   鍏ㄧ▼鍙姩 transform + opacity锛岃蛋鍚堟垚鍣紝鎵€浠ヤ笣婊戙€?*/
 .intro-veil {
   position: absolute;
   left: 50%; top: 50%;
@@ -2071,7 +2088,7 @@ html.is-shifting::after {
   100% { opacity: 0; transform: scale(1.06); }
 }
 
-/* 内容退场：统一成一种动作（上浮 + 缩小），不再各自为政 */
+/* 鍐呭閫€鍦猴細缁熶竴鎴愪竴绉嶅姩浣滐紙涓婃诞 + 缂╁皬锛夛紝涓嶅啀鍚勮嚜涓烘斂 */
 .intro.is-leaving .intro-bracket { opacity: 0; transform: scale(1.5); transition: opacity .3s ease, transform .4s var(--ease); }
 .intro.is-leaving .intro-seal    { opacity: 0; transform: scale(.7);   transition: opacity .3s ease, transform .4s var(--ease); }
 .intro.is-leaving .intro-stage   { opacity: 0; transform: translateY(-12px) scale(.97); transition: opacity .42s var(--ease), transform .5s var(--ease); }
@@ -2079,10 +2096,10 @@ html.is-shifting::after {
 .intro.is-leaving .veil-scan     { animation: scanDown 1s var(--ease-2) .12s forwards; }
 .intro.is-leaving .intro-panel   { opacity: 0; transition: opacity .4s ease 1.05s; }
 
-/* 首屏文字入场放慢一点，交接更顺（头图不参与，避免动画重启） */
+/* 棣栧睆鏂囧瓧鍏ュ満鏀炬參涓€鐐癸紝浜ゆ帴鏇撮『锛堝ご鍥句笉鍙備笌锛岄伩鍏嶅姩鐢婚噸鍚級 */
 html:not(.intro-active) .stagger { animation-duration: 1.05s; }
 
-/* ── 回到旧版网站的入口 ─────────────────────────────────────────────────── */
+/* 鈹€鈹€ 鍥炲埌鏃х増缃戠珯鐨勫叆鍙?鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
 .footer-legacy {
   display: inline-flex;
   align-items: center;
@@ -2102,15 +2119,13 @@ html:not(.intro-active) .stagger { animation-duration: 1.05s; }
   transform: translateX(-4px);
 }
 
-/* flex 项默认 min-width:auto，不会收缩到内容宽度以下 ——
-   SVG 词标会因此撑破容器。这是手机端词标溢出右边界的原因。 */
+/* flex 椤归粯璁?min-width:auto锛屼笉浼氭敹缂╁埌鍐呭瀹藉害浠ヤ笅 鈥斺€?   SVG 璇嶆爣浼氬洜姝ゆ拺鐮村鍣ㄣ€傝繖鏄墜鏈虹璇嶆爣婧㈠嚭鍙宠竟鐣岀殑鍘熷洜銆?*/
 .hero-text { max-width: 100%; min-width: 0; }
 .hero-title { max-width: 100%; }
 .wordmark { max-width: 100%; }
 
-/* ── 移动端收敛 ───────────────────────────────────────────────────────────
-   词标溢出用「更优雅」的写法赌了几次都没吃掉：SVG 在宽度不稳定的容器里会
-   退化成按 viewBox 固有宽度（712px）撑开。这里直接给死约束，不再依赖推导。 */
+/* 鈹€鈹€ 绉诲姩绔敹鏁?鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+   璇嶆爣婧㈠嚭鐢ㄣ€屾洿浼橀泤銆嶇殑鍐欐硶璧屼簡鍑犳閮芥病鍚冩帀锛歋VG 鍦ㄥ搴︿笉绋冲畾鐨勫鍣ㄩ噷浼?   閫€鍖栨垚鎸?viewBox 鍥烘湁瀹藉害锛?12px锛夋拺寮€銆傝繖閲岀洿鎺ョ粰姝荤害鏉燂紝涓嶅啀渚濊禆鎺ㄥ銆?*/
 @media (max-width: 720px) {
   .hero-text, .hero-title { display: block !important; width: 100% !important; max-width: 100% !important; min-width: 0 !important; }
   .hero-title .hero-mark { display: block !important; width: 68vw !important; max-width: 68vw !important; }
@@ -2127,24 +2142,23 @@ html:not(.intro-active) .stagger { animation-duration: 1.05s; }
 }
 
 /* ==========================================================================
-   24. 收尾：删红线 · 底部框框透明 · 追加常驻动画
+   24. 鏀跺熬锛氬垹绾㈢嚎 路 搴曢儴妗嗘閫忔槑 路 杩藉姞甯搁┗鍔ㄧ敾
    ========================================================================== */
 
-/* 大图下面那条朱砂短线没有信息量，删掉 */
+/* 澶у浘涓嬮潰閭ｆ潯鏈辩爞鐭嚎娌℃湁淇℃伅閲忥紝鍒犳帀 */
 .hero-rule { display: none; }
 
-/* 大图收口那条红线改成中性细线：保留硬边（这是你之前要的），但不再发红 */
+/* 澶у浘鏀跺彛閭ｆ潯绾㈢嚎鏀规垚涓€х粏绾匡細淇濈暀纭竟锛堣繖鏄綘涔嬪墠瑕佺殑锛夛紝浣嗕笉鍐嶅彂绾?*/
 .hero::after { border-top-color: var(--rule); }
 
-/* 大图左右下角那两个 L 形框：设为透明 */
+/* 澶у浘宸﹀彸涓嬭閭ｄ袱涓?L 褰㈡锛氳涓洪€忔槑 */
 .hero-bracket.bl,
 .hero-bracket.br { opacity: 0 !important; animation: none !important; }
 
-/* ── 追加常驻动画 ────────────────────────────────────────────────────────
-   全部只用 transform / opacity（走合成器），不加绘制负担 ——
-   你之前反馈的掉帧就是 backdrop-filter 的实时采样造成的，这里不再犯。 */
+/* 鈹€鈹€ 杩藉姞甯搁┗鍔ㄧ敾 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+   鍏ㄩ儴鍙敤 transform / opacity锛堣蛋鍚堟垚鍣級锛屼笉鍔犵粯鍒惰礋鎷?鈥斺€?   浣犱箣鍓嶅弽棣堢殑鎺夊抚灏辨槸 backdrop-filter 鐨勫疄鏃堕噰鏍烽€犳垚鐨勶紝杩欓噷涓嶅啀鐘€?*/
 
-/* 保留下来的两个上角框缓慢呼吸 */
+/* 淇濈暀涓嬫潵鐨勪袱涓笂瑙掓缂撴參鍛煎惛 */
 .hero-bracket.tl,
 .hero-bracket.tr {
   animation: bracketIn .8s var(--ease) .35s forwards,
@@ -2155,28 +2169,28 @@ html:not(.intro-active) .stagger { animation-duration: 1.05s; }
   50%      { opacity: 1; }
 }
 
-/* 竖排小字缓慢明暗 */
+/* 绔栨帓灏忓瓧缂撴參鏄庢殫 */
 .hero-vertical { animation: vertBreathe 7s ease-in-out infinite; }
 @keyframes vertBreathe {
   0%, 100% { opacity: .6; }
   50%      { opacity: 1; }
 }
 
-/* 卡片玻璃的倾斜反光常驻缓慢横扫 */
+/* 鍗＄墖鐜荤拑鐨勫€炬枩鍙嶅厜甯搁┗缂撴參妯壂 */
 .card::before { animation: sheenDrift 9s ease-in-out infinite alternate; }
 @keyframes sheenDrift {
   0%   { transform: translateX(-15%); }
   100% { transform: translateX(15%); }
 }
 
-/* 章节编号缓慢呼吸 */
+/* 绔犺妭缂栧彿缂撴參鍛煎惛 */
 .sec-num { animation: numBreathe 6s ease-in-out infinite; }
 @keyframes numBreathe {
   0%, 100% { opacity: .55; }
   50%      { opacity: 1; }
 }
 
-/* HUD 状态点也让它常驻脉动（原本已有，这里统一时长） */
+/* HUD 鐘舵€佺偣涔熻瀹冨父椹昏剦鍔紙鍘熸湰宸叉湁锛岃繖閲岀粺涓€鏃堕暱锛?*/
 .hero-hud i { animation-duration: 3.2s; }
 
 @media (prefers-reduced-motion: reduce) {
@@ -2185,10 +2199,10 @@ html:not(.intro-active) .stagger { animation-duration: 1.05s; }
 }
 
 /* ==========================================================================
-   25. 常驻动画加强版 —— 之前太克制，等于白做
+   25. 甯搁┗鍔ㄧ敾鍔犲己鐗?鈥斺€?涔嬪墠澶厠鍒讹紝绛変簬鐧藉仛
    ========================================================================== */
 
-/* 上角框：呼吸 + 缩放，明显能看见在动 */
+/* 涓婅妗嗭細鍛煎惛 + 缂╂斁锛屾槑鏄捐兘鐪嬭鍦ㄥ姩 */
 .hero-bracket.tl,
 .hero-bracket.tr {
   animation: bracketIn .8s var(--ease) .35s forwards,
@@ -2198,7 +2212,7 @@ html:not(.intro-active) .stagger { animation-duration: 1.05s; }
   0%, 100% { opacity: .35; transform: scale(.86); }
   50%      { opacity: 1;   transform: scale(1.1); }
 }
-/* 角框加一圈自己的回响 */
+/* 瑙掓鍔犱竴鍦堣嚜宸辩殑鍥炲搷 */
 .hero-bracket.tl::after,
 .hero-bracket.tr::after {
   content: "";
@@ -2214,7 +2228,7 @@ html:not(.intro-active) .stagger { animation-duration: 1.05s; }
   100% { opacity: 0;  transform: scale(1.9); }
 }
 
-/* 竖排小字：明暗 + 轻微上下漂 */
+/* 绔栨帓灏忓瓧锛氭槑鏆?+ 杞诲井涓婁笅婕?*/
 .hero-vertical {
   animation: vertLive 6s ease-in-out infinite;
 }
@@ -2223,8 +2237,7 @@ html:not(.intro-active) .stagger { animation-duration: 1.05s; }
   50%      { opacity: 1;   transform: translateY(5px); }
 }
 
-/* 卡片：二次元白色玻璃反光 —— 斜向白亮带周期扫过，扫完停一下再来。
-   用 transform 位移（走合成器），不是 background-position（那是重绘）。 */
+/* 鍗＄墖锛氫簩娆″厓鐧借壊鐜荤拑鍙嶅厜 鈥斺€?鏂滃悜鐧戒寒甯﹀懆鏈熸壂杩囷紝鎵畬鍋滀竴涓嬪啀鏉ャ€?   鐢?transform 浣嶇Щ锛堣蛋鍚堟垚鍣級锛屼笉鏄?background-position锛堥偅鏄噸缁橈級銆?*/
 .card::before {
   content: "";
   position: absolute;
@@ -2245,9 +2258,9 @@ html:not(.intro-active) .stagger { animation-duration: 1.05s; }
 @keyframes glassSweep {
   0%   { transform: translateX(-200%) skewX(-18deg); }
   38%  { transform: translateX(420%)  skewX(-18deg); }
-  100% { transform: translateX(420%)  skewX(-18deg); }   /* 扫完停住，节奏才像二次元 */
+  100% { transform: translateX(420%)  skewX(-18deg); }   /* 鎵畬鍋滀綇锛岃妭濂忔墠鍍忎簩娆″厓 */
 }
-/* 每张卡错开，不要一起闪 */
+/* 姣忓紶鍗￠敊寮€锛屼笉瑕佷竴璧烽棯 */
 .card:nth-child(2)::before { animation-delay: .7s; }
 .card:nth-child(3)::before { animation-delay: 1.4s; }
 .card:nth-child(4)::before { animation-delay: 2.1s; }
@@ -2262,9 +2275,9 @@ html:not(.intro-active) .stagger { animation-duration: 1.05s; }
     rgba(255, 255, 255, 0)  100%);
 }
 
-/* 首屏大字的玻璃反光已按你的要求取消 —— 只保留卡片上的那一道。 */
+/* 棣栧睆澶у瓧鐨勭幓鐠冨弽鍏夊凡鎸変綘鐨勮姹傚彇娑?鈥斺€?鍙繚鐣欏崱鐗囦笂鐨勯偅涓€閬撱€?*/
 
-/* 章节编号：呼吸 + 缩放 */
+/* 绔犺妭缂栧彿锛氬懠鍚?+ 缂╂斁 */
 .sec-num {
   display: inline-block;
   animation: numLive 4.5s ease-in-out infinite;
@@ -2274,19 +2287,18 @@ html:not(.intro-active) .stagger { animation-duration: 1.05s; }
   50%      { opacity: 1;   transform: scale(1.12); }
 }
 
-/* 章节头的网点带缓慢平移（面积很小，绘制开销可忽略） */
+/* 绔犺妭澶寸殑缃戠偣甯︾紦鎱㈠钩绉伙紙闈㈢Н寰堝皬锛岀粯鍒跺紑閿€鍙拷鐣ワ級 */
 .section-head::after { animation: hatchDrift 11s linear infinite; }
 @keyframes hatchDrift {
   0%   { background-position: 0 0; }
   100% { background-position: 56px 0; }
 }
 
-/* 首屏大图与印章的玻璃反光已按你的要求取消 —— 全站只留卡片上的那一道。 */
+/* 棣栧睆澶у浘涓庡嵃绔犵殑鐜荤拑鍙嶅厜宸叉寜浣犵殑瑕佹眰鍙栨秷 鈥斺€?鍏ㄧ珯鍙暀鍗＄墖涓婄殑閭ｄ竴閬撱€?*/
 
-/* 导航条的玻璃反光已按你的要求去掉 —— 顶部那条只保留材质本身
-   （半透明 + 背景模糊），不再有白亮带扫过。 */
+/* 瀵艰埅鏉＄殑鐜荤拑鍙嶅厜宸叉寜浣犵殑瑕佹眰鍘绘帀 鈥斺€?椤堕儴閭ｆ潯鍙繚鐣欐潗璐ㄦ湰韬?   锛堝崐閫忔槑 + 鑳屾櫙妯＄硦锛夛紝涓嶅啀鏈夌櫧浜甫鎵繃銆?*/
 
-/* 页脚短线的明暗幅度加大 */
+/* 椤佃剼鐭嚎鐨勬槑鏆楀箙搴﹀姞澶?*/
 @keyframes ruleGlow {
   0%, 100% { opacity: .3; }
   50%      { opacity: 1; }
@@ -2309,20 +2321,20 @@ html:not(.intro-active) .stagger { animation-duration: 1.05s; }
   .seal { animation: none !important; }
 }
 
-/* 入场层打开时锁住页面滚动 */
+/* 鍏ュ満灞傛墦寮€鏃堕攣浣忛〉闈㈡粴鍔?*/
 body.intro-lock { overflow: hidden; }
 
-/* 本会话已看过入场层：直接不渲染 */
+/* 鏈細璇濆凡鐪嬭繃鍏ュ満灞傦細鐩存帴涓嶆覆鏌?*/
 .intro-skip .intro { display: none !important; }
 
-/* 移动端收敛 */
+/* 绉诲姩绔敹鏁?*/
 @media (max-width: 720px) {
   .intro-bracket { width: 14px; height: 14px; }
   .intro-enter { padding: 13px 28px; }
   .intro-status-mid { display: none; }
 }
 
-/* 减弱动效：入场层不做动画，直接可点 */
+/* 鍑忓急鍔ㄦ晥锛氬叆鍦哄眰涓嶅仛鍔ㄧ敾锛岀洿鎺ュ彲鐐?*/
 @media (prefers-reduced-motion: reduce) {
   .intro-bracket, .intro-seal, .intro-char, .intro-title, .intro-sub,
   .intro-latin, .intro-enter, .intro-status {
@@ -2334,3 +2346,372 @@ body.intro-lock { overflow: hidden; }
   .intro-enter-ring { display: none; }
   .intro-panel { transition: none !important; }
 }
+
+/* ==========================================================================
+   26. 鎬ц兘淇籍 路 灏侀潰鍔ㄧ敾鍔犲己 路 Q寮圭偣鍑?   ========================================================================== */
+
+/* 鈹€鈹€ 鎬ц兘 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+   涔嬪墠鍗￠】鐨勪富鍥犳槸澶村浘锛氬師鏉ラ偅寮?PNG 鏈?16.9 MB锛岃В鐮佷竴娆″氨瑕佷笂鐧炬绉掞紝
+   婊氬姩鏃舵瘡娆￠噸缁橀兘瑕侀噸鏂伴噰鏍枫€傜幇宸插帇鍒?170 KB WebP銆傝繖閲屽啀琛ュ嚑閬撱€?*/
+
+/* 澶村浘涓ゅ眰鍙湪闇€瑕佹椂鍚堟垚锛屽噺灏戝浘灞?*/
+.hero-img { contain: paint; }
+
+/* 鍗＄墖瀹瑰櫒缁熶竴寮€鍚嫭绔嬪悎鎴愬眰锛屾粴鍔ㄦ椂涓嶈繛甯︾埗灞傞噸缁?*/
+.card, .post-link, .aside-block { transform: translateZ(0); }
+
+/* 闀垮垪琛ㄧ敤鍐呭鍙鎬ц烦杩囧睆澶栨覆鏌擄紙鏂囩珷鍒楄〃闀夸簡浠ュ悗寰堟湁鐢級 */
+.post-list .post-link { content-visibility: auto; contain-intrinsic-size: auto 92px; }
+
+/* 鍥剧墖涓€寰嬫噿瑙ｇ爜锛屽埆璁╁畠浠湪涓荤嚎绋嬩笂鎺掗槦 */
+.prose img, .card-media img, .aside-avatar img { decoding: async; }
+
+/* 鈹€鈹€ 灏侀潰鍔ㄧ敾鍔犲己 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+   鍘熸潵 48 绉掓帹 4%锛岃倝鐪煎嚑涔庣湅涓嶅嚭銆傜幇鍦?26 绉掓帹 14%锛屽苟鍔犱竴鐐规í鍚戞紓绉汇€?*/
+@keyframes kenburns {
+  0%   { transform: scale(1.02) translate3d(0, 0, 0); }
+  100% { transform: scale(1.16) translate3d(-2.2%, -2.6%, 0); }
+}
+.hero-media { animation: kenburns 26s ease-in-out infinite alternate; }
+
+/* 澶у浘涓婃柟鍐嶅彔涓€灞傛瀬缂撶殑銆屽懠鍚搞€嶏紝璁╅潤姝㈡椂涔熸湁璧蜂紡 */
+.hero::before {
+  content: "";
+  position: absolute; inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(120% 90% at 50% 30%, rgba(255,255,255,.10), transparent 62%);
+  animation: heroBreathe 9s ease-in-out infinite;
+}
+@keyframes heroBreathe {
+  0%, 100% { opacity: .25; }
+  50%      { opacity: .75; }
+}
+
+/* 璇嶆爣鍏ュ満锛氫粠涓嬫柟甯︿竴鐐瑰洖寮规诞涓婃潵 */
+@keyframes markPop {
+  0%   { opacity: 0; transform: translateY(26px) scale(.965); }
+  62%  { opacity: 1; transform: translateY(-4px) scale(1.006); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+html:not(.intro-active) .hero-mark {
+  animation: markPop .95s cubic-bezier(.34, 1.32, .5, 1) both;
+}
+
+/* 鈹€鈹€ Q寮圭偣鍑?鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+   鎸変笅鏃跺揩閫熺缉涓€鐐癸紝鏉炬墜鐢ㄣ€屽洖寮规洸绾裤€嶅脊鍥炴潵 鈥斺€?杩欏氨鏄偅绉?Q 寮规墜鎰熴€?   鍥炲脊鏇茬嚎 cubic-bezier(.34,1.56,.64,1) 浼氬啿杩囩粓鐐瑰啀鍥炴潵銆?*/
+.card,
+.post-link,
+.nav-link,
+.pag-link, #pagination .page-number, #pagination .extend,
+.tag-cloud a,
+.mode-toggle,
+.nav-toggle,
+.tag,
+.footer-legacy {
+  transition-timing-function: cubic-bezier(.34, 1.56, .64, 1);
+}
+.card                  { transition: transform .5s cubic-bezier(.34,1.56,.64,1), filter .45s ease, border-color .4s ease, background-color .9s ease; }
+.post-link             { transition: padding-left .45s cubic-bezier(.34,1.56,.64,1), background-color .3s ease; }
+.pag-link, #pagination .page-number, #pagination .extend { transition: transform .42s cubic-bezier(.34,1.56,.64,1), background-color .3s ease, color .3s ease, border-color .3s ease; }
+
+.card:active {
+  transform: translateY(-2px) scale(.978);
+  transition-duration: .12s;
+  transition-timing-function: ease-out;
+}
+.post-link:active { padding-left: 30px; transition-duration: .1s; }
+.pag-link:active, #pagination .page-number:active, #pagination .extend:active {
+  transform: scale(.93);
+  transition-duration: .1s;
+  transition-timing-function: ease-out;
+}
+.nav-link:active .nav-link-cn { transform: translateY(1px) scale(.96); transition: transform .1s ease-out; }
+.nav-link .nav-link-cn { transition: transform .4s cubic-bezier(.34,1.56,.64,1); }
+.mode-toggle:active, .nav-toggle:active { transform: scale(.92); transition-duration: .1s; transition-timing-function: ease-out; }
+.tag-cloud a:active { transform: scale(.92); transition-duration: .1s; transition-timing-function: ease-out; }
+.intro-enter:active { transform: scale(.955); transition-duration: .1s; transition-timing-function: ease-out; }
+
+/* 绠ご鍥炬爣涔熻窡鐫€寮?*/
+.post-arrow, .card-arrow { transition: transform .45s cubic-bezier(.34,1.56,.64,1); }
+.post-link:hover .post-arrow { transform: translateX(6px); }
+.card:hover .card-arrow     { transform: translateX(6px); }
+
+/* 銆屽睍寮€銆嶇被鍏冪礌鐐瑰嚮涔熷甫寮规€?*/
+.card-media img { transition: transform .55s cubic-bezier(.34,1.56,.64,1); }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-media, .hero::before, html:not(.intro-active) .hero-mark { animation: none !important; }
+  .card:active, .post-link:active, .pag-link:active,
+  .mode-toggle:active, .nav-toggle:active, .intro-enter:active { transform: none !important; }
+}
+
+/* ==========================================================================
+   27. 浜や簰鏃堕暱鏍℃锛堜緷鎹?ui-ux-pro-max 鐨?Duration Timing 瑙勫垯锛?   ==========================================================================
+   瑙勫垯鍘熸枃锛?     Animations should feel responsive not sluggish.
+     Use 150-300ms for micro-interactions.
+     Don't use animations longer than 500ms for UI.
+   鎴戝師鏉ョ殑 hover/press 杩囨浮鍏ㄦ槸 .42~.6s锛屾瘮涓撲笟鍖洪棿鎱竴鍊嶅 鈥斺€?   琛ㄧ幇鍑烘潵灏辨槸銆屽彂闂枫€佷笉璺熸墜銆嶃€傝繖閲屾妸**浜や簰绫?*鏀惰繘 180鈥?00ms銆?   娉ㄦ剰锛氱幆澧冨姩鏁堬紙鍛煎惛銆並en Burns銆佹壂鍏夛級涓嶅彈姝ら檺锛屽畠浠湰鏉ュ氨璇ユ參銆?*/
+
+.card {
+  transition: transform .26s cubic-bezier(.34,1.56,.64,1),
+              filter .3s ease,
+              border-color .22s ease,
+              background-color .9s ease;      /* 鏄煎鎹㈣壊淇濇寔鎱?*/
+}
+.card:hover { transition-duration: .26s, .3s, .22s, .9s; }
+.card::after { transition: background-size .28s var(--ease); }   /* 鍥涜鏍囪 */
+.card-media img { transition: transform .34s cubic-bezier(.34,1.56,.64,1); }
+.card-media::after { transition: transform .5s var(--ease); }    /* 缃戠偣鎵繃 */
+.card::before { animation-duration: 5.4s; }                      /* 鐜荤拑鍙嶅厜锛氫繚鎸佹參 */
+
+.post-link {
+  transition: padding-left .22s cubic-bezier(.34,1.56,.64,1),
+              background-color .2s ease;
+}
+.post-link::after { transition: transform .28s var(--ease); }    /* 搴曠嚎鎻忓啓 */
+.post-link::before { transition: background-size .26s var(--ease); }
+.post-main::before { animation-duration: 1.6s; }                 /* 鎮仠鎵厜锛氱暐蹇?*/
+.post-arrow, .card-arrow { transition: transform .24s cubic-bezier(.34,1.56,.64,1); }
+
+.nav-link .nav-link-cn { transition: transform .2s cubic-bezier(.34,1.56,.64,1); }
+.nav-link::after { transition: transform .22s var(--ease), opacity .22s ease; }
+.nav-link:hover::after { animation-duration: 1.4s; }
+
+.mode-toggle { transition: color .2s ease, border-color .2s ease, background-color .9s ease, transform .22s cubic-bezier(.34,1.56,.64,1); }
+.mode-toggle:hover .mode-icon { animation-duration: 2.6s; }
+
+.pag-link, #pagination .page-number, #pagination .extend {
+  transition: transform .24s cubic-bezier(.34,1.56,.64,1),
+              background-color .2s ease, color .2s ease, border-color .2s ease;
+}
+.tag-cloud a { transition: transform .22s cubic-bezier(.34,1.56,.64,1), background-color .2s ease, color .2s ease; }
+.footer-legacy { transition: color .2s ease, border-color .2s ease, transform .24s cubic-bezier(.34,1.56,.64,1); }
+.intro-enter { transition: color .2s ease, border-color .2s ease, background-color .2s ease, transform .2s cubic-bezier(.34,1.56,.64,1); }
+
+/* 鐒︾偣鍙鎬э紙鎶€鑳藉垪涓?High 涓ラ噸搴︼細閿洏鐢ㄦ埛闇€瑕佹槑纭劍鐐圭幆锛?*/
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--cinnabar);
+  outline-offset: 2px;
+}
+
+/* 鍙偣鍑荤殑閮借鏄墜鍨嬪厜鏍囷紙鎶€鑳芥竻鍗曢」锛?*/
+a, button, [role="button"], summary, label[for] { cursor: pointer; }
+button:disabled, [aria-disabled="true"] { cursor: not-allowed; }
+
+/* ==========================================================================
+   28. 妯℃暟浣撶郴锛坢odular scale锛?   ==========================================================================
+   ui-ux-pro-max 鍙嶅寮鸿皟 modular scale / mathematical spacing锛?   鑰屾垜鍘熸潵鐨勫瓧鍙蜂笌闂磋窛鏄暎鐨勶紙clamp(64px,13vw,118px) 杩欑被鎷嶈剳琚嬪€硷級銆?   杩欓噷寤轰袱濂楁ā鏁帮紝鍏ㄧ珯鍙粠杩欎袱濂楅噷鍙栧€笺€?
+   瀛楀彿锛氬熀鍑?16px锛屾瘮渚?1.25锛堝ぇ涓夊害锛夛紝鍥涜垗浜斿叆鍒版暣鏁?   闂磋窛锛? 鐨勫€嶆暟锛屽舰鎴?4-8-12-16-24-32-48-64-96 鐨勮妭濂?*/
+:root {
+  /* 鈹€鈹€ 瀛楀彿妯℃暟 鈹€鈹€ */
+  --t-2xs: 11px;    /* 11  = 16 / 1.25虏 鍙栨暣锛岀敤浜庤鏍?*/
+  --t-xs:  13px;    /* 13  = 16 / 1.25   鍙栨暣锛岀敤浜庤緟鍔╂枃瀛?*/
+  --t-sm:  14px;
+  --t-md:  16px;    /* 鍩哄噯 */
+  --t-lg:  20px;    /* 16 脳 1.25 */
+  --t-xl:  25px;    /* 16 脳 1.25虏 */
+  --t-2xl: 31px;    /* 16 脳 1.25鲁 */
+  --t-3xl: 39px;    /* 16 脳 1.25鈦?*/
+  --t-4xl: 49px;    /* 16 脳 1.25鈦?*/
+  --t-5xl: 61px;    /* 16 脳 1.25鈦?*/
+
+  /* 鈹€鈹€ 闂磋窛妯℃暟锛? 鐨勫€嶆暟锛夆攢鈹€ */
+  --s-1:  4px;
+  --s-2:  8px;
+  --s-3:  12px;
+  --s-4:  16px;
+  --s-6:  24px;
+  --s-8:  32px;
+  --s-12: 48px;
+  --s-16: 64px;
+  --s-24: 96px;
+
+  /* 鈹€鈹€ 琛岄珮锛氭鏂?1.7锛屾爣棰橀殢瀛楀彿鏀剁揣銆傚瓧浣撹秺澶э紝琛岄珮瓒婄揣 鈹€鈹€ */
+  --lh-body:  1.75;
+  --lh-tight: 1.24;
+
+  /* 鈹€鈹€ 瀛楄窛锛氶殢瀛楀彿閫掑噺锛堟妧鑳戒笌鏂硅垷鐮旂┒閮藉己璋冭繖鐐癸級鈹€鈹€ */
+  --track-body: 0;
+  --track-lg:   -.012em;
+  --track-xl:   -.02em;
+  --track-2xl:  -.028em;
+}
+
+/* 璁╁叏绔欎富瑕佺暀鐧介兘钀藉湪妯℃暟涓?*/
+.section        { padding-block: var(--s-16) var(--s-12); }
+.cards          { gap: var(--s-6); }
+.card-body      { padding: var(--s-4) var(--s-4) var(--s-6); }
+.post-list      { gap: var(--s-2); }
+.aside-stack    { gap: var(--s-4); }
+.site-footer    { padding-block: var(--s-12) var(--s-8); }
+.reading-grid   { gap: var(--s-12); }
+.prose h2       { margin-top: var(--s-12); margin-bottom: var(--s-4); }
+.prose h3       { margin-top: var(--s-8);  margin-bottom: var(--s-3); }
+
+/* 瀛楀彿涓庡瓧璺濇寜妯℃暟褰掍綅 */
+.section-title  { font-size: var(--t-2xl); line-height: var(--lh-tight); letter-spacing: var(--track-2xl); }
+.section-sub    { font-size: var(--t-sm); }
+.section-label  { font-size: var(--t-2xs); letter-spacing: .24em; }
+.card-title     { font-size: var(--t-lg); line-height: 1.35; letter-spacing: var(--track-lg); }
+.card-desc      { font-size: var(--t-xs); }
+.card-tag       { font-size: var(--t-2xs); }
+.post-title     { font-size: var(--t-lg); letter-spacing: var(--track-lg); }
+.post-date      { font-size: var(--t-2xs); }
+.prose          { font-size: var(--t-md); line-height: var(--lh-body); letter-spacing: var(--track-body); }
+.prose h2       { font-size: var(--t-xl); letter-spacing: var(--track-xl); }
+.prose h3       { font-size: var(--t-lg); letter-spacing: var(--track-lg); }
+.prose h4       { font-size: var(--t-md); }
+.aside-title    { font-size: var(--t-2xs); letter-spacing: .2em; }
+
+/* ==========================================================================
+   29. 鏂瑰舰鏍囪瘑锛堝ぇ S 鎸ゅ帇缁撴瀯锛?   ==========================================================================
+   缁撴瀯鐓ф惉銆婃槑鏃ユ柟鑸燂細缁堟湯鍦般€嬬殑璇█锛?     路 澶?S 鍘嬪乏杈癸紝椤跺埌妗嗚竟
+     路 ing / ning 缂╁埌鍙充笂锛屽昂搴﹀姣旂害 4:1
+     路 901 鏈辩爞鎾戞弧鍙充笅瑙掞紝鍘嬩綇閲嶅績
+   鏁村潡鐢?--wm 鎺у埗杈归暱锛屽唴閮ㄥ叏閮ㄦ寜姣斾緥鎹㈢畻锛屾敼涓€涓€煎氨鑳芥暣浣撶缉鏀俱€?*/
+.wm-sq {
+  --wm: 200px;                       /* 鏂规杈归暱锛氬敮涓€鐨勫昂瀵告棆閽?*/
+  position: relative;
+  display: inline-block;
+  width: var(--wm);
+  height: var(--wm);
+  font-family: Bahnschrift, "DIN Alternate", "Segoe UI Variable Display",
+               "Segoe UI", system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: -.02em;
+  color: var(--ink);
+  vertical-align: middle;
+  flex: none;
+  overflow: hidden;                  /* 涓夊眰鍙犲帇锛岄槻姝换浣曚竴灞傝窇鍑烘柟妗?*/
+}
+.wm-sq > span { position: absolute; display: block; }
+/* S锛歏3 缁撴瀯锛屽崰婊″乏涓婏紝鏁翠綋涓嬬Щ 10% */
+.wm-s  { left: -2%; top: 10%; font-size: calc(var(--wm) * 1.020); line-height: .72;
+         letter-spacing: -.035em; z-index: 1; }
+/* ing/ning锛氬線宸︾Щ锛屽彸缂樹笌 901 閲屻€?銆嶇殑鍙鍙崇紭榻愬钩銆?   銆?銆嶅洜瀛楄韩绐?+ 璐熷瓧璺濓紝鍙鍙崇紭钀藉湪妗嗗绾?92% 澶勶紝鎵€浠?right 缁?8%銆?   锛堥棿璺濅笉绠?鈥斺€?涓?S 閲嶅彔娌″叧绯伙級 */
+.wm-rest { right: 8%; top: 4%; font-size: calc(var(--wm) * .220); line-height: .94;
+           letter-spacing: -.015em; text-align: right; z-index: 3; }
+/* 901锛氭湵鐮傦紝姘村钩灞呬腑鍒版柟妗嗙殑绔栧悜涓嚎涓娿€?   瀹藉害 鈮?1.545 脳 瀛楀彿锛?66em 鏃剁害 .99em锛屽眳涓悗涓や晶鍚勭暀 0.5%銆?*/
+.wm-num  { left: 50%; transform: translateX(-50%); bottom: 4%;
+           font-size: calc(var(--wm) * .660); line-height: .72;
+           letter-spacing: -.085em; color: var(--cinnabar); z-index: 2; }
+/* 娣辫壊搴曚笂鏈辩爞瑕佹彁浜竴妗ｏ紝鍚﹀垯鍘嬪湪榛?S 涓婁細绯?*/
+[data-daypart="night"] .wm-num { color: var(--cinnabar-lit, #e2564a); }
+
+/* 鍚勫灏哄 */
+.hero-mark .wm-sq      { --wm: clamp(150px, 17vw, 232px); }
+.intro-wordmark .wm-sq { --wm: clamp(120px, 15vw, 190px); }
+.footer-mark .wm-sq    { --wm: 116px; }
+/* 瀵艰埅锛氭柟褰㈡爣璇嗗彇浠ｅ師鏉ョ殑銆屼節銆嶅嵃绔狅紝鍋氭垚绔欑偣 LOGO銆?   灏哄璐︼紙--wm = 鏂规杈归暱锛夛細
+     S   瀛楀彿 1.16em 鈫?瀹?.673em锛宑ap 楂?.835em
+     901 瀛楀彿 .44em 鈫?瀹?1.545脳.44 = .680em  鈫?涓?S 鍚屽锛屽眳涓彔涓婂幓姝ｅソ
+   涔嬪墠缁?901 鐢?.72em锛屽杈?1.11em锛堣秴杩囨柟妗嗘湰韬級锛屽眳涓悗宸︿晶婧㈠嚭 24%
+   琚?overflow:hidden 瑁佹帀 鈥斺€?杩欏氨鏄?S 鍜?901 鏄剧ず涓嶅叏"鐨勫師鍥犮€?*/
+.brand-mark .wm-sq     { --wm: 34px; vertical-align: middle;
+                         overflow: visible;   /* line-height:.72 浼氳瀛楀舰婧㈠嚭
+                                                 琛岀洅绾?.14em锛宱verflow:hidden 浼氭妸
+                                                 S 鐨勯《鍒囨帀 鈥斺€?瀵艰埅杩欓噷鏀惧紑 */ }
+.brand-mark .wm-rest   { display: none; }
+/* S 鏀跺埌 left:0锛屼笉鍐嶅嚭琛€ */
+.brand-mark .wm-s       { left: 0; font-size: calc(var(--wm) * 1.16); top: 6%; }
+/* 901 鍙犲湪 S 鐨勪笅閮ㄦ涓ぎ锛氭按骞充腑蹇?= S 涓績 (.673/2 鈮?33.7%)锛屽瀭鐩村彇 68% */
+.brand-mark .wm-num     { left: 33.7%; right: auto; bottom: auto; top: 68%;
+                          transform: translate(-50%, -50%);
+                          font-size: calc(var(--wm) * .440); }
+.site-nav .wm-sq { color: var(--ink); }
+.site-nav .wm-num { color: var(--cinnabar); }
+
+/* ==========================================================================
+   30. 澶村浘鏄庢殫鑷€傚簲
+   ==========================================================================
+   鐢ㄦ埛瑕佹眰锛氱櫧澶╁ご鍥句笉瑕佸啀鍘嬫殫銆備絾鍘嬫殫鏈潵鏄负浜嗕繚璇佺櫧瀛楀彲璇?鈥斺€?   鍘绘帀涔嬪悗浜浘涓婄櫧瀛椾細绯娿€傛墍浠ユ敼鎴?*鎸夊ご鍥惧疄闄呮槑鏆楄嚜鍔ㄥ垏鎹㈠瓧鑹?*锛?
+   js/liubai.js 鎶婂ご鍥剧缉鍒?48脳48 鐢昏繘 canvas锛屽彧鍙栧乏渚?60%脳70% 閭ｅ潡
+   锛堟爣棰樻墍鍦ㄥ尯鍩燂級绠楀钩鍧囦寒搴︼紝鍐欏埌 <html data-hero-tone="light|dark">銆?   浜簳 鈫?澧ㄨ壊瀛?+ 鍔犻噸闃村奖锛涙殫搴?鈫?鐧藉瓧锛堝師鏍凤級銆?*/
+
+/* 鐧藉ぉ/娓呮櫒/鍌嶆櫄涓嶅帇鏆楋紝鏅氫笂鐣欎竴鐐?*/
+html:not([data-daypart="night"]) .hero-media::after { opacity: .18; }
+[data-daypart="night"] .hero-media::after { opacity: 1; }
+.hero-media::after { transition: opacity 1.1s ease; }
+
+/* 浜簳锛?*姣忎釜鍏冪礌鍚勮嚜**鎸夎嚜宸辫儗鍚庣殑鐢婚潰鍒囧ⅷ鑹诧紙data-tone 鐢?js 閫愬厓绱犲啓锛?*/
+[data-tone="light"] { color: var(--ink); }
+[data-tone="light"].hero-vertical,
+[data-tone="light"] .hero-vertical { color: var(--ink); }
+[data-tone="light"].hero-tagline,
+[data-tone="light"].hero-title { color: var(--ink); }
+[data-tone="light"] .wm-num,
+[data-tone="light"].wm-num { color: var(--cinnabar-deep, #a82a20); }
+[data-tone="light"] .hero-rule span { background: var(--ink); }
+/* 浜簳涓婂姞涓€鍦堝绾歌壊鍏夋檿锛屽帇鍦ㄦ潅鑹蹭笂涔熻兘璇绘竻 */
+[data-tone="light"] { text-shadow: 0 0 18px rgba(250,247,241,.9), 0 1px 0 rgba(250,247,241,.7); }
+
+/* 鏆楀簳锛氱櫧瀛?+ 鎶曞奖鍒嗙 */
+[data-tone="dark"] { color: #faf6f0; }
+[data-tone="dark"].hero-tagline,
+[data-tone="dark"].hero-title { color: #faf6f0; }
+[data-tone="dark"] .wm-num,
+[data-tone="dark"].wm-num { color: var(--cinnabar); }
+[data-tone="dark"] { text-shadow: 0 1px 12px rgba(10,10,14,.5); }
+
+/* 鈽?鍏抽敭锛氭爣璇?.wm-sq 鑷繁鍐欐浜?color: var(--ink)锛屼細鎸′綇浠庣埗鍏冪礌缁ф壙涓嬫潵鐨?   data-tone銆傛墍浠ュ繀椤荤敤鏇撮珮浼樺厛绾х殑閫夋嫨鍣ㄦ妸 S 鍜?ing/ning 鐨勯鑹蹭篃鎺ョ銆?   婕忎簡杩欎袱鏉＄殑璇濓紝娣辫壊澶村浘涓婁細鍑虹幇銆屽ⅷ鑹?S 鍘嬪湪娣辫壊鐢婚潰涓娿€? 鐪嬩笉瑙併€?*/
+[data-tone="dark"]  .wm-sq,
+[data-tone="dark"].wm-sq  { color: #faf6f0; }
+[data-tone="light"] .wm-sq,
+[data-tone="light"].wm-sq { color: var(--ink); }
+[data-tone="light"] .wm-num,
+[data-tone="light"].wm-num { color: var(--cinnabar-deep, #a82a20); }
+
+/* 鏁撮〉鍏滃簳锛歫s 杩樻病璺戝畬锛堟垨 canvas 涓嶅彲鐢級鏃讹紝娌跨敤鏄煎鐨勯粯璁ょ櫧瀛?*/
+html:not([data-hero-tone]) .hero-title,
+html:not([data-hero-tone]) .hero-tagline { color: inherit; }
+
+/* 鏃х殑鏁撮〉绾ц鍒欎繚鐣欎綔鍏滃簳锛坖s 浼氬湪鍏冪礌涓婂啓鏇寸簿纭殑 data-tone 瑕嗙洊瀹冿級 */
+[data-hero-tone="light"] .hero-title,
+[data-hero-tone="light"] .hero-mark,
+[data-hero-tone="light"] .hero-tagline,
+[data-hero-tone="light"] .hero-vertical,
+[data-hero-tone="light"] .hero-bracket { color: var(--ink); }
+[data-hero-tone="light"] .hero-num,
+[data-hero-tone="light"] .wm-num { color: var(--cinnabar-deep, #a82a20); }
+[data-hero-tone="light"] .hero-rule span { background: var(--ink); }
+[data-hero-tone="light"] .hero-bracket { border-color: rgba(22,22,26,.42); }
+[data-hero-tone="light"] .hero-title,
+[data-hero-tone="light"] .hero-tagline {
+  text-shadow: 0 0 18px rgba(250,247,241,.85), 0 1px 0 rgba(250,247,241,.6);
+}
+[data-hero-tone="dark"] .hero-title,
+[data-hero-tone="dark"] .hero-tagline {
+  text-shadow: 0 1px 12px rgba(10,10,14,.45);
+}
+[data-hero-tone="dark"] .hero-num,
+[data-hero-tone="dark"] .wm-num { color: var(--cinnabar); }
+
+/* 鏃х殑銆屼節銆嶅嵃绔犲凡涓嶅啀浣跨敤锛堜繚鐣欓€夋嫨鍣ㄤ互闃插埆澶勫紩鐢級 */
+.seal { display: none; }
+
+/* 瀵艰埅绱у噾鐗堬細鍙暀 901锛岃窡宸﹁竟鐨勩€屼節銆嶅嵃绔犻厤瀵?*/
+.wm-mini {
+  font-family: Bahnschrift, "DIN Alternate", "Segoe UI Variable Display",
+               "Segoe UI", system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  letter-spacing: -.035em;
+  color: var(--cinnabar);
+  line-height: 1;
+}
+
+/* 鏃х殑鎵嬬粯 SVG 璇嶆爣瑙勫垯宸蹭綔搴燂紝淇濈暀閫夋嫨鍣ㄤ互鍏嶅叾瀹冨湴鏂瑰紩鐢ㄦ姤绌?*/
+.wordmark { max-width: 100%; }
+
+@media (max-width: 700px) {
+  .hero-mark .wm-sq   { --wm: clamp(110px, 30vw, 150px); }
+  .footer-mark .wm-sq { --wm: 92px; }
+}
+
+

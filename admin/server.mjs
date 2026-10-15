@@ -19,7 +19,8 @@ import http from 'node:http';
 import fs from 'node:fs';
 import fsp from 'node:fs/promises';
 import path from 'node:path';
-import { spawn } from 'node:child_process';
+import os from 'node:os';
+import { spawn, spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -67,6 +68,131 @@ const readBody = (req, limit = 60 * 1024 * 1024) => new Promise((resolve, reject
 });
 
 const HOST_ENV = () => ({ ...process.env, PATH: GIT_DIR + ';' + (process.env.PATH || '') });
+
+/* 图片实体目录（源文件所在），压缩在这里落地 */
+const IMG_DIR = path.join(ROOT, 'source', 'img');
+
+/* ── 图片压缩（WebP）───────────────────────────────────────────────────────
+   用 Pillow 转 WebP。Python 按这个顺序找：
+     1. 环境变量 DSH_PYTHON
+     2. PATH 里的 python / python3
+     3. 本机 DSH 运行时自带的 python（这台机器的实际情况）
+   找不到就明确报错，不静默失败。 */
+const PY_CANDIDATES = [
+  process.env.DSH_PYTHON,
+  'python',
+  'python3',
+  path.join(process.env.USERPROFILE || '', '.dsh', 'dsh-runtimes',
+            'dsh-primary-runtime', 'dependencies', 'python', 'python.exe'),
+].filter(Boolean);
+
+let PY_BIN = null;
+function findPython() {
+  if (PY_BIN) return PY_BIN;
+  for (const c of PY_CANDIDATES) {
+    try {
+      const r = spawnSync(c, ['-c', 'import PIL;print(PIL.__version__)'], { env: HOST_ENV(), timeout: 20000 });
+      if (r.status === 0) { PY_BIN = c; return c; }
+    } catch (e) { /* 试下一个 */ }
+  }
+  return null;
+}
+
+const WEBP_SCRIPT = `
+import sys, os
+from PIL import Image
+src, dst, maxw, q = sys.argv[1], sys.argv[2], int(sys.argv[3]), int(sys.argv[4])
+before = os.path.getsize(src)
+im = Image.open(src)
+w, h = im.size
+if im.mode in ('RGBA','LA','P'):
+    im = im.convert('RGBA')
+    bg = Image.new('RGB', im.size, (250,247,241))
+    bg.paste(im, mask=im.split()[-1]); im = bg
+else:
+    im = im.convert('RGB')
+if w > maxw:
+    im = im.resize((maxw, int(h*maxw/w)), Image.LANCZOS)
+im.save(dst, 'WEBP', quality=q, method=6)
+after = os.path.getsize(dst)
+print('%d %d %d %d' % (before, after, im.size[0], im.size[1]))
+`;
+
+/* 视频 → 动图 WebP：OpenCV 解帧，Pillow 合成。
+   注意：**视频转 WebP 通常会让文件变大** —— WebP 动图用的是帧内/帧间压缩但远不如
+   H.264/VP9。真要减体积，正确方向是 GIF → mp4/webm（见 GIF 那一档）。
+   这个功能的意义是**统一格式**（一张 .webp 静态图、动图、视频通吃），不是省空间。 */
+const VIDEO_SCRIPT = `
+import sys, os
+import cv2
+from PIL import Image
+
+src, dst, maxw, q = sys.argv[1], sys.argv[2], int(sys.argv[3]), int(sys.argv[4])
+before = os.path.getsize(src)
+
+cap = cv2.VideoCapture(src)
+if not cap.isOpened():
+    print('无法打开视频', file=sys.stderr); sys.exit(1)
+
+fps = cap.get(cv2.CAP_PROP_FPS) or 15.0
+if fps <= 0 or fps > 120: fps = 15.0
+step = max(1, int(round(fps / 12.0)))      # 抽到约 12fps，动图不需要满帧
+frames, i = [], 0
+W = H = 0
+while True:
+    ok, fr = cap.read()
+    if not ok: break
+    if i % step == 0:
+        h0, w0 = fr.shape[:2]
+        if w0 > maxw:
+            s = maxw / float(w0)
+            fr = cv2.resize(fr, (maxw, int(h0*s)), interpolation=cv2.INTER_AREA)
+        rgb = cv2.cvtColor(fr, cv2.COLOR_BGR2RGB)
+        frames.append(Image.fromarray(rgb))
+        W, H = frames[-1].size
+    i += 1
+cap.release()
+
+if not frames:
+    print('没解出任何帧', file=sys.stderr); sys.exit(1)
+# 动图 WebP 很吃体积，超过 240 帧就截断（约 20 秒 @12fps）
+if len(frames) > 240: frames = frames[:240]
+
+dur = int(1000.0 / 12.0)
+frames[0].save(dst, 'WEBP', save_all=True, append_images=frames[1:],
+               duration=dur, loop=0, quality=q, method=5)
+after = os.path.getsize(dst)
+print('%d %d %d %d' % (before, after, W, H))
+`;
+
+/** 把 source/img/<name> 压成同名 .webp。返回压缩前后的大小。
+ *  图片走 Pillow，视频（mp4/webm/mov）走 cv2 解帧 + Pillow 写动图 WebP。 */
+function compressToWebp(name, { maxw = 2560, quality = 84 } = {}) {
+  const py = findPython();
+  if (!py) return { ok: false, error: '找不到可用的 Python + Pillow，无法压缩' };
+  const src = path.join(IMG_DIR, name);
+  if (!fs.existsSync(src)) return { ok: false, error: '图片不存在：' + name };
+  const isVideo = /\.(mp4|webm|mov|m4v|avi|mkv)$/i.test(name);
+  const base = name.replace(/\.[^.]+$/, '');
+  const dst = path.join(IMG_DIR, base + '.webp');
+  if (path.resolve(src) === path.resolve(dst)) {
+    return { ok: false, error: '它已经是 WebP 了' };
+  }
+  const scriptFile = path.join(os.tmpdir(), isVideo ? 'liubai-vid2webp.py' : 'liubai-webp.py');
+  fs.writeFileSync(scriptFile, isVideo ? VIDEO_SCRIPT : WEBP_SCRIPT, 'utf8');
+  // 视频要解码全部帧，给足时间
+  const timeout = isVideo ? 900000 : 180000;
+  const args = isVideo
+    ? [scriptFile, src, dst, String(maxw), String(quality)]
+    : [scriptFile, src, dst, String(maxw), String(quality)];
+  const r = spawnSync(py, args, { env: HOST_ENV(), timeout, encoding: 'utf8', maxBuffer: 32 * 1024 * 1024 });
+  if (r.status !== 0) {
+    return { ok: false, error: '压缩失败：' + String(r.stderr || '').trim().slice(0, 300) };
+  }
+  const [before, after, w, h] = String(r.stdout).trim().split(/\s+/).map(Number);
+  return { ok: true, file: base + '.webp', before, after, w, h, video: isVideo,
+           saved: before > 0 ? Math.round((1 - after / before) * 100) : 0 };
+}
 
 /** 跑一条命令，把输出喂给 log 回调 */
 function run(cmd, args, { cwd = ROOT, optional = false, log } = {}) {
@@ -186,9 +312,20 @@ function startJob(action, payload = {}) {
       await run('git', ['fetch', 'origin', 'main', '--tags'], { cwd: DEPLOY_DIR, log, optional: true });
       const tag = 'backup-' + new Date().toISOString().replace(/[:.]/g, '-').slice(0, 16);
       const t = await run('git', ['tag', '-f', tag, 'origin/main'], { cwd: DEPLOY_DIR, log, optional: true });
+      let remoteBackedUp = false;
       if (t.ok) {
-        await run('git', ['push', 'origin', tag, '--force'], { cwd: DEPLOY_DIR, log, optional: true });
-        log('✓ 线上当前版本已存为标签 ' + tag);
+        /* ★ 这里必须看 push 的返回。原来无论 push 成没成都打印「✓ 已存为标签」，
+           代理断掉时就会谎报「远端有备份」—— 真出事想回滚才发现远端根本没有。
+           本地标签本身是有的，区别在于**远端**有没有。 */
+        const pt = await run('git', ['push', 'origin', tag, '--force'], { cwd: DEPLOY_DIR, log, optional: true });
+        remoteBackedUp = !!pt.ok;
+        if (remoteBackedUp) {
+          log('✓ 线上当前版本已存为标签 ' + tag + '（本地 + 远端）');
+        } else {
+          log('⚠ 本地标签 ' + tag + ' 已建，但**推送到远端失败**。');
+          log('  远端目前没有这个备份。要回滚请用本地 .deploy/ 里的这个标签，');
+          log('  或等网络恢复后手动执行：git -C .deploy push origin ' + tag);
+        }
       } else {
         log('· 远端还没有 main（首次部署），跳过备份');
       }
@@ -328,13 +465,52 @@ async function listBackups() {
   return out;
 }
 
-/** 只在 hero: 段内替换某个键 */
+/** 给备份版本改名，方便回档时认得出（例如 backup-2026-10-13T13-33 → v2-方形标识别）。
+ *  type=tag      → git tag 重命名，并把新名推到远端、删掉远端旧名
+ *  type=snapshot → .backups/ 下的目录重命名
+ *  只允许改 backup-* / public-* 前缀的，避免误伤。 */
+async function renameVersion(type, from, to) {
+  const safe = String(to || '').trim();
+  if (!/^[\w\u4e00-\u9fa5.\-]{1,60}$/.test(safe)) {
+    return { ok: false, error: '名字只能用中英文、数字、点、横线，1~60 字' };
+  }
+  if (type === 'tag') {
+    if (!/^backup-/.test(from)) return { ok: false, error: '只能重命名 backup-* 标签' };
+    const suffix = from.replace(/^backup-/, '');
+    const next = /^backup-/.test(safe) ? safe : 'backup-' + safe;
+    if (next === from) return { ok: false, error: '新旧名字一样' };
+    const exists = await new Promise((res) => {
+      const p = spawn('git', ['tag', '-l', next], { cwd: DEPLOY_DIR, env: HOST_ENV() });
+      let o = ''; p.stdout.on('data', (b) => o += b); p.on('close', () => res(o.trim()));
+    });
+    if (exists) return { ok: false, error: '已经有一个叫 ' + next + ' 的版本了' };
+    const a = await run('git', ['tag', next, from], { cwd: DEPLOY_DIR });
+    if (!a.ok) return { ok: false, error: '本地打标签失败' };
+    await run('git', ['tag', '-d', from], { cwd: DEPLOY_DIR, optional: true });
+    // 远端同步：推新名、删旧名。失败不影响本地，但要在结果里说清楚
+    const push = await run('git', ['push', 'origin', next], { cwd: DEPLOY_DIR, optional: true });
+    const del = await run('git', ['push', 'origin', ':refs/tags/' + from], { cwd: DEPLOY_DIR, optional: true });
+    const remoteOk = push.ok && del.ok;
+    return { ok: true, name: next, remoteSynced: remoteOk,
+             note: remoteOk ? null : '本地已改名，但远端同步失败（检查代理后重推该标签）' };
+  }
+  if (type === 'snapshot') {
+    if (!/^public-/.test(from)) return { ok: false, error: '只能重命名 public-* 快照' };
+    const src = path.join(BACKUPS, from);
+    const dst = path.join(BACKUPS, safe);
+    if (!fs.existsSync(src)) return { ok: false, error: '快照不存在：' + from };
+    if (fs.existsSync(dst)) return { ok: false, error: '已经有一个叫 ' + safe + ' 的快照了' };
+    await fsp.rename(src, dst);
+    return { ok: true, name: safe, remoteSynced: true };
+  }
+  return { ok: false, error: '未知类型' };
+}
 async function patchTheme(key, value) {
   const lines = (await fsp.readFile(THEME_CFG, 'utf8')).split('\n');
-  let inHero = false, done = false;
+  let inHero = false, done = false, heroEnd = -1;
   for (let i = 0; i < lines.length; i++) {
     if (/^hero:\s*$/.test(lines[i])) { inHero = true; continue; }
-    if (inHero && /^\S/.test(lines[i])) break;
+    if (inHero && /^\S/.test(lines[i])) { heroEnd = i; break; }
     if (inHero && new RegExp('^\\s+' + key + ':').test(lines[i])) {
       const indent = lines[i].match(/^\s*/)[0];
       const needQuote = /[:#]/.test(value) || value === '';
@@ -342,7 +518,11 @@ async function patchTheme(key, value) {
       done = true; break;
     }
   }
-  if (!done) return { ok: false, error: '在 hero: 段里没找到 ' + key };
+  if (!done) {
+    if (heroEnd < 0) heroEnd = lines.length;
+    const needQuote = /[:#]/.test(value) || value === '';
+    lines.splice(heroEnd, 0, '  ' + key + ': ' + (needQuote ? JSON.stringify(value) : value));
+  }
   await fsp.writeFile(THEME_CFG, lines.join('\n'), 'utf8');
   return { ok: true };
 }
@@ -427,7 +607,9 @@ const server = http.createServer(async (req, res) => {
         posts: await listPosts(),
         images: await listImages(),
         backups: await listBackups(),
-        hero: { image: g('image'), tagline: g('tagline'), vertical: g('vertical') },
+        hero: { image: g('image'), image_night: g('image_night'),
+                tone_day: g('tone_day'), tone_night: g('tone_night'),
+                tagline: g('tagline'), vertical: g('vertical') },
         preview: { running: !!previewProc, port: PREVIEW_PORT },
         deploy: { gitReady: fs.existsSync(path.join(DEPLOY_DIR, '.git')), live: LIVE },
         job: currentJob ? { id: currentJob.id, action: currentJob.action, status: currentJob.status } : null,
@@ -467,6 +649,15 @@ const server = http.createServer(async (req, res) => {
       return json(res, 200, startRollback(b.tag));
     }
 
+    if (req.method === 'POST' && p === '/api/rename-version') {
+      const b = JSON.parse((await readBody(req)).toString('utf8'));
+      try {
+        return json(res, 200, await renameVersion(b.type, b.from, b.to));
+      } catch (e) {
+        return json(res, 500, { ok: false, error: e.message });
+      }
+    }
+
     if (req.method === 'POST' && p === '/api/post') {
       const b = JSON.parse((await readBody(req)).toString('utf8'));
       const title = safeName(b.title);
@@ -504,7 +695,29 @@ const server = http.createServer(async (req, res) => {
       if (!buf.length) return json(res, 400, { ok: false, error: '文件是空的' });
       await fsp.mkdir(IMG, { recursive: true });
       await fsp.writeFile(path.join(IMG, name), buf);
-      return json(res, 200, { ok: true, name, size: buf.length });
+      // 自动压 WebP（可带 ?nowebp=1 跳过）
+      let webp = null;
+      const skip = u.searchParams.get('nowebp') === '1';
+      if (!skip && !/\.webp$/i.test(name) && /\.(png|jpe?g|bmp|tiff?)$/i.test(name)) {
+        try { webp = compressToWebp(name); } catch (e) { webp = { ok: false, error: e.message }; }
+      }
+      return json(res, 200, { ok: true, name, size: buf.length, webp });
+    }
+
+    if (req.method === 'POST' && p === '/api/webp') {
+      const b = JSON.parse((await readBody(req)).toString('utf8'));
+      try {
+        if (b.all) {
+          const list = (await fsp.readdir(IMG)).filter((f) => /\.(png|jpe?g|bmp|tiff?|mp4|webm|mov|m4v|ogv)$/i.test(f));
+          const results = list.map((f) => ({ name: f, ...compressToWebp(f, { maxw: b.maxw || 2560, quality: b.quality || 84 }) }));
+          return json(res, 200, { ok: true, results });
+        }
+        if (!b.name) return json(res, 400, { ok: false, error: '缺少文件名' });
+        const r = compressToWebp(safeName(b.name), { maxw: b.maxw || 2560, quality: b.quality || 84 });
+        return json(res, r.ok ? 200 : 400, r);
+      } catch (e) {
+        return json(res, 500, { ok: false, error: e.message });
+      }
     }
 
     if (req.method === 'POST' && p === '/api/delete-image') {
@@ -540,6 +753,9 @@ const server = http.createServer(async (req, res) => {
       const b = JSON.parse((await readBody(req)).toString('utf8'));
       const results = [];
       if (b.image !== undefined)    results.push(['image',    await patchTheme('image', String(b.image))]);
+      if (b.image_night !== undefined) results.push(['image_night', await patchTheme('image_night', String(b.image_night))]);
+      if (b.tone_day !== undefined)   results.push(['tone_day',   await patchTheme('tone_day', String(b.tone_day))]);
+      if (b.tone_night !== undefined) results.push(['tone_night', await patchTheme('tone_night', String(b.tone_night))]);
       if (b.tagline !== undefined)  results.push(['tagline',  await patchTheme('tagline', String(b.tagline))]);
       if (b.vertical !== undefined) results.push(['vertical', await patchTheme('vertical', String(b.vertical))]);
       const bad = results.filter(([, r]) => !r.ok);

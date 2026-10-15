@@ -332,4 +332,38 @@
       applyMode(nextMode, true);
     });
   }
+
+  /* ── 首屏文字明暗（按昼夜手动指定）────────────────────────────────────
+     不再猜图。主题配置里 hero.tone_day / tone_night 各给一个值：
+       light = 墨色字（浅色头图）    dark = 白色字（深色头图）
+     这里只负责把它写到每个文字元素的 data-tone 上，CSS 照此上色。
+     切换昼夜时重新应用一次。 */
+  (function () {
+    var hero = document.querySelector('.hero');
+    if (!hero) return;
+
+    var TARGETS = ['.hero-title', '.hero-tagline', '.hero-vertical'];
+    var dayTone   = hero.getAttribute('data-tone-day')   || 'dark';
+    var nightTone = hero.getAttribute('data-tone-night') || 'dark';
+
+    function apply() {
+      var part = document.documentElement.getAttribute('data-daypart') || 'day';
+      var want = (part === 'night') ? nightTone : dayTone;
+      if (want !== 'light' && want !== 'dark') want = 'dark';
+      TARGETS.forEach(function (sel) {
+        var el = document.querySelector(sel);
+        if (el && el.getAttribute('data-tone') !== want) el.setAttribute('data-tone', want);
+      });
+    }
+
+    apply();
+    /* 昼夜切换是改 <html data-daypart>，监听它 */
+    try {
+      new MutationObserver(apply).observe(document.documentElement,
+        { attributes: true, attributeFilter: ['data-daypart'] });
+    } catch (e) {
+      setInterval(apply, 1500);          /* MutationObserver 不可用就轮询兜底 */
+    }
+    window.addEventListener('resize', apply, { passive: true });
+  })();
 })();

@@ -9,11 +9,8 @@
 <header class="site-nav" id="site-nav" data-pin-after="<%= pinAfter %>">
   <div class="nav-inner">
     <a class="nav-brand" href="<%- url_for('/') %>" aria-label="<%= config.title %>">
-      <span class="seal" aria-hidden="true">九</span>
-      <span class="brand-text">
-        <span class="brand-mark"><%- partial('_partial/wordmark') %></span>
-        <% if (config.subtitle) { %><span class="brand-sub"><%= config.subtitle %></span><% } %>
-      </span>
+      <span class="brand-mark"><%- partial('_partial/wordmark') %></span>
+      <% if (config.subtitle) { %><span class="brand-sub"><%= config.subtitle %></span><% } %>
     </a>
 
     <nav class="nav-links" aria-label="主导航">

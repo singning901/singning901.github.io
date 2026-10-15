@@ -4,9 +4,16 @@
 %>
 
 <!-- ── 首屏 ───────────────────────────────────────────── -->
-<section class="hero<%= hero.image ? ' has-media' : '' %>" style="--hero-h:<%= hero.height || '66vh' %>">
+<section class="hero<%= hero.image ? ' has-media' : '' %>" style="--hero-h:<%= hero.height || '66vh' %>" data-tone-day="<%= hero.tone_day || 'dark' %>" data-tone-night="<%= hero.tone_night || 'dark' %>">
   <% if (hero.image) { %>
-    <div class="hero-media" style="background-image:url('<%- url_for(hero.image) %>');--scrim:<%= hero.scrim == null ? 0.34 : hero.scrim %>" aria-hidden="true"></div>
+    <%
+      var imgDay   = url_for(hero.image);
+      var imgNight = hero.image_night ? url_for(hero.image_night) : imgDay;
+    %>
+    <div class="hero-media" style="--scrim:<%= hero.scrim == null ? 0.34 : hero.scrim %>" aria-hidden="true">
+      <span class="hero-img hero-img-day" style="background-image:url('<%- imgDay %>')"></span>
+      <% if (imgNight !== imgDay) { %><span class="hero-img hero-img-night" style="background-image:url('<%- imgNight %>')"></span><% } %>
+    </div>
   <% } %>
 
   <!-- 四角标记：方舟式 HUD 取景框 -->
@@ -28,12 +35,8 @@
     </div>
   </div>
 
-  <div class="hero-foot">
-    <span class="hero-hud" aria-hidden="true"><i></i><span id="hero-daypart">--</span></span>
-    <% if (hero.scroll_hint) { %>
-      <span class="hero-scroll"><%= hero.scroll_hint %><i aria-hidden="true"></i></span>
-    <% } %>
-  </div>
+  <%# 原来的 hero-foot（左下「DAY 08-17」徽标 + 右下「向下」提示）已按用户要求移除：
+      两个带边框的方块很丑，且「向下」没有实际作用。 %>
 </section>
 
 <!-- ── 链接卡片（主题配置里的 cards.items 驱动）─────────── -->
@@ -49,7 +52,13 @@
     <% cards.items.forEach(function (c, i) { %>
       <a class="card reveal" style="--i:<%= i %>" href="<%- c.url %>" target="_blank" rel="noopener">
         <div class="card-media">
-          <% if (c.img) { %>
+          <% if (c.img && /\.(mp4|webm|ogv|mov|m4v)$/i.test(c.img)) { %>
+            <%# 视频配图：原来一律用 <img>，mp4/webm 根本显示不出来。
+                静音 + 自动循环 + inline 播放，行为跟动图一致，但体积小得多。 %>
+            <video class="card-video" src="<%- url_for(c.img) %>"
+                   autoplay muted loop playsinline preload="metadata"
+                   aria-hidden="true"></video>
+          <% } else if (c.img) { %>
             <img src="<%- url_for(c.img) %>" alt="" loading="lazy" />
           <% } else { %>
             <span class="card-glyph"><%= c.name.charAt(0) %></span>
