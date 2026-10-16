@@ -3501,3 +3501,35 @@ html:not(.intro-active) .wm-num  { animation: wmAssembleD .82s cubic-bezier(.22,
 @media (prefers-reduced-motion: reduce) {
   .wm-s, .wm-rest, .wm-num { animation: none !important; translate: none !important; scale: none !important; }
 }
+
+
+/* ==========================================================================
+   41. 页脚「本站已安全运行」
+   ==========================================================================
+   沿用旧版起点：旧站 index.html 写死 NewDate("2021-2-8")，UTC 零点。
+   样式跟着站的语言走 —— 等宽、tabular-nums（数字等宽，秒跳不会左右抖）、
+   朱砂只点在分隔的冒号上，整体压得很低，不抢页脚标识。 */
+.footer-runtime {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: .08em;
+  color: var(--ink-3, #9a9186);
+}
+.footer-runtime-label { white-space: nowrap; }
+.footer-runtime-value {
+  font-variant-numeric: tabular-nums;   /* 关键：数字等宽，秒位跳动不会把整行推来推去 */
+  letter-spacing: .1em;
+  color: var(--ink-2, #6b6357);
+}
+/* 数字里那几个分隔符用朱砂 —— 全站唯一热色，只用在这种极小的地方 */
+.footer-runtime-value b {
+  color: var(--cinnabar);
+  font-weight: 400;
+  padding: 0 1px;
+}
+@media (max-width: 640px) {
+  .footer-runtime { flex-wrap: wrap; gap: 4px; font-size: 10px; }
+}

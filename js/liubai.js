@@ -565,4 +565,44 @@
 
 
 
+
+  /* ── 页脚「本站已安全运行」────────────────────────────────────────────
+     起点从元素的 data-since 读（EJS 从 _config.yml 注入），不写死在脚本里。
+     沿用旧版起点：旧站的 NewDate("2021-2-8") 用 setUTCFullYear +
+     setUTCHours(0,0,0,0)，所以是 2021-02-08T00:00:00Z。
+
+     ★ 性能：标签页切到后台时把定时器停掉 —— 没人看的秒表不该占着 CPU。
+       用 visibilitychange 控制，回来立即刷新一次再续上。 */
+  (function () {
+    var el = document.getElementById('site-uptime');
+    if (!el) return;
+    var host = el.closest('.footer-runtime');
+    var t0 = Date.parse((host && host.getAttribute('data-since')) || el.getAttribute('datetime') || '');
+    if (!t0 || isNaN(t0)) { el.textContent = '—'; return; }
+
+    var timer = 0;
+
+    function pad(n) { return (n < 10 ? '0' : '') + n; }
+
+    function tick() {
+      var diff = Date.now() - t0;
+      if (diff < 0) diff = 0;
+      var sec = Math.floor(diff / 1000);
+      var d = Math.floor(sec / 86400);
+      var h = Math.floor((sec % 86400) / 3600);
+      var m = Math.floor((sec % 3600) / 60);
+      var s = sec % 60;
+      /* 用 <b> 包住分隔符，CSS 里把 b 染成朱砂 —— 全站唯一热色只点在这种地方 */
+      el.innerHTML = d + '<b>天</b>' + pad(h) + '<b>:</b>' + pad(m) + '<b>:</b>' + pad(s);
+    }
+
+    function start() { if (!timer) { tick(); timer = setInterval(tick, 1000); } }
+    function stop()  { if (timer) { clearInterval(timer); timer = 0; } }
+
+    start();
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) stop(); else start();
+    });
+  })();
+
 })();
