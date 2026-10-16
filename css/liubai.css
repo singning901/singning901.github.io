@@ -141,10 +141,7 @@ a { color: inherit; text-decoration: none; }
   opacity: .55;
   animation: navSweep 8s linear infinite;
 }
-@keyframes navSweep {
-  0%   { background-position: -40% 0; }
-  100% { background-position: 140% 0; }
-}
+
 
 body.nav-show .site-nav,
 body.nav-pinned .site-nav,
@@ -412,17 +409,11 @@ body.nav-pinned .site-nav {
 .hero-bracket.tr { top: 96px;    right: 26px; border-top-width: 1px;    border-right-width: 1px; }
 .hero-bracket.bl { bottom: 26px; left: 26px;  border-bottom-width: 1px; border-left-width: 1px; }
 .hero-bracket.br { bottom: 26px; right: 26px; border-bottom-width: 1px; border-right-width: 1px; }
-@keyframes bracketIn {
-  from { opacity: 0; transform: scale(1.5); }
-  to   { opacity: 1; transform: scale(1); }
-}
+
 
 /* 棣栧睆搴曞浘锛氭寔缁瀬缂撴參鎺ㄨ繎锛屼笉鏄彧鍦ㄨ浇鍏ユ椂鍔ㄤ竴娆?*/
 .hero-media { animation: kenburns 48s ease-in-out infinite alternate; }
-@keyframes kenburns {
-  0%   { transform: scale(1.04) translate3d(0, 0, 0); }
-  100% { transform: scale(1.13) translate3d(-1.4%, -1.7%, 0); }
-}
+
 
 /* 缂栧彿绔犺妭鏍囩 */
 .sec-num {
@@ -1388,17 +1379,6 @@ a.pag-link:hover { color: var(--cinnabar); }
 }
 .intro-status-mid { color: var(--intro-accent); font-variant-numeric: tabular-nums; }
 
-/* 鈹€鈹€ 15. 鎵嬬粯璇嶆爣 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
-   singning + 901锛岀瓑瀹藉崟绾垮嚑浣曞瓧褰紝瑙?_partial/wordmark.ejs
-   鏀惧湪瀵艰埅銆佸叆鍦哄眰銆侀〉鑴氫笁澶勶紝灏哄鐢卞灞傚鍣ㄦ帶鍒?*/
-.wordmark {
-  display: block;
-  width: 100%;
-  height: auto;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 9;
-}
 .wordmark .wm-accent { fill: var(--cinnabar); stroke: none; }
 .wordmark .wm-digits { stroke: var(--cinnabar); }
 
@@ -1419,7 +1399,7 @@ a.pag-link:hover { color: var(--cinnabar); }
 .nav-brand:hover .brand-mark { color: var(--cinnabar); }
 
 .footer-mark {
-  width: 150px;
+  width: auto;
   margin-top: 12px;
   color: var(--ink);
 }
@@ -1515,17 +1495,11 @@ a.pag-link:hover { color: var(--cinnabar); }
 
 /* 鍗扮珷缂撴參鍛煎惛 */
 .seal { animation: sealBreath 6.5s ease-in-out infinite; }
-@keyframes sealBreath {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(200, 54, 43, 0); }
-  50%      { box-shadow: 0 0 0 5px rgba(200, 54, 43, .10); }
-}
+
 
 /* 椤佃剼閭ｆ潯鏈辩爞鐭嚎缂撴參鏄庢殫 */
 .footer-rule { animation: ruleGlow 5s ease-in-out infinite; }
-@keyframes ruleGlow {
-  0%, 100% { opacity: .55; }
-  50%      { opacity: 1; }
-}
+
 
 /* 鍗＄墖锛氭偓鍋滀箣澶栬繕鏈夋瀬缂撴參鐨勯槾褰卞懠鍚革紝璁╅〉闈?娲荤潃" */
 .card { animation: cardBreath 11s ease-in-out infinite alternate; }
@@ -2122,7 +2096,6 @@ html:not(.intro-active) .stagger { animation-duration: 1.05s; }
 /* flex 椤归粯璁?min-width:auto锛屼笉浼氭敹缂╁埌鍐呭瀹藉害浠ヤ笅 鈥斺€?   SVG 璇嶆爣浼氬洜姝ゆ拺鐮村鍣ㄣ€傝繖鏄墜鏈虹璇嶆爣婧㈠嚭鍙宠竟鐣岀殑鍘熷洜銆?*/
 .hero-text { max-width: 100%; min-width: 0; }
 .hero-title { max-width: 100%; }
-.wordmark { max-width: 100%; }
 
 /* 鈹€鈹€ 绉诲姩绔敹鏁?鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
    璇嶆爣婧㈠嚭鐢ㄣ€屾洿浼橀泤銆嶇殑鍐欐硶璧屼簡鍑犳閮芥病鍚冩帀锛歋VG 鍦ㄥ搴︿笉绋冲畾鐨勫鍣ㄩ噷浼?   閫€鍖栨垚鎸?viewBox 鍥烘湁瀹藉害锛?12px锛夋拺寮€銆傝繖閲岀洿鎺ョ粰姝荤害鏉燂紝涓嶅啀渚濊禆鎺ㄥ銆?*/
@@ -2130,7 +2103,7 @@ html:not(.intro-active) .stagger { animation-duration: 1.05s; }
   .hero-text, .hero-title { display: block !important; width: 100% !important; max-width: 100% !important; min-width: 0 !important; }
   .hero-title .hero-mark { display: block !important; width: 68vw !important; max-width: 68vw !important; }
   .hero-title .hero-mark .wordmark { width: 100% !important; max-width: 100% !important; height: auto !important; }
-  .brand-mark { width: 92px; }
+  .brand-mark { width: auto; }   /* 原来 92px：旧 SVG 词标的宽度，会压过上面的 auto */
   .nav-inner { gap: 10px; }
   .mode-toggle { padding: 6px 8px; }
   .hero-bracket { width: 20px; height: 20px; }
@@ -2706,12 +2679,825 @@ html:not([data-hero-tone]) .hero-tagline { color: inherit; }
   line-height: 1;
 }
 
-/* 鏃х殑鎵嬬粯 SVG 璇嶆爣瑙勫垯宸蹭綔搴燂紝淇濈暀閫夋嫨鍣ㄤ互鍏嶅叾瀹冨湴鏂瑰紩鐢ㄦ姤绌?*/
-.wordmark { max-width: 100%; }
-
 @media (max-width: 700px) {
   .hero-mark .wm-sq   { --wm: clamp(110px, 30vw, 150px); }
   .footer-mark .wm-sq { --wm: 92px; }
 }
 
+/* ==========================================================================
+   31. 滚动驱动动画（视差 / 进度条 / 区块入场）
+   ==========================================================================
+   为什么用滚动驱动，而不是 JS 监听 scroll：
+     JS 方案每帧都要进主线程算一次，滚动越猛越卡 —— 这正是之前 PC 卡的原因之一。
+     animation-timeline 由**合成器线程**直接推进动画，主线程零开销，
+     且天然与滚动同步，不会抖动。
 
+   全部包在 @supports 里：不支持时这几条整个不生效，页面退回原来的静态样子，
+   而不是让动画错跑到时间轴上。 */
+
+@supports (animation-timeline: scroll()) {
+
+  /* ── ① 阅读进度条：顶部一条朱砂线，随滚动从左填满 ───────────────── */
+  .read-progress {
+    position: fixed; top: 0; left: 0; right: 0;
+    height: 2px; z-index: 96; pointer-events: none;
+  }
+  .read-progress i {
+    display: block; height: 100%;
+    background: linear-gradient(90deg, var(--cinnabar), var(--red));
+    transform-origin: 0 50%;
+    transform: scaleX(0);
+    animation: readGrow linear both;
+    animation-timeline: scroll(root block);
+  }
+  @keyframes readGrow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+  /* ── ② 首屏视差：头图随滚动往下坠，文字正常走 ───────────────────────
+     视差挂在 .hero-img（两个图层）上，**绝不能挂在 .hero-media 上** ——
+     那个元素已经有 kenburns，同一元素两条 animation 会互相顶掉，
+     这正是之前「头图抽一下」那个 bug 的成因。 */
+  .hero-img {
+    animation: heroParallax linear both;
+    animation-timeline: scroll(root block);
+    animation-range: 0 96vh;
+  }
+  @keyframes heroParallax {
+    from { transform: translate3d(0, 0, 0); }
+    to   { transform: translate3d(0, 17%, 0); }
+  }
+
+  /* ── ③ 区块入场：标题浮起 ───────────────────────────────────────── */
+  .section-head > *,
+  .section > .section-title {
+    animation: secRise linear both;
+    animation-timeline: view(block);
+    animation-range: entry 0% entry 100%;
+  }
+  
+
+  /* 卡片逐张入场（靠 animation-range 的偏移错开） */
+  .cards .card {
+    animation: cardRise linear both;
+    animation-timeline: view(block);
+    animation-range: entry 0% entry 92%;
+  }
+  .cards .card:nth-child(2) { animation-range: entry 4% entry 96%; }
+  .cards .card:nth-child(3) { animation-range: entry 8% entry 100%; }
+  .cards .card:nth-child(4) { animation-range: entry 14% entry 100%; }
+  
+
+  /* 文章行从左滑入 */
+  .post-list .post-link {
+    animation: rowSlide linear both;
+    animation-timeline: view(block);
+    animation-range: entry 0% entry 92%;
+  }
+  
+
+  /* 页脚标识最后浮上来 */
+  .footer-mark {
+    animation: secRise linear both;
+    animation-timeline: view(block);
+    animation-range: entry 10% cover 40%;
+  }
+}
+
+/* 尊重「减少动态效果」：这一节全部不启用 */
+@media (prefers-reduced-motion: reduce) {
+  .read-progress { display: none; }
+  .hero-img,
+  .section-head > *,
+  .section > .section-title,
+  .cards .card,
+  .post-list .post-link,
+  .footer-mark { animation: none !important; }
+}
+
+/* ==========================================================================
+   32. 交互打磨：真弹簧缓动 / 卡片 3D 倾斜 / 光标跟随 / 图片擦除
+   ========================================================================== */
+
+:root {
+  /* 真正的弹簧曲线。cubic-bezier 只能做单次过冲，linear() 能描述完整的阻尼
+     振荡 —— 冲过头、回弹、再收敛。这就是「Q弹」和「生硬」的区别。 */
+  --spring: linear(
+    0, 0.009, 0.035 2.1%, 0.141 4.4%, 0.723 12.9%, 0.938 16.7%,
+    1.017, 1.077, 1.121, 1.149, 1.161, 1.154, 1.132,
+    1.079 30.3%, 1.01 35.3%, 0.98 39.7%, 0.975, 0.981 46.1%,
+    0.996 52.1%, 1.001 60.2%, 1
+  );
+  /* 轻微过冲，用于大面积元素，幅度小不晕 */
+  --spring-soft: linear(
+    0, 0.012 1.4%, 0.05 3%, 0.19 6.3%, 0.62 15%, 0.79 20.3%,
+    0.9 25.8%, 0.96 31.5%, 0.99 38.2%, 1.004 46%, 1.006 57.7%, 1
+  );
+}
+
+/* ── 卡片 3D 跟随倾斜 ────────────────────────────────────────────────────
+   JS 每帧写 --tilt-x/--tilt-y，这里把变量接进 transform。
+   悬停时**关掉 transform 的过渡** —— 否则每帧的变量更新都会被重新过渡一次，
+   变成又黏又糊的拖影。移开后过渡恢复，负责回弹那一下。 */
+.card {
+  --tilt-x: 0deg;
+  --tilt-y: 0deg;
+  transform-style: preserve-3d;
+  transform: perspective(1000px)
+             rotateX(var(--tilt-x)) rotateY(var(--tilt-y))
+             translateY(0) scale(1);
+}
+.card:hover {
+  transform: perspective(1000px)
+             rotateX(var(--tilt-x)) rotateY(var(--tilt-y))
+             translateY(-7px) scale(1.014);
+  transition: transform 0s linear,
+              filter .3s ease, border-color .22s ease, background-color .9s ease;
+}
+.card:active {
+  transform: perspective(1000px)
+             rotateX(var(--tilt-x)) rotateY(var(--tilt-y))
+             translateY(-2px) scale(.978);
+}
+.card-body { transition: transform .45s var(--spring); }
+.card:hover .card-body { transform: translateZ(18px); }
+
+/* ── 点击反馈统一换成真弹簧 ───────────────────────────────────────────── */
+.post-link { transition: padding-left .42s var(--spring), background-color .2s ease; }
+.pag-link, #pagination .page-number, #pagination .extend {
+  transition: transform .5s var(--spring), background-color .2s ease,
+              color .2s ease, border-color .2s ease;
+}
+
+/* ── 光标弹簧跟随点：已按本人要求移除（不要红点）───────────────────── */
+
+/* ── 卡片高光跟随光标 ───────────────────────────────────────────────────
+   ★ 必须用 ::before，不能用 ::after ★
+   .card-media::after 早就被「斜向网点扫过」占了（4 条规则：网点
+   background-image + translateX(-100%) + hatchSweep 动画）。一个伪元素
+   只有一个 ::after，我把发光挂上去会把网点的 background 覆盖掉，
+   而它的 transform 和动画还留着 —— 两套东西抢同一个元素，视觉就乱了。
+   ::before 是空的，安全。 */
+.card-media::before {
+  content: "";
+  position: absolute; inset: 0;
+  z-index: 2;                       /* 压在图上、网点下 */
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .35s ease;
+  background: radial-gradient(
+    240px circle at var(--glow-x, 50%) var(--glow-y, 50%),
+    rgba(255, 255, 255, .30), rgba(255, 255, 255, .07) 42%, transparent 68%);
+}
+.card:hover .card-media::before { opacity: 1; }
+
+/* ── 导航栏：下滚收起 / 上滚回来 ──────────────────────────────────────── */
+.site-nav {
+  transition: transform .42s var(--spring-soft),
+              background-color .4s ease, border-color .4s ease,
+              box-shadow .4s ease;
+}
+.site-nav.nav-hidden { transform: translateY(-104%); }
+.site-nav.nav-scrolled { box-shadow: 0 1px 0 var(--rule), 0 10px 34px -22px rgba(10,10,20,.5); }
+
+/* ── 回到顶部：弹性出现 ──────────────────────────────────────────────── */
+.to-top {
+  position: fixed; right: 26px; bottom: 26px;
+  width: 46px; height: 46px;
+  display: grid; place-items: center;
+  border: 1px solid var(--rule);
+  background: var(--paper);
+  color: var(--ink-2);
+  font-size: 17px; line-height: 1;
+  cursor: pointer;
+  z-index: 92;
+  opacity: 0;
+  transform: translateY(14px) scale(.86);
+  pointer-events: none;
+  transition: opacity .3s ease,
+              transform .5s var(--spring),
+              color .2s ease, border-color .2s ease, background-color .2s ease;
+}
+.to-top.is-on { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+.to-top:hover { color: var(--cinnabar); border-color: var(--cinnabar); }
+.to-top:active { transform: translateY(2px) scale(.9); }
+@media (max-width: 700px) { .to-top { right: 16px; bottom: 16px; width: 40px; height: 40px; } }
+@media (prefers-reduced-motion: reduce) {
+  .to-top { transition: opacity .2s ease; transform: none; }
+  .to-top.is-on { transform: none; }
+}
+
+/* ── 区块轻微视差 ───────────────────────────────────────────────────────
+   JS 写 --sec-shift（±14px）。幅度刻意压小：大了会晕，也会在上下露白。 */
+.section { transform: translate3d(0, var(--sec-shift, 0), 0); }
+@media (prefers-reduced-motion: reduce) { .section { transform: none !important; } }
+
+/* ==========================================================================
+   35. 修两个 bug
+   ==========================================================================
+   ① 页脚标识「显示不全」
+      两个原因叠在一起：
+
+      a) .footer-mark { width: 150px } 是旧手绘 SVG 词标留下的固定宽度
+         （跟 .brand-mark { width: 116px } 同一类残留）。标识早换成方块了，
+         这个宽度只会把布局撑歪。改成 auto。
+
+      b) **真正把它裁掉一半的是 clip-path。**
+         第 33 节给 secRise 加了 clip-path 遮罩上推，第 31 节又把 secRise
+         挂给了 .footer-mark，animation-range 是 entry 10% ~ cover 40%。
+         但页脚在最底部 —— **页面滚到底也到不了 cover 40%**，
+         动画永远停在中途，clip-path 就永远只揭开一部分，标识被切掉半边。
+
+      修法：页脚不要这个揭示动画（底部元素的 view() 区间本来就不可靠）。
+
+   ② .cards .card 的入场动画占着 transform（详见第 34 节的说明），
+      改用独立的 translate / scale 属性，把 transform 让出来。
+      translate/scale/rotate 是独立属性，跟 transform 不打架 ——
+      这是这类冲突的标准解法，比"用 !important 抢"干净得多。 */
+
+.footer-mark {
+  width: auto;                     /* 撤掉旧 SVG 的 150px */
+  animation: none !important;      /* 底部元素不做 view() 揭示 */
+  clip-path: none !important;
+}
+.footer-mark .wm-sq { --wm: 116px; }
+
+/* 901 的宽度 = 3 × (0.60 + 字距) × 字号。原来 -.085em、.66em 时算出 1.03em，
+   比方框宽 1em 多 3% —— 居中后左右各被 overflow:hidden 裁掉 1.5%。
+   字距收到 -.10em 后正好 0.99em，不再被裁。 */
+.wm-num { letter-spacing: -.100em; }
+
+/* 入场动画改用 translate/scale，不再动 transform */
+@supports (animation-timeline: view()) {
+  
+  @keyframes rowSlide {
+    from { opacity: 0; translate: -22px 0; }
+    to   { opacity: 1; translate: 0 0; }
+  }
+  
+}
+
+
+/* ==========================================================================
+   34. 撤销：斜线纹理 / 跟鼠标跑的高光 / 3D 倾斜
+   ==========================================================================
+   本人反馈两点，都成立：
+
+   ①「一条一条斜线那个真难看」
+      .card-media::after 上原本有 repeating-linear-gradient(-45deg,…) 的斜线网点，
+      原本只在悬停时扫过一次。我这轮给它加了 background，破坏了原有显隐逻辑，
+      把它弄成常态可见 —— 所以难看。这里彻底去掉纹理。
+
+   ②「高光还是会跟鼠标跑」
+      真凶**不是**我加的那团柔光，而是**卡片 3D 倾斜本身**：
+      卡片上有一层固定的反光渐变（.card::before），卡片一旦旋转，
+      这层固定渐变相对卡片表面的位置就跟着变 —— 视觉上就是"高光追着鼠标走"。
+      这是「3D 倾斜 + 固定反光」的必然副作用，方案本身就不成立。
+      所以倾斜、图内位移、跟随柔光**一并撤掉**。
+
+   保留：悬停抬起 + 图片放大 + 那层固定反光（本人早先明确要求保留反光）。 */
+
+/* ① 去掉斜线纹理 */
+.card-media::after {
+  background-image: none !important;
+  transform: none !important;
+  transition: none !important;
+  animation: none !important;
+  opacity: 0 !important;
+}
+.card:hover .card-media::after {
+  background-image: none !important;
+  transform: none !important;
+  animation: none !important;
+  opacity: 0 !important;
+}
+
+/* ② 去掉跟随光标的柔光 */
+.card-media::before {
+  display: none !important;
+}
+
+/* ③ 3D 倾斜：恢复（本人要求）─────────────────────────────────────────
+   通道必须精确分配，否则四项互相顶掉：
+
+     transform  → 3D 倾斜（JS 每帧写 --tilt-x / --tilt-y）
+     translate  → 悬停抬起（CSS 弹簧过渡）
+     scale      → 悬停缩放（CSS 弹簧过渡）
+     opacity    → 入场动画
+
+   为什么抬起不走 transform：
+     transform 被 JS 每帧改。若它带过渡，每个新值都会被重新过渡一次，
+     变成又黏又糊的拖影。所以 transform 不给过渡，抬起改走 translate。
+
+   为什么入场动画的 fill-mode 要从 both 改成 backwards：
+     both 会在动画播完后**永久锁定** translate / scale 在终态，
+     之后悬停抬起写 translate 就失效了。backwards 只在动画开始前生效，
+     播完把控制权交回 CSS —— 终态值（0 0 / 1）与基础值一致，不会跳。 */
+.card {
+  --tilt-x: 0deg;
+  --tilt-y: 0deg;
+  transform-style: preserve-3d;
+  transform: perspective(1000px)
+             rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
+  translate: 0 0;
+  scale: 1;
+  transition: translate .34s var(--spring-soft),
+              scale .34s var(--spring-soft),
+              filter .3s ease, border-color .22s ease, background-color .9s ease;
+}
+.card:hover { translate: 0 -6px; scale: 1.008; }
+.card:active { translate: 0 -1px; scale: .985; }
+
+.card-body { transition: transform .45s var(--spring); }
+.card:hover .card-body { transform: translateZ(18px); }
+
+.card:hover .card-media img,
+.card:hover .card-media video {
+  transform: scale(1.07);
+  transition: transform .34s cubic-bezier(.34,1.56,.64,1), filter .3s ease;
+}
+
+/* 入场动画播完把 translate / scale 交回 CSS（见上面说明）。
+   不加这条的话 fill-mode:both 会锁死这两个属性，悬停抬起永远不生效。 */
+.cards .card,
+.post-list .post-link,
+.section-head > *,
+.section > .section-title,
+.prose > p, .prose > ul, .prose > ol, .prose > blockquote,
+.prose > pre, .prose > h2, .prose > h3 {
+  animation-fill-mode: backwards;
+}
+
+
+/* ==========================================================================
+   33. 再补三样
+   ========================================================================== */
+
+/* ── ① 卡片图「内位移」视差 ─────────────────────────────────────────────
+   倾斜之外，让图本身在框内反向挪一点点（±3%），产生「透过窗口看进去」的纵深。
+   复用的还是 JS 已经在写的 --glow-x / --glow-y，不加任何监听。 */
+.card:hover .card-media img,
+.card:hover .card-media video {
+  transform: scale(1.09)
+             translate3d(calc(var(--glow-x, 50%) * .06 - 3%),
+                         calc(var(--glow-y, 50%) * .06 - 3%), 0);
+  filter: saturate(1.05);
+  transition: transform .16s ease-out, filter .3s ease;
+}
+
+/* ── ② 标题「从下往上擦出」─────────────────────────────────────────────
+   把第 31 节 secRise 的透明度淡入，换成 clip-path 遮罩上推 ——
+   文字像是从一条看不见的线后面升起来，比单纯淡入高级。
+   注意：这是**改写已有的同一条 animation**，不是加第二条。
+   同一元素挂两条 animation 会互相顶掉（头图抽一下就是这么来的）。 */
+@supports (animation-timeline: view()) {
+  @keyframes secRise {
+    from { opacity: 0; transform: translateY(22px); clip-path: inset(0 0 108% 0); }
+    to   { opacity: 1; transform: none;              clip-path: inset(0 0 -8% 0); }
+  }
+}
+
+/* ── ③ 导航项：悬停上浮 + 中文弹性抬升 ────────────────────────────────
+   必须写成 .nav-link .nav-link-cn（两个类）—— 第 27 节已经有一条
+   `.nav-link .nav-link-cn` 的过渡，(0,2,0) 比单独一个 .nav-link-cn
+   (0,1,0) 更具体，光靠"写在后面"压不住它。只动 transform，
+   不碰 .nav-link::after（那条下划线的既有样式不明确，改了容易误伤）。 */
+.nav-link .nav-link-cn {
+  display: inline-block;
+  transition: transform .38s var(--spring), color .2s ease;
+}
+.nav-link:hover .nav-link-cn { transform: translateY(-2px); }
+.nav-link:active .nav-link-cn { transform: translateY(1px) scale(.96); }
+
+/* ── ④ 正文逐段浮起（只作用于文章/页面，滚动驱动）──────────────────── */
+@supports (animation-timeline: view()) {
+  .prose > p,
+  .prose > ul,
+  .prose > ol,
+  .prose > blockquote,
+  .prose > pre,
+  .prose > h2,
+  .prose > h3 {
+    animation: paraRise linear both;
+    animation-timeline: view(block);
+    animation-range: entry 0% entry 100%;
+  }
+  @keyframes paraRise {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: none; }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .prose > p, .prose > ul, .prose > ol, .prose > blockquote,
+  .prose > pre, .prose > h2, .prose > h3 { animation: none !important; }
+}
+
+
+/* ── 图片「擦」出来（替代淡入）───────────────────────────────────────── */
+@supports (animation-timeline: view()) {
+  .cards .card-media img,
+  .cards .card-media video {
+    animation: mediaWipe linear both;
+    animation-timeline: view(block);
+    animation-range: entry 0% entry 100%;
+  }
+  @keyframes mediaWipe {
+    from { clip-path: inset(0 62% 0 0); }
+    to   { clip-path: inset(0 0 0 0); }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cards .card-media img,
+  .cards .card-media video { animation: none !important; clip-path: none !important; }
+}
+
+/* cardRise 的唯一权威定义（放在最末尾，确保没有别的同名定义覆盖它）。
+   只动 opacity —— translate / scale / transform 三个通道全部让给
+   3D 倾斜、悬停抬起、悬停缩放。错开效果靠 animation-range 的偏移保留。 */
+@keyframes cardRise {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ==========================================================================
+   36. 再补三样（动手前先查过通道占用）
+   ==========================================================================
+   教训：加动画前必须确认目标元素的 transform / translate / scale /
+   animation 四个通道谁被占了。上一个 bug 就是 cardRise 和 3D 倾斜抢 transform。
+
+   本次目标的通道状态：
+     .wm-s / .wm-rest  四个通道全空闲              → 随便用
+     .wm-num           transform 被占（居中的 translateX(-50%)）
+                       → 只能用 translate / scale / opacity，不能碰 transform
+     .wm-sq            transform 空闲
+     .footer-mark      animation 被我的 !important 锁死 → 不加动画
+     .section-title::after  之前无人占用
+*/
+
+/* ── ① 首屏标识「逐层浮起」─────────────────────────────────────────────
+   三层按 S → ing/ning → 901 依次上浮。
+   刻意用 translate 而不是 transform —— .wm-num 的 transform 被居中占用，
+   碰它会破坏对齐。translate 是独立属性，与 transform 叠加不冲突。 */
+@keyframes wmLayer {
+  from { opacity: 0; translate: 0 26px; }
+  to   { opacity: 1; translate: 0 0; }
+}
+html:not(.intro-active) .wm-s,
+html:not(.intro-active) .wm-rest,
+html:not(.intro-active) .wm-num {
+  animation: wmLayer .9s var(--spring-soft) both;
+}
+html:not(.intro-active) .wm-s    { animation-delay: .05s; }
+html:not(.intro-active) .wm-rest { animation-delay: .18s; }
+html:not(.intro-active) .wm-num  { animation-delay: .30s; }
+
+/* ── ② 标识悬停：弹性放大 ──────────────────────────────────────────────
+   .wm-sq 的 transform 空闲，可安全使用。只在本机精确指针设备上生效。 */
+@media (hover: hover) and (pointer: fine) {
+  .wm-sq { transition: transform .5s var(--spring); }
+  .nav-brand:hover .wm-sq,
+  .footer-mark .wm-sq:hover { transform: scale(1.06); }
+  .nav-brand:active .wm-sq  { transform: scale(.96); }
+}
+
+/* ── ③ 区块标题的装饰线：从左画出 ──────────────────────────────────────
+   .section-title::after 之前没人用（已确认）。scaleX 从左展开，
+   与标题的 secRise（走 translate + clip-path）互不干扰。 */
+.section-title { position: relative; }
+.section-title::after {
+  content: "";
+  display: block;
+  width: 46px;
+  height: 2px;
+  margin-top: 10px;
+  background: var(--cinnabar);
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+}
+@supports (animation-timeline: view()) {
+  .section-title::after {
+    animation: ruleDraw linear both;
+    animation-timeline: view(block);
+    animation-range: entry 6% entry 72%;
+  }
+  @keyframes ruleDraw { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .section-title::after { animation: none !important; transform: scaleX(1) !important; }
+  .wm-s, .wm-rest, .wm-num { animation: none !important; }
+  .wm-sq { transition: none !important; transform: none !important; }
+}
+
+/* ==========================================================================
+   37. 再补四个（动手前逐个查过通道占用，见下方注释）
+   ==========================================================================
+   通道审计结果：
+     .footer-list li    transform/translate/scale/animation 全空   → 可用
+     .section-sub       同上                                      → 可用
+     .to-top::after     同上（按钮本体用 translate，但 ::after 没被占） → 可用
+     .prose a           同上（它用 border-bottom，不动 transform）  → 可用
+     .post-arrow        只有 transition，没有 animation             → 可升级缓动
+
+   刻意避开的（有占用）：
+     .nav-link::after   3 条规则且其中一条是 display:none
+     .post-link         ::before(3) ::after(2) 都被占，transform 还被 translateZ(0) 占
+     .section           transform 已被滚动视差占用
+     .sec-num           animation 已被 numLive 占用
+*/
+
+/* ── ① 页脚三栏内容逐个浮起 ──────────────────────────────────────────── */
+@supports (animation-timeline: view()) {
+  .footer-label {
+    animation: footIn linear both;
+    animation-timeline: view(block);
+    animation-range: entry 0% entry 70%;
+  }
+  .footer-list li {
+    animation: footIn linear both;
+    animation-timeline: view(block);
+    animation-range: entry 0% entry 85%;
+  }
+  .footer-list li:nth-child(2) { animation-range: entry 6% entry 91%; }
+  .footer-list li:nth-child(3) { animation-range: entry 12% entry 97%; }
+  .footer-list li:nth-child(4) { animation-range: entry 18% entry 100%; }
+  .footer-list li:nth-child(5) { animation-range: entry 24% entry 100%; }
+  .footer-desc {
+    animation: footIn linear both;
+    animation-timeline: view(block);
+    animation-range: entry 10% entry 95%;
+  }
+  @keyframes footIn {
+    from { opacity: 0; translate: 0 14px; }
+    to   { opacity: 1; translate: 0 0; }
+  }
+}
+
+/* ── ② 区块副标题浮现（section-sub 通道全空）────────────────────────── */
+@supports (animation-timeline: view()) {
+  .section-sub {
+    animation: subIn linear both;
+    animation-timeline: view(block);
+    animation-range: entry 0% entry 80%;
+  }
+  @keyframes subIn {
+    from { opacity: 0; translate: 0 16px; }
+    to   { opacity: 1; translate: 0 0; }
+  }
+}
+
+/* ── ③ 回到顶部：悬停时箭头弹跳 + 一圈朱砂环 ───────────────────────────
+   .to-top 本体用 translate 做显隐，::after 完全空闲，安全。 */
+.to-top::after {
+  content: "";
+  position: absolute; inset: -4px;
+  border: 1px solid transparent;
+  pointer-events: none;
+  opacity: 0;
+  transform: scale(.82);
+  transition: opacity .3s ease, transform .5s var(--spring), border-color .3s ease;
+}
+.to-top:hover::after {
+  opacity: 1;
+  transform: scale(1);
+  border-color: var(--cinnabar);
+}
+.to-top span {
+  display: block;
+  transition: transform .5s var(--spring);
+}
+.to-top:hover span { transform: translateY(-3px); }
+.to-top:active span { transform: translateY(1px) scale(.9); }
+
+/* ── ④ 正文链接：下划线从左展开 ──────────────────────────────────────
+   .prose a 原本用 border-bottom（实线，改不了长度）。换成背景渐变线，
+   用 background-size 从 0 到 100% 展开 —— 不碰 transform，零冲突。 */
+.prose a {
+  background-image: linear-gradient(90deg, var(--cinnabar), var(--cinnabar));
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 1px;
+  border-bottom-color: transparent;
+  transition: background-size .42s var(--spring), color .2s ease;
+}
+.prose a:hover { background-size: 100% 1px; }
+
+/* ── ⑤ 箭头：换成真弹簧 ─────────────────────────────────────────────── */
+.post-arrow, .card-arrow { transition: transform .5s var(--spring), color .25s ease; }
+.post-link:hover .post-arrow,
+.card:hover .card-arrow { transform: translateX(7px); }
+
+/* ── 减少动态效果：本节的动画全部不启用 ─────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .footer-label, .footer-list li, .footer-desc, .section-sub { animation: none !important; }
+  .to-top::after, .to-top span, .prose a, .post-arrow, .card-arrow { transition: none !important; }
+  .prose a { background-size: 100% 1px; }
+}
+
+/* ==========================================================================
+   38. 新奇的四个（照例先审通道）
+   ==========================================================================
+     .nav-link-cn      transform 被“悬停上浮”占用 → 磁吸走 translate（空闲）
+     .read-progress i  transform 被 readGrow 占用 → 光点挂在 ::after（空闲）
+     .hero-body        四通道全空                  → 可写 translate
+     .footer-legacy    只有 transition             → 可加 transform / 边框色
+*/
+
+/* ── ① 导航项磁吸 ───────────────────────────────────────────────────────
+   JS 写 --mag-x / --mag-y（±3px 内），标签朝光标方向轻微偏移。
+   用 translate 而不是 transform —— transform 已经被“悬停上浮”占了。 */
+.nav-link-cn {
+  translate: var(--mag-x, 0) var(--mag-y, 0);
+  transition: translate .45s var(--spring), transform .38s var(--spring), color .2s ease;
+}
+
+/* ── ② 进度条末端的光点 ─────────────────────────────────────────────────
+   进度条本身是 scaleX 撑开的；光点挂在它的 ::after 上，
+   因为父元素被缩放了，::after 会跟着走 —— 于是光点始终停在进度最前端。
+   用 :not() 反向缩放抵消父级的 scaleX，让光点保持正圆。 */
+.read-progress i::after {
+  content: "";
+  position: absolute;
+  right: 0; top: 50%;
+  width: 7px; height: 7px;
+  margin: -3.5px -3.5px 0 0;
+  border-radius: 50%;
+  background: var(--cinnabar);
+  box-shadow: 0 0 10px 2px rgba(200, 54, 43, .55);
+  transform: scaleX(calc(1 / max(var(--rp, 1), .0001)));
+  animation: dotPulse 2.4s ease-in-out infinite;
+}
+.read-progress i { position: relative; }
+@keyframes dotPulse {
+  0%, 100% { box-shadow: 0 0 8px 1px rgba(200, 54, 43, .45); }
+  50%      { box-shadow: 0 0 16px 4px rgba(200, 54, 43, .75); }
+}
+/* 用滚动进度驱动 --rp，让光点抵消父级缩放（scroll() 时间轴） */
+@supports (animation-timeline: scroll()) {
+  @keyframes rpVar { from { --rp: 0.0001; } to { --rp: 1; } }
+  .read-progress i {
+    animation: readGrow linear both, rpVar linear both;
+    animation-timeline: scroll(root block), scroll(root block);
+  }
+}
+
+/* ── ③ 首屏文字跟随鼠标微视差 ───────────────────────────────────────────
+   JS 写 --hero-mx / --hero-my（±5px）。幅度刻意压到很小 ——
+   大了会晕，也会让文字与背景脱节。只在精确指针设备上跑。 */
+.hero-body { translate: var(--hero-mx, 0) var(--hero-my, 0); }
+@media (hover: hover) and (pointer: fine) {
+  .hero-body { transition: translate .9s cubic-bezier(.22, .61, .36, 1); }
+}
+
+/* ── ④ 旧版网站入口：悬停时框线转朱砂 + 箭头上跳 ──────────────────────── */
+.footer-legacy { transition: color .2s ease, border-color .25s ease,
+                             transform .5s var(--spring), background-color .25s ease; }
+.footer-legacy:hover { border-color: var(--cinnabar); transform: translateY(-2px); }
+.footer-legacy span { display: inline-block; transition: transform .5s var(--spring); }
+.footer-legacy:hover span { transform: translateY(-2px); }
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-link-cn { translate: none !important; transition: none !important; }
+  .hero-body   { translate: none !important; transition: none !important; }
+  .read-progress i::after { animation: none !important; }
+  .footer-legacy, .footer-legacy span { transform: none !important; transition: none !important; }
+}
+
+/* ==========================================================================
+   39. 有设计感的四个（照例先审通道）
+   ==========================================================================
+   ★ 教训：本节第一次是用正则"删掉再重写"实现 .footer-mark 解锁的，
+     `.*?` 跨行匹配把中间几十条规则整段删了（关键帧从 54 掉到 25）。
+     现在改成**只追加、不删除** —— 末尾规则靠层叠自然覆盖，安全得多。
+
+   通道审计：
+     .section-head::before      之前没人用      → 新建刻度条
+     .footer-mark               transform 空闲   → 盖章落下
+     .prose blockquote::before  之前没人用      → 引号朱砂条生长
+     .post-date                 四通道全空       → 悬停右移
+*/
+
+/* ── ① 区块标题上方的「标尺刻度」从左织出 ───────────────────────────────
+   一排 1px 竖刻度，像印刷版式里的尺规标记。滚动到该区块时从左侧展开。 */
+.section-head { position: relative; padding-top: 14px; }
+.section-head::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0;
+  width: 132px;
+  height: 7px;
+  pointer-events: none;
+  opacity: .5;
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--rule-2, rgba(120,110,96,.5)) 0 1px,
+    transparent 1px 11px);
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+}
+@supports (animation-timeline: view()) {
+  .section-head::before {
+    animation: ticksIn linear both;
+    animation-timeline: view(block);
+    animation-range: entry 0% entry 60%;
+  }
+  @keyframes ticksIn {
+    from { transform: scaleX(0); opacity: 0; }
+    to   { transform: scaleX(1); opacity: .5; }
+  }
+}
+
+/* ── ② 页脚大标识「盖章落下」───────────────────────────────────────────
+   从 1.3 倍、微倾 -5°，边转正边落到位 —— 像盖印章。
+   用 entry 区间（页脚在底部，cover 够不到，之前就是这儿出过 bug）。
+   fill-mode 用 backwards，播完把 transform 交回 CSS，不锁死。
+
+   注意 .footer-mark 上原来有一条 `animation: none !important`（第 35 节，
+   为修"显示不全"加的）。!important 只能被 !important 覆盖，
+   所以这里也用 !important，靠写在后面取胜。 */
+@supports (animation-timeline: view()) {
+  .footer-mark {
+    animation: sealStamp linear both !important;
+    animation-timeline: view(block);
+    animation-range: entry 0% entry 85%;
+    animation-fill-mode: backwards;
+    clip-path: none !important;
+  }
+  @keyframes sealStamp {
+    from { opacity: 0; transform: scale(1.3) rotate(-5deg); }
+    62%  { opacity: 1; transform: scale(.985) rotate(1.2deg); }
+    to   { opacity: 1; transform: scale(1) rotate(0deg); }
+  }
+}
+
+/* ── ③ 引用块的朱砂竖条：从上往下生长 ─────────────────────────────────
+   blockquote 原本是静态 border-left。把边框透明化，换成一个 ::before 竖条，
+   用 scaleY 从顶部展开 —— 更有"引述开始"的语感。 */
+.prose blockquote { border-left-color: transparent; position: relative; }
+.prose blockquote::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 2px;
+  background: var(--cinnabar);
+  transform-origin: 50% 0;
+  transform: scaleY(0);
+}
+@supports (animation-timeline: view()) {
+  .prose blockquote::before {
+    animation: quoteBar linear both;
+    animation-timeline: view(block);
+    animation-range: entry 0% entry 90%;
+  }
+  @keyframes quoteBar { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+}
+
+/* ── ④ 文章日期：等宽数字 + 悬停右移 ─────────────────────────────────── */
+.post-date {
+  font-variant-numeric: tabular-nums;
+  transition: transform .45s var(--spring), color .2s ease;
+  display: inline-block;
+}
+.post-link:hover .post-date { transform: translateX(4px); color: var(--cinnabar); }
+
+@media (prefers-reduced-motion: reduce) {
+  .section-head::before { animation: none !important; transform: scaleX(1) !important; }
+  .footer-mark { animation: none !important; clip-path: none !important; }
+  .prose blockquote::before { animation: none !important; transform: scaleY(1) !important; }
+  .post-date, .post-link:hover .post-date { transform: none !important; transition: none !important; }
+}
+
+
+/* ==========================================================================
+   40. 朱砂墨点（点击事件驱动，非常驻）
+   ==========================================================================
+   全站唯一一个"大"效果，刻意只在点击时发生 ——
+   常驻的粒子背景会一直烧 GPU，而这个页面静止时零开销。 */
+
+/* ── 首屏标识「拆解重装」──────────────────────────────────────────────
+   把 wmLayer 从"轻轻上浮"改成三层从不同方向带旋转飞入、带过冲。
+   .wm-s / .wm-rest / .wm-num 的 translate / scale 都空闲（transform 上
+   只有 .wm-num 用于居中，所以这里仍不碰 transform）。 */
+@keyframes wmAssemble {
+  0%   { opacity: 0; translate: -34px -26px; scale: .72; }
+  58%  { opacity: 1; translate: 4px 3px;     scale: 1.06; }
+  78%  { translate: -2px -1px;               scale: .99; }
+  100% { opacity: 1; translate: 0 0;         scale: 1; }
+}
+@keyframes wmAssembleR {
+  0%   { opacity: 0; translate: 36px -20px;  scale: .70; }
+  58%  { opacity: 1; translate: -4px 2px;    scale: 1.07; }
+  78%  { translate: 2px -1px;                scale: .99; }
+  100% { opacity: 1; translate: 0 0;         scale: 1; }
+}
+@keyframes wmAssembleD {
+  0%   { opacity: 0; translate: 0 40px;      scale: .78; }
+  58%  { opacity: 1; translate: 0 -5px;      scale: 1.05; }
+  78%  { translate: 0 2px;                   scale: .995; }
+  100% { opacity: 1; translate: 0 0;         scale: 1; }
+}
+html:not(.intro-active) .wm-s    { animation: wmAssemble  .78s cubic-bezier(.22,.61,.36,1) both; animation-delay: .02s; }
+html:not(.intro-active) .wm-rest { animation: wmAssembleR .78s cubic-bezier(.22,.61,.36,1) both; animation-delay: .14s; }
+html:not(.intro-active) .wm-num  { animation: wmAssembleD .82s cubic-bezier(.22,.61,.36,1) both; animation-delay: .26s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .wm-s, .wm-rest, .wm-num { animation: none !important; translate: none !important; scale: none !important; }
+}

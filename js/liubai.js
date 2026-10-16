@@ -366,4 +366,203 @@
     }
     window.addEventListener('resize', apply, { passive: true });
   })();
+
+  /* ── 卡片 3D 跟随倾斜 ─────────────────────────────────────────────────
+     鼠标在卡片上移动时，卡片朝光标方向微微翻转（rotateX/rotateY 各 ±6°）。
+
+     每次只写 --tilt-x / --tilt-y 两个变量，CSS 负责接进 transform：
+       transform: perspective(1000px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y))
+     本函数**不写 --glow-x / --glow-y** —— 那团跟光标的柔光本人不要。
+
+     跟随用 0.18 的 lerp 缓动，不硬跟（硬跟会抖）。
+     悬停抬起走的是 translate、缩放走 scale，与这里的 transform 互不干扰。
+
+     尊重 prefers-reduced-motion；触屏跳过（没有 hover 概念）。 */
+  (function () {
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var fine = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    if (reduce || !fine) return;
+
+    var MAX = 6;      /* 最大倾角，度数 */
+    document.querySelectorAll('.card').forEach(function (card) {
+      var raf = 0, tx = 0, ty = 0, mx = 0, my = 0;
+
+      function flush() {
+        raf = 0;
+        tx += (mx - tx) * 0.18;
+        ty += (my - ty) * 0.18;
+        card.style.setProperty('--tilt-x', (ty * MAX).toFixed(2) + 'deg');
+        card.style.setProperty('--tilt-y', (-tx * MAX).toFixed(2) + 'deg');
+        if (Math.abs(mx - tx) > 0.002 || Math.abs(my - ty) > 0.002) {
+          raf = requestAnimationFrame(flush);
+        }
+      }
+
+      card.addEventListener('mousemove', function (e) {
+        var r = card.getBoundingClientRect();
+        mx = ((e.clientX - r.left) / r.width) * 2 - 1;    /* -1 ~ 1 */
+        my = ((e.clientY - r.top) / r.height) * 2 - 1;
+        if (!raf) raf = requestAnimationFrame(flush);
+      }, { passive: true });
+
+      card.addEventListener('mouseleave', function () {
+        mx = my = 0;
+        if (!raf) raf = requestAnimationFrame(flush);
+      }, { passive: true });
+    });
+  })();
+
+  /* ── 导航栏：下滚收起、上滚立刻回来 ───────────────────────────────────
+     只在下滚**超过一屏**之后才收，避免顶部轻微抖动就闪烁。
+     用 transform 位移，不动 height —— 不触发重排。 */
+  (function () {
+    var nav = document.getElementById('site-nav');
+    if (!nav) return;
+    var last = 0, ticking = false, HIDE_AFTER = 0;
+
+    function update() {
+      ticking = false;
+      var y = window.pageYOffset || document.documentElement.scrollTop;
+      var up = y < last;
+      last = y;
+
+      /* 顶部附近、或往上滚 → 展开 */
+      if (y < 90 || up) {
+        nav.classList.remove('nav-hidden');
+      } else if (y > HIDE_AFTER) {
+        nav.classList.add('nav-hidden');
+      }
+      /* 滚起来了才让进度条/背景生效 */
+      nav.classList.toggle('nav-scrolled', y > 24);
+    }
+
+    addEventListener('scroll', function () {
+      if (!ticking) { ticking = true; requestAnimationFrame(update); }
+    }, { passive: true });
+    update();
+  })();
+
+  /* ── 回到顶部：出现/消失都带弹簧 ────────────────────────────────────── */
+  (function () {
+    var btn = document.createElement('button');
+    btn.className = 'to-top';
+    btn.type = 'button';
+    btn.setAttribute('aria-label', '回到顶部');
+    btn.innerHTML = '<span aria-hidden="true">↑</span>';
+    document.body.appendChild(btn);
+
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var ticking = false;
+
+    function update() {
+      ticking = false;
+      var y = window.pageYOffset || document.documentElement.scrollTop;
+      btn.classList.toggle('is-on', y > 600);
+    }
+    addEventListener('scroll', function () {
+      if (!ticking) { ticking = true; requestAnimationFrame(update); }
+    }, { passive: true });
+    update();
+
+    btn.addEventListener('click', function () {
+      window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
+    });
+  })();
+
+  /* ── 区块轻微视差 ─────────────────────────────────────────────────────
+     只给「最近文章」那一段和页脚一点点反向位移，制造纵深。
+     幅度很小（±14px），大了会晕、也会露白。 */
+  (function () {
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) return;
+    var secs = document.querySelectorAll('.section');
+    if (!secs.length) return;
+    var ticking = false;
+
+    function update() {
+      ticking = false;
+      var vh = innerHeight;
+      secs.forEach(function (s) {
+        var r = s.getBoundingClientRect();
+        if (r.bottom < -200 || r.top > vh + 200) return;    /* 屏外不算，省 CPU */
+        var p = (r.top + r.height / 2 - vh / 2) / vh;        /* -1 ~ 1 */
+        var shift = Math.max(-14, Math.min(14, -p * 16));
+        s.style.setProperty('--sec-shift', shift.toFixed(1) + 'px');
+      });
+    }
+    addEventListener('scroll', function () {
+      if (!ticking) { ticking = true; requestAnimationFrame(update); }
+    }, { passive: true });
+    addEventListener('resize', update, { passive: true });
+    update();
+  })();
+
+  /* ── 导航项磁吸 ───────────────────────────────────────────────────────
+     鼠标在导航条上移动时，每个导航项朝光标方向轻微偏移（最多 3px）。
+     写的是 --mag-x / --mag-y，CSS 那边用 translate 接 ——
+     .nav-link-cn 的 transform 已被「悬停上浮」占用，碰不得。
+
+     纯计算，不读布局（不调 getBoundingClientRect），所以不触发重排。 */
+  (function () {
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var fine = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    if (reduce || !fine) return;
+    var links = document.querySelectorAll('.nav-link');
+    if (!links.length) return;
+    var MAX = 3;
+
+    links.forEach(function (a) {
+      a.addEventListener('mousemove', function (e) {
+        var r = a.getBoundingClientRect();
+        var dx = (e.clientX - (r.left + r.width / 2)) / (r.width / 2);
+        var dy = (e.clientY - (r.top + r.height / 2)) / (r.height / 2);
+        dx = Math.max(-1, Math.min(1, dx));
+        dy = Math.max(-1, Math.min(1, dy));
+        a.style.setProperty('--mag-x', (dx * MAX).toFixed(2) + 'px');
+        a.style.setProperty('--mag-y', (dy * MAX).toFixed(2) + 'px');
+      }, { passive: true });
+      a.addEventListener('mouseleave', function () {
+        a.style.setProperty('--mag-x', '0px');
+        a.style.setProperty('--mag-y', '0px');
+      }, { passive: true });
+    });
+  })();
+
+  /* ── 首屏文字跟随鼠标微视差 ───────────────────────────────────────────
+     鼠标在首屏内移动时，文字层朝鼠标反方向偏移最多 5px。
+     幅度很小是刻意的 —— 大了会晕，也会让文字和背景脱节。
+     只在精确指针设备上跑；滚出首屏就归零。 */
+  (function () {
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var fine = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    if (reduce || !fine) return;
+    var hero = document.querySelector('.hero');
+    var body = document.querySelector('.hero-body');
+    if (!hero || !body) return;
+    var MAX = 5, raf = 0, tx = 0, ty = 0, mx = 0, my = 0;
+
+    function flush() {
+      raf = 0;
+      tx += (mx - tx) * 0.10;          /* 很慢的缓动，像有惯性 */
+      ty += (my - ty) * 0.10;
+      body.style.setProperty('--hero-mx', tx.toFixed(2) + 'px');
+      body.style.setProperty('--hero-my', ty.toFixed(2) + 'px');
+      if (Math.abs(mx - tx) > 0.02 || Math.abs(my - ty) > 0.02) {
+        raf = requestAnimationFrame(flush);
+      }
+    }
+    hero.addEventListener('mousemove', function (e) {
+      var r = hero.getBoundingClientRect();
+      mx = -((e.clientX - r.left) / r.width * 2 - 1) * MAX;
+      my = -((e.clientY - r.top) / r.height * 2 - 1) * MAX;
+      if (!raf) raf = requestAnimationFrame(flush);
+    }, { passive: true });
+    hero.addEventListener('mouseleave', function () {
+      mx = my = 0;
+      if (!raf) raf = requestAnimationFrame(flush);
+    }, { passive: true });
+  })();
+
+
+
 })();
